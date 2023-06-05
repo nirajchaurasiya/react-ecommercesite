@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom';
+import checkServiciabilityPinn from '../checkServiciabilityJSON/checkServiciabilityJSON.json'
 const originalProducts = [
     {
         id: 1,
@@ -44,6 +45,8 @@ export default function ProductDetails() {
     const [showDesc, setShowDesc] = useState(true);
     const [showImages, setShowImages] = useState('/images/message.png')
     const [cardClassName, setCardClassName] = useState('border-2 border-gray-900');
+    const [serviceabilityMsg, setServiceabilityMsg] = useState('Check serviceability')
+    const serviceabilityPin = useRef();
     const products = [
         {
             id: 1,
@@ -62,7 +65,15 @@ export default function ProductDetails() {
             url: "/images/logo.jpg"
         }
     ]
+    const checkServiciability = () => {
+        const enteredNumber = parseInt(serviceabilityPin.current.value);
 
+        if (checkServiciabilityPinn.includes(enteredNumber)) {
+            setServiceabilityMsg('Hurray, we deliver to this pincode.')
+        } else {
+            setServiceabilityMsg("We don't deliver to this pincode yet.")
+        }
+    }
     return (
         <div>
             <section className="py-12 sm:py-16 m-auto w-[90vw]">
@@ -118,11 +129,14 @@ export default function ProductDetails() {
                                 Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan.
                             </div>
 
-                            <div className="mt-3 flex select-none flex-wrap items-center gap-1">
-                                <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5"><div className="flex"><span className="mr-3">Color</span><button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button><button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button><button className="border-2 border-gray-300 ml-1 bg-indigo-500 rounded-full w-6 h-6 focus:outline-none"></button></div><div className="flex ml-6 items-center"><span className="mr-3">Size</span><div className="relative"><select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10"><option>SM</option><option>M</option><option>L</option><option>XL</option></select><span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></span></div></div></div>
+                            <div className="mt-3">
+                                <div className='flex items-center gap-1 mt-3'>
+                                    <input type="number" ref={serviceabilityPin} id="serviceability" className="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your pincode" />
+                                    <button className='text-xs border text-white font-sans p-1.5 bg-blue-600 rounded-lg' onClick={checkServiciability} >Check</button>
+                                </div>
+                                <span className='text-xs text-indigo-500'>{serviceabilityMsg}</span>
                             </div>
-
-                            <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
+                            <div className="mt-3 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
                                 <div className="flex items-end">
                                     <h1 className="text-3xl font-bold">Nrs60.50</h1>
                                 </div>
@@ -285,7 +299,7 @@ export default function ProductDetails() {
                                 </div>
                             })}
                             <div className='flex m-auto'>
-                                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
+                                <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
                             </div>
                         </div>
                     </div>

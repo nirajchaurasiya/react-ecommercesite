@@ -7,12 +7,8 @@ export default function Navbar() {
     const navigate = useNavigate();
     const searchQuery = useRef();
     const handleSearchQuery = () => {
-        // Trim the value to remove leading and trailing whitespace
         const trimmedValue = searchQuery.current.value.trim();
-
-        // Check if the trimmed value is not an empty string
         if (trimmedValue !== "") {
-            // If the trimmed value is not empty, navigate to the search page with the trimmed value
             navigate('/search/' + trimmedValue);
         }
     }
