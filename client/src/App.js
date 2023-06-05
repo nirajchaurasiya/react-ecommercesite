@@ -16,6 +16,8 @@ import ForgotPassword from './components/Auth/ForgotPassword/ForgotPassword'
 import Checkout from './components/Checkout/Checkout'
 import Profile from './components/Profile/Profile'
 import { AuthContext } from './Context/AuthContext'
+import Editprofile from './components/EditProfile/Editprofile'
+import Logout from './components/Logout/Logout'
 export default function App() {
   const { user } = useContext(AuthContext);
   return (
@@ -34,8 +36,9 @@ export default function App() {
           <Route path='/updates' element={<Updates />} />
           <Route path='/profile' element={user ? <Profile /> : <Login />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/profile/editprofile' element={<Editprofile />} />
           <Route path='/checkout/:uid' element={user ? <Checkout /> : <Login />} />
-
+          <Route path='/profile/logout' element={<Logout />} />
           <Route path='/product/:pid' element={<ProductDetails />} />
         </Routes>
         <Footer />

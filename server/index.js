@@ -2,6 +2,7 @@ const express = require('express')
 const app = express();
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const path = require('path')
 const helmet = require('helmet')
 app.use(morgan("common"));
 const cors = require('cors')
@@ -23,6 +24,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(express.static('uploads'))
+app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 app.use('/api/auth', require('./auth/auth'));
 app.get('/', (req, res) => {
     res.send({ "msg": "success" })

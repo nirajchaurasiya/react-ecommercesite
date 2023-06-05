@@ -13,3 +13,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgb(84, 77, 77);
 }
+.order_products_table_wefweew::-webkit-scrollbar {
+  height: 3px;
+}

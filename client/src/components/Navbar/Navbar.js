@@ -1,7 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
+import { AuthContext } from '../../Context/AuthContext';
 export default function Navbar() {
+    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const searchQuery = useRef();
     const handleSearchQuery = () => {
@@ -51,9 +53,11 @@ export default function Navbar() {
                                 <NavLink to="/updates" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Updates</NavLink>
                             </li>
 
-                            <li>
+                            {user ? <li>
+                                <NavLink to="/profile" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</NavLink>
+                            </li> : <li>
                                 <NavLink to="/login" className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Login</NavLink>
-                            </li>
+                            </li>}
                             {/* <NavLink to="/search" className="flex items-center justify-center py-2 pl-3 pr-4 text-xl text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"><AiOutlineSearch /></NavLink> */}
                             <li>
                                 <label for="search" className=" text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>

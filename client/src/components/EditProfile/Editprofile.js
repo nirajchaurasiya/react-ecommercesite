@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios'
 import LoadingBar from 'react-top-loading-bar'
-export default function Register() {
+export default function Editprofile() {
     const [profile, setProfile] = useState('')
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
@@ -31,7 +31,7 @@ export default function Register() {
                 fd.append('address3', address3.current.value);
                 fd.append('password', password.current.value);
                 try {
-                    axios.post(`${REACT_APP_API_URL}/api/auth/register`, fd)
+                    axios.post(`${REACT_APP_API_URL}/api/auth/updateprofile`, fd)
                         .then(data => {
                             setProgress(20)
                             if (data.data.status === 1) {
@@ -108,7 +108,7 @@ export default function Register() {
                     <img className='h-24 w-24' src="/images/logo.jpg" alt="logo" />
                 </div>
                 <p className="text-gray-700 text-center mx-auto">
-                    Secure Registration
+                    Update Profile
                 </p>
                 <div className='mt-10'>
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
@@ -148,10 +148,6 @@ export default function Register() {
                     <div className="mb-6">
                         <label for="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Password</label>
                         <input type="password" id="password" ref={password} className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
-                    </div>
-                    <div className="mb-6">
-                        <label for="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Confirm password</label>
-                        <input type="password" ref={cpassword} id="confirm_password" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
                     </div>
                     <div className="flex items-start mb-6">
                         <div className="flex items-center h-5">
