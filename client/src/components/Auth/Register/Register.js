@@ -1,83 +1,70 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 
 export default function Register() {
     return (
-        <div className='py-16'>
+        <div className='py-8 w-[90vw] m-auto'>
             <div className='flex justify-center '>
                 <img className='h-24 w-24' src="/images/logo.jpg" alt="logo" />
             </div>
-            <p className="text-gray-700 text-center mx-auto -mb-16">
+            <p className="text-gray-700 text-center mx-auto">
                 Secure Registration
             </p>
-            <form className="bg-white shadow-lg mb-4 justify-center flex flex-wrap py-24 w-[90vw] mx-auto ">
-
-                <div className=" md:w-1/3 bg-blue-600 p-6 text-white ml-4">
-
-                    <p className="mb-8 text-3xl flex items-center">
-                        <svg
-                            width="32"
-                            height="32"
-                            viewBox="0 0 512 512"
-                            className="inline-block fill-current h-8 w-8 mr-2"
-                        >
-                            <path
-                                d="m64 496l0-256 48 0 0-80c0-71 57-128 128-128l16 0c71 0 128 57 128 128l0 80 48 0 0 256z m172-131l-12 83 48 0-12-83c12-5 20-17 20-30 0-18-14-32-32-32-18 0-32 14-32 32 0 13 8 25 20 30z m100-197c0-49-39-88-88-88-49 0-88 39-88 88l0 72 176 0z"
-                            />
-                        </svg>
-                        Register Now
-                    </p>
-                    <div className="mb-4">
-                        <input
-                            className="appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            type="email"
-                            placeholder="Email"
-                        />
+            <div className='mt-10'>
+                <div className="grid gap-6 mb-6 md:grid-cols-2">
+                    <div>
+                        <label for="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">First name</label>
+                        <input type="text" id="first_name" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
                     </div>
-                    <div className="mb-6">
-                        <input
-                            className="appearance-none border w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                            type="password"
-                            placeholder="Password"
-                        />
+                    <div>
+                        <label for="last_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Last name</label>
+                        <input type="text" id="last_name" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
                     </div>
-                    <button
-                        className="block w-full bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
-                        type="submit"
-                    >Register</button><br />
-
-                    <label className="block text-sm mb-4">
-                        <input type="checkbox" /> Remember me
-                    </label>
-
-
-                </div>
-                <div className="w-full md:w-2/3 p-6 flex flex-col justify-between">
-
-                    <NavLink
-                        className="block w-full mb-8 text-sm text-center text-blue-600 hover:text-blue-700"
-                        to='/login'
-                    >Already have an account? Login Now!</NavLink>
-
-                    <p className="mb-4 text-center">OR</p>
-                    <hr className="block w-full mb-4 border-0 border-t border-gray-300" />
-
-                    <div className="flex flex-wrap justify-center">
-                        <div className="w-full sm:w-1/2 sm:pr-2 mb-3 sm:mb-0">
-                            <button
-                                className="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
-                                type="button"
-                            >Register with Facebook</button>
-                        </div>
-                        <div className="w-full sm:w-1/2 sm:pl-2">
-                            <button
-                                className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
-                                type="button"
-                            >Register with Google</button>
-                        </div>
+                    <div>
+                        <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Email</label>
+                        <input type="email" id="email" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Flowbite" required />
+                    </div>
+                    <div>
+                        <label for="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Phone number</label>
+                        <input type="tel" id="phone" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required />
+                    </div>
+                    <div>
+                        <label for="address_line_1" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Address Line 1</label>
+                        <input type="text" id="address_line_1" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
+                    </div>
+                    <div>
+                        <label for="address_line_2" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Address Line 2</label>
+                        <input type="text" id="address_line_2" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
+                    </div>
+                    <div>
+                        <label for="address_line_3" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Address Line 3</label>
+                        <input type="text" id="address_line_3" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
+                    </div>
+                    <div>
+                        <label for="profilePicture" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">profilePicture</label>
+                        <input type="file" id="profilePicture" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
                     </div>
                 </div>
-            </form>
+
+                <div className="mb-6">
+                    <label for="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Password</label>
+                    <input type="password" id="password" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                </div>
+                <div className="mb-6">
+                    <label for="confirm_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Confirm password</label>
+                    <input type="password" id="confirm_password" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="•••••••••" required />
+                </div>
+                <div className="mb-6">
+                    <label for="extra_info" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Extra Information</label>
+                    <textarea type="text" id="extra_info" className="border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Extra Info" required />
+                </div>
+                <div className="flex items-start mb-6">
+                    <div className="flex items-center h-5">
+                        <input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded focus:ring-3 focus:ring-blue-300 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required />
+                    </div>
+                    <label for="remember" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-900">I agree with the <a href="/" className="text-gray-900 hover:underline dark:text-gray-900 underline">terms and conditions</a>.</label>
+                </div>
+                <button type="submit" className="text-white font-bold bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+            </div>
         </div >
     )
 }

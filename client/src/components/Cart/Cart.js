@@ -1,6 +1,11 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 const pid = [1, 2, 3]
 export default function Cart() {
+    const navigate = useNavigate();
+    const handleCheckOut = () => {
+        navigate('/checkout/' + Math.floor(Math.random() * 1000))
+    }
     return (
         <div>
             <div className=" bg-gray-100 pt-20">
@@ -10,7 +15,7 @@ export default function Cart() {
 
                         {pid.map(e => {
                             return <div key={e} className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-                                <img src="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="product-image" className="w-full rounded-lg sm:w-40" />
+                                <img src="https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="product" className="w-full rounded-lg sm:w-40" />
                                 <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                                     <div className="mt-5 sm:mt-0">
                                         <h2 className="text-lg font-bold text-gray-900">Nike Air Max 2019</h2>
@@ -35,7 +40,7 @@ export default function Cart() {
 
                         {pid.map(e => {
                             return <div key={e} className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-                                <img src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1131&q=80" alt="product-image" className="w-full rounded-lg sm:w-40" />
+                                <img src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1131&q=80" alt="product" className="w-full rounded-lg sm:w-40" />
                                 <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                                     <div className="mt-5 sm:mt-0">
                                         <h2 className="text-lg font-bold text-gray-900">Nike Air Max 2019</h2>
@@ -76,7 +81,7 @@ export default function Cart() {
                                 <p className="text-sm text-gray-700">including VAT</p>
                             </div>
                         </div>
-                        <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
+                        <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600" onClick={handleCheckOut}>Check out</button>
                     </div>
                 </div>
             </div>

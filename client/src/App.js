@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
 import Home from './components/HomeContent/Home'
@@ -13,7 +13,11 @@ import ProductDetails from './components/ProductDetails/ProductDetails'
 import Products from './components/Products/Products'
 import Search from './components/Search/Search'
 import ForgotPassword from './components/Auth/ForgotPassword/ForgotPassword'
+import Checkout from './components/Checkout/Checkout'
+import Profile from './components/Profile/Profile'
+import { AuthContext } from './Context/AuthContext'
 export default function App() {
+  const { user } = useContext(AuthContext);
   return (
     <>
       <Router>
@@ -22,13 +26,16 @@ export default function App() {
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/products' element={<Products />} />
-          <Route path='/search' element={<Search />} />
+          <Route path='/search/:query' element={<Search />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/login' element={<Login />} />
           <Route path='/forgotpassword' element={<ForgotPassword />} />
           <Route path='/register' element={<Register />} />
           <Route path='/updates' element={<Updates />} />
+          <Route path='/profile' element={user ? <Profile /> : <Login />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/checkout/:uid' element={user ? <Checkout /> : <Login />} />
+
           <Route path='/product/:pid' element={<ProductDetails />} />
         </Routes>
         <Footer />
