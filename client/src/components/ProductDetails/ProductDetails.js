@@ -44,6 +44,7 @@ export default function ProductDetails() {
     const [showReviews, setShowReviews] = useState(false)
     const [showDesc, setShowDesc] = useState(true);
     const [showImages, setShowImages] = useState('/images/message.png')
+    // eslint-disable-next-line
     const [cardClassName, setCardClassName] = useState('border-2 border-gray-900');
     const [serviceabilityMsg, setServiceabilityMsg] = useState('Check serviceability')
     const serviceabilityPin = useRef();
