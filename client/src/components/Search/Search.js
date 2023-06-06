@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, useNavigate, useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 const numberOfProduct = [
     {
         id: 1,
@@ -39,7 +39,6 @@ const numberOfProduct = [
     }
 ]
 export default function Search() {
-    const navigate = useNavigate();
     const { query } = useParams();
     return (
         <div>

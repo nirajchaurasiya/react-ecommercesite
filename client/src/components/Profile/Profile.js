@@ -44,6 +44,7 @@ export default function Profile() {
                         </div>
                         <img alt="ecommerce" className="lg:w-1/3 w-full lg:h-auto h-64 shadow-lg object-cover object-center rounded" src={`${REACT_APP_API_URL}/${user.profile}`} />
                     </div>
+
                 </div>
             </section>
             <div className="relative order_products_table_wefweew overflow-x-scroll w-[98vw] lg:w-[90vw] m-auto sm:rounded-lg">
@@ -82,7 +83,7 @@ export default function Profile() {
                                 Nrs 40000
                             </td>
                             <td className="px-6 py-4">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <p className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</p>
                             </td>
                             <td className="px-6 py-4 flex items-center">
                                 Received <TiTick />

@@ -18,6 +18,7 @@ import Profile from './components/Profile/Profile'
 import { AuthContext } from './Context/AuthContext'
 import Editprofile from './components/EditProfile/Editprofile'
 import Logout from './components/Logout/Logout'
+import Dashboard from './components/Dashboard/Dashboard'
 export default function App() {
   const { user } = useContext(AuthContext);
   return (
@@ -34,6 +35,7 @@ export default function App() {
           <Route path='/forgotpassword' element={<ForgotPassword />} />
           <Route path='/register' element={<Register />} />
           <Route path='/updates' element={<Updates />} />
+          <Route path='/admin/dashboard' element={<Dashboard />} />
           <Route path='/profile' element={user ? <Profile /> : <Login />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile/editprofile' element={<Editprofile />} />

@@ -17,7 +17,8 @@ Router.post('/register', userImage.single('profile'), async (req, res) => {
                     address2: userDatas.address2,
                     address3: userDatas.address3,
                     profile: req.file.path,
-                    password: userDatas.password
+                    password: userDatas.password,
+                    isAdmin: userDatas.isAdmin
                 });
                 res.send({ status: 1, msg: "Account Registered Successfully." });
             } else {
@@ -58,6 +59,33 @@ Router.post('/login', async (req, res) => {
         res.send({ status: 0, msg: "Some error occurred. Please try again later." });
     }
 });
+
+Router.post('/adminlogin', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const isEmailExist = await UserModel.findOne({ email: email });
+        if (isEmailExist) {
+            if (isEmailExist.isAdmin === true) {
+                const isPasswordmatch = await bcrypt.compare(password, isEmailExist.password)
+                if (isPasswordmatch) {
+                    delete isEmailExist.password
+                    res.send({ status: 1, msg: "Successfully login to your account. Redirecting you to the profile page within 2 seconds..", data: isEmailExist });
+                }
+                else {
+                    res.send({ status: 0, msg: "Invalid Credentials" });
+                }
+            }
+            else {
+                res.send({ status: 0, msg: "Invalid Credentials" });
+            }
+        }
+        else {
+            res.send({ status: 0, msg: "Invalid Credentials" });
+        }
+    } catch (error) {
+
+    }
+})
 
 
 module.exports = Router

@@ -5,7 +5,7 @@ export default function Contact() {
         <div>
             <div class="flex flex-col justify-center items-center py-24">
                 <div>
-                    <img class="h-40 mx-auto py-2" src="/images/logo.jpg" />
+                    <img class="h-40 mx-auto py-2" src="/images/logo.jpg" alt="logo" />
                     <p class="text-center text-xl lg:text-2xl font-medium leading-tight">Feel free to ask us anything!</p>
                     <p class="py-4 px-4 text-md lg:text-md leading-tight text-center">If you have any questions regarding  your order, feel free to send email, call or Whatsapp us on our support number</p>
 

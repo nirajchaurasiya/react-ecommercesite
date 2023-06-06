@@ -94,7 +94,7 @@ export default function Footer() {
                 </div>
                 <div className="border-t border-gray-200 w-[90vw] m-auto">
                     <div className="container px-5 py-8 flex flex-wrap mx-auto items-center justify-between" id="abId0.40277924950961075">
-                        <img class="lg:w-48 sm:w-full" src="/images/maincontentpayments.png" alt="description" />
+                        <img className="lg:w-48 sm:w-full" src="/images/maincontentpayments.png" alt="description" />
 
 
                         <div className="flex md:flex-nowrap flex-wrap justify-center items-end md:justify-start"

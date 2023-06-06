@@ -37,7 +37,36 @@ const UserModel = mongoose.Schema({
     isAdmin: {
         type: Boolean,
         default: false,
-    }
+    },
+    productOrders:
+        [
+            {
+                _id: {
+                    type: String,
+                    required: true
+                },
+                name: {
+                    type: String,
+                    required: true
+                },
+                productImage: {
+                    type: String,
+                    required: true
+                },
+                time: {
+                    type: Date,
+                    required: true
+                },
+                orderID: {
+                    type: String,
+                    required: true
+                },
+                status: {
+                    type: Boolean,
+                    required: true
+                }
+            }
+        ]
 },
     {
         timestamps: true
