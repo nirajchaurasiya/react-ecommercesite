@@ -12,6 +12,8 @@ export default function ProductDetails() {
     const [showImages, setShowImages] = useState('/images/message.png')
     const [productDoesntExist, setProductDoesntExist] = useState(false)
     const [loader, setLoader] = useState(true)
+    const [loader2, setLoader2] = useState(true);
+    const [addToCartValue, setAddToCartValue] = useState('Add to Cart')
     // eslint-disable-next-line
     const [cardClassName, setCardClassName] = useState('border-2 border-gray-900');
     const [serviceabilityMsg, setServiceabilityMsg] = useState('Check serviceability')
@@ -32,7 +34,7 @@ export default function ProductDetails() {
         axios.get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
             .then((data) => {
                 setAllProducts(data.data.data)
-                setLoader(false)
+                setLoader2(false);
             })
             .catch((err) => {
                 console.log(err)
@@ -65,7 +67,46 @@ export default function ProductDetails() {
             console.log(error)
         }
         setProgress(100)
+        setAddToCartValue('Add to Cart')
     }
+    const addtoCart = () => {
+        const cartItem = {
+            name: fetchProductsFromId.title,
+            pid: fetchProductsFromId._id,
+            image: fetchProductsFromId?.pictures?.split(',')[0],
+            price: fetchProductsFromId.price
+        };
+
+        if (localStorage) {
+            // Retrieve the current cart value from localStorage
+            const storedCartValue = localStorage.getItem('shopkartCarts');
+            const parsedCartValue = storedCartValue ? JSON.parse(storedCartValue) : [];
+            const cartValue = JSON.parse(storedCartValue);
+            if (cartValue) {
+                if ((cartValue.filter(e => e.pid === pid).length) >= 5) {
+                    alert("You can't add more than 5 items of this type");
+                    return;
+                }
+                else {
+                    const updatedCartValue = [...parsedCartValue, cartItem];
+                    console.log(updatedCartValue)
+                    localStorage.setItem('shopkartCarts', JSON.stringify(updatedCartValue));
+                    const localStoreLength = JSON.parse(localStorage.getItem('shopkartCarts'))
+                    setAddToCartValue(`Added to the cart ${localStoreLength.length}`);
+                    // window.location.reload();
+                }
+            } else {
+                const updatedCartValue = [...parsedCartValue, cartItem];
+                console.log(updatedCartValue)
+                localStorage.setItem('shopkartCarts', JSON.stringify(updatedCartValue));
+                const localStoreLength = JSON.parse(localStorage.getItem('shopkartCarts'))
+                setAddToCartValue(`Added to the cart ${localStoreLength.length}`);
+                // window.location.reload();
+            }
+        }
+
+    };
+
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -147,7 +188,7 @@ export default function ProductDetails() {
                                         <svg xmlns="http://www.w3.org/2000/svg" className="shrink-0 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                         </svg>
-                                        Add to cart
+                                        Add to Cart
                                     </button>
                                 </div>
 
@@ -284,14 +325,10 @@ export default function ProductDetails() {
                                         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
                                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
                                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                        <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
                                         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                                        <div className="flex items-center mt-4 space-x-3">
-                                            <svg className="text-gray-200 w-14 h-14 dark:text-gray-700" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"></path></svg>
-                                            <div>
-                                                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
-                                                <div className="w-48 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                                            </div>
-                                        </div>
+
                                         <span className="sr-only">Loading...</span>
                                     </div>
                                 })}
@@ -380,11 +417,11 @@ export default function ProductDetails() {
                                             <h1 className="text-3xl font-bold">Nrs {fetchProductsFromId?.price}</h1>
                                         </div>
 
-                                        <button type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-blue-600 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-blue-500">
+                                        <button onClick={addtoCart} type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-blue-600 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-blue-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="shrink-0 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                             </svg>
-                                            Add to cart
+                                            {addToCartValue}
                                         </button>
                                     </div>
 
@@ -525,7 +562,23 @@ export default function ProductDetails() {
                                     <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">People also search this</p>
                                 </div>
                                 <div className="flex flex-wrap -m-4">
-                                    {allProducts.filter(e => e._id !== pid).map(e => {
+                                    {loader2 ? <div className="flex flex-wrap -m-4">
+                                        {[1, 2, 3, 4, 5, 6].map(e => {
+                                            return <div key={e} role="status" className="xl:w-1/4 md:w-1/2 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
+                                                <div className="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700">
+                                                    <svg className="w-12 h-12 text-gray-200 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
+                                                </div>
+                                                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                        })}
+                                    </div> : allProducts.filter(e => e._id !== pid).map(e => {
                                         return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
                                             <div className="bg-gray-100 p-3 rounded-lg">
                                                 <img className="h-40 rounded w-full object-cover object-center mb-6" src={REACT_APP_API_URL + "/" + e.pictures.split(',')[0]} alt="content" />
@@ -535,7 +588,9 @@ export default function ProductDetails() {
                                                 <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
                                             </div>
                                         </div>
-                                    })}
+                                    })
+
+                                    }
 
                                 </div>
                             </div>

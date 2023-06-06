@@ -39,7 +39,7 @@ export default function App() {
           <Route path='/profile' element={user ? <Profile /> : <Login />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile/editprofile' element={<Editprofile />} />
-          <Route path='/checkout/:uid' element={user ? <Checkout /> : <Login />} />
+          <Route path='/checkout' element={user ? <Checkout /> : <Login />} />
           <Route path='/profile/logout' element={<Logout />} />
           <Route path='/product/:pid' element={<ProductDetails />} />
         </Routes>

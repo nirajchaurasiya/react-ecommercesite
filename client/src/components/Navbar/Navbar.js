@@ -1,9 +1,10 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai'
 import { AuthContext } from '../../Context/AuthContext';
 export default function Navbar() {
     const { user } = useContext(AuthContext);
+    const [cartLength, setCartLength] = useState(0);
     const navigate = useNavigate();
     const searchQuery = useRef();
     const handleSearchQuery = () => {
@@ -12,7 +13,12 @@ export default function Navbar() {
             navigate('/search/' + trimmedValue);
         }
     }
-
+    useEffect(() => {
+        const storedCartValue = localStorage.getItem('shopkartCarts');
+        const parsedCartValue = storedCartValue ? JSON.parse(storedCartValue) : [];
+        const cartLength = Array.isArray(parsedCartValue) ? parsedCartValue.length : 0;
+        setCartLength(cartLength);
+    }, []);
     return (
         <>
             <nav className="bg-white border-gray-200 dark:bg-gray-900 z-10 top-0 sticky">
@@ -24,7 +30,7 @@ export default function Navbar() {
                     <div className="flex items-center md:order-2">
                         <div className=''>
                             <li className='flex items-center'>
-                                <p className='text-black -mt-5 bg-white rounded-full fixed -ml-2 pl-1.5 pr-1.5 w-3 h-3 items-center flex justify-center' style={{ fontSize: "9px" }}>9</p>
+                                {/* <p className='text-black -mt-5 bg-white rounded-full fixed -ml-2 pl-1.5 pr-1.5 w-3 h-3 items-center flex justify-center' style={{ fontSize: "9px" }}>{cartLength}</p> */}
                                 <NavLink to="/cart" className="-m-5 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 text-2xl"><AiOutlineShoppingCart /></NavLink>
                             </li>
                         </div>

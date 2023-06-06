@@ -1,12 +1,10 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios'
-import LoadingBar from 'react-top-loading-bar'
 export default function Register() {
     const [profile, setProfile] = useState('')
     const [successAlert, setSuccessAlert] = useState(false);
     const [errorAlert, setErrorAlert] = useState(false);
     const [message, setMessage] = useState('')
-    const [progress, setProgress] = useState(0)
     const fname = useRef();
     const lname = useRef();
     const email = useRef();
@@ -33,35 +31,26 @@ export default function Register() {
                 try {
                     axios.post(`${REACT_APP_API_URL}/api/auth/register`, fd)
                         .then(data => {
-                            setProgress(20)
                             if (data.data.status === 1) {
                                 setSuccessAlert(true);
                             }
                             else {
                                 setErrorAlert(true)
                             }
-                            setProgress(40);
                             setMessage(data.data.msg)
-                            setProgress(60);
                             setTimeout(() => {
                                 setErrorAlert(false)
                                 setSuccessAlert(false)
                             }, 2000);
-                            setProgress(100);
                         })
                         .catch(err => {
-                            setProgress(20)
                             setErrorAlert(true);
-                            setProgress(40)
                             setSuccessAlert(false);
-                            setProgress(60)
                             setMessage('Registration failed, please try again later.')
-                            setProgress(80)
                             setTimeout(() => {
                                 setErrorAlert(false)
                                 setSuccessAlert(false)
                             }, 2000);
-                            setProgress(100)
                         })
                 } catch (error) {
                     setErrorAlert(true)
@@ -91,16 +80,24 @@ export default function Register() {
     }
     return (
         <>
-            <LoadingBar
-                color='#f11946'
-                progress={progress}
-                onLoaderFinished={() => setProgress(0)}
-            />
-            {successAlert && <div className="p-4 mb-4 transition ease-in-out delay-150 text-sm text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400 sticky top-0 z-10" role="alert">
-                <span className="font-medium">{message}</span>
+
+            {successAlert && <div id="toast-notification" className="fixed right:0 lg:right-2 bottom-0 lg:bottom-2 w-full md:max-w-xs lg:max-w-xs p-4 text-gray-900 bg-white lg:rounded-lg shadow dark:bg-gray-800 dark:text-gray-300" role="alert">
+                <div className="flex items-center">
+                    <div className="ml-3 text-sm font-normal">
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">Success!</div>
+                        <div className="text-sm font-normal">{message}</div>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
+                    </div>
+                </div>
             </div>}
-            {errorAlert && <div className="p-4 transition ease-in-out delay-150 mb-4 text-sm text-yellow-800 bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 sticky top-0 z-10" role="alert">
-                <span className="font-medium">{message}</span>
+            {errorAlert && <div id="toast-notification" className="fixed right:0 lg:right-2 bottom-0 lg:bottom-2 w-full md:max-w-xs lg:max-w-xs p-4 text-gray-900 bg-white lg:rounded-lg shadow dark:bg-gray-800 dark:text-gray-300" role="alert">
+                <div className="flex items-center">
+                    <div className="ml-3 text-sm font-normal">
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">Warning!</div>
+                        <div className="text-sm font-normal">{message}</div>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
+                    </div>
+                </div>
             </div>}
             <div className='py-8 w-[90vw] m-auto'>
 
