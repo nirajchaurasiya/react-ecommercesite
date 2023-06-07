@@ -5,23 +5,14 @@ export default function Home() {
     const [loader, setLoader] = useState(true);
     const [products, setProducts] = useState([])
     // eslint-disable-next-line
-    const [activeSlide, setActiveSlide] = useState(0);
     const slides = [
         '/images/image.jpg',
         '/images/logo.jpg',
-        '/images/khalti.png',
+        '/images/cod.png',
         '/images/message.png',
         '/images/imepay.jpg'
     ];
     const [currentSlide, setCurrentSlide] = useState(0);
-
-    const handlePrevSlide = () => {
-        setActiveSlide((prevSlide) => (prevSlide === 0 ? slides.length - 1 : prevSlide - 1));
-    };
-
-    const handleNextSlide = () => {
-        setActiveSlide((prevSlide) => (prevSlide === slides.length - 1 ? 0 : prevSlide + 1));
-    };
     const navigate = useNavigate();
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const fetchAlltheProducts = useCallback(() => {
@@ -66,7 +57,7 @@ export default function Home() {
                                 <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-3 text-sm lg:text-lg focus:outline-none hover:bg-indigo-600 rounded lg:px-6" onClick={() => { navigate('/products') }}>Browse Product</button>
                             </div>
                         </div>
-                        <div className="lg:max-w-xl lg:w-full md:w-1/2 w-[95%]">
+                        <div className="lg:max-w-xl lg:w-full h-full object-cover md:w-1/2 w-[95%] border">
                             <div id="indicators-carousel" className="relative w-full" data-carousel="static">
                                 <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
                                     {slides.map((slide, index) => (
@@ -96,46 +87,6 @@ export default function Home() {
                                         ></button>
                                     ))}
                                 </div>
-                                <button
-                                    type="button"
-                                    className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                                    data-carousel-prev
-                                    onClick={handlePrevSlide}
-                                >
-                                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                        <svg
-                                            aria-hidden="true"
-                                            className="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-                                        </svg>
-                                        <span className="sr-only">Previous</span>
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-                                    data-carousel-next
-                                    onClick={handleNextSlide}
-                                >
-                                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                                        <svg
-                                            aria-hidden="true"
-                                            className="w-5 h-5 text-white sm:w-6 sm:h-6 dark:text-gray-800"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                                        </svg>
-                                        <span className="sr-only">Next</span>
-                                    </span>
-                                </button>
                             </div>
 
 

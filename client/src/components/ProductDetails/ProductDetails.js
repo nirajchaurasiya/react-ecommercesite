@@ -51,6 +51,7 @@ export default function ProductDetails() {
                 })
                 .catch((err) => {
                     setLoader(false);
+                    setProductDoesntExist(true)
                 })
         } catch (error) {
         }
@@ -328,7 +329,7 @@ export default function ProductDetails() {
                             <div className="max-w-md mx-auto p-6 bg-white shadow-md">
                                 <img src='/images/logo.jpg' alt="Logo" className="w-20 h-20 mx-auto mb-4" />
                                 <h2 className="text-center text-2xl font-bold mb-4">Product Not Found</h2>
-                                <p className="text-center text-gray-600">Sorry, but there is no such product available.</p>
+                                <p className="text-center text-gray-600">Sorry, but there is no such product available or you might be offline.</p>
                             </div>
                         </div>
                     </div>
