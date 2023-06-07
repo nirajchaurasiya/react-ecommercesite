@@ -18,7 +18,6 @@ Router.post('/addproduct', productMulter.array('pictures'), async (req, res) => 
             path = path.substring(0, path.lastIndexOf(','));
             product.pictures = path;
         }
-
         await product.save();
         res.send({ msg: 'Success' });
     } catch (error) {

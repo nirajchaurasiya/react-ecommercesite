@@ -2,13 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom';
 import checkServiciabilityPinn from '../checkServiciabilityJSON/checkServiciabilityJSON.json'
 import axios from 'axios';
-import LoadingBar from 'react-top-loading-bar'
 export default function ProductDetails() {
     const [fetchProductsFromId, setFetchProductsFromId] = useState([])
     const [allProducts, setAllProducts] = useState([])
     const [showReviews, setShowReviews] = useState(false)
     const [showDesc, setShowDesc] = useState(true);
-    const [progress, setProgress] = useState(0)
     const [showImages, setShowImages] = useState('/images/message.png')
     const [productDoesntExist, setProductDoesntExist] = useState(false)
     const [loader, setLoader] = useState(true)
@@ -42,31 +40,23 @@ export default function ProductDetails() {
             })
     }
     const fetchTheProductWithId = (pid) => {
-        setProgress(20)
         try {
             setShowImages('/images/message.png')
-            setProgress(40)
             axios.get(`${REACT_APP_API_URL}/api/productactions/getproducts/${pid}`)
                 .then((data) => {
-                    setProgress(60)
                     setFetchProductsFromId(data.data.data)
                     if (data.data.data === undefined) {
                         setProductDoesntExist(true);
                     }
-                    setProgress(80)
-                    setProgress(100)
                     setLoader(false)
                 })
                 .catch((err) => {
-                    setProgress(100)
                     console.log(err)
                     setLoader(false);
                 })
         } catch (error) {
-            setProgress(100)
             console.log(error)
         }
-        setProgress(100)
         setAddToCartValue('Add to Cart')
     }
     const addtoCart = () => {
@@ -117,7 +107,6 @@ export default function ProductDetails() {
     }, [pid])
     return (
         <div>
-            <LoadingBar color='red' progress={progress} />
             {loader ?
                 <section className="py-12 sm:py-16 m-auto w-[90vw]">
 

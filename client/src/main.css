@@ -1,9 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-.active {
-  color: rgb(0, 234, 255) !important;
-}
 ::-webkit-scrollbar {
   width: 5px;
 }

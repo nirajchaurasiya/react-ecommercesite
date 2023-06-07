@@ -2,6 +2,7 @@ const Router = require('express').Router();
 const userImage = require('../multer/userImage');
 const UserModel = require('../Models/UserModel')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 Router.post('/register', userImage.single('profile'), async (req, res) => {
     try {
         const userDatas = req.body;
@@ -18,7 +19,7 @@ Router.post('/register', userImage.single('profile'), async (req, res) => {
                     address3: userDatas.address3,
                     profile: req.file.path,
                     password: userDatas.password,
-                    isAdmin: userDatas.isAdmin
+                    isAdmin: userDatas.isAdmin,
                 });
                 res.send({ status: 1, msg: "Account Registered Successfully." });
             } else {
@@ -34,6 +35,7 @@ Router.post('/register', userImage.single('profile'), async (req, res) => {
 
 Router.post('/login', async (req, res) => {
     try {
+        let token;
         const userDatas = req.body;
         const enteredPassword = userDatas.password;
         const email = userDatas.email;
@@ -45,6 +47,13 @@ Router.post('/login', async (req, res) => {
                 if (isPasswordMatch) {
                     const data = isEmailFound.toObject(); // Convert Mongoose document to plain JavaScript object
                     delete data.password; // Remove the password field
+
+                    token = await isEmailFound.generateAuthToken();
+                    res.cookie('shopkartcookie', token, {
+                        expires: new Date(Date.now() + 25892000000),
+                        httpOnly: true,
+                    })
+
                     res.send({ status: 1, msg: "Successfully login to your account. Redirecting you to the profile page within 2 seconds..", data: data });
                 } else {
                     res.send({ status: 0, msg: "Invalid Credentials" });
@@ -56,6 +65,7 @@ Router.post('/login', async (req, res) => {
             res.send({ status: 0, msg: "All the input fields are mandatory. Please fill all the fields before submitting the form." });
         }
     } catch (error) {
+        console.log(error)
         res.send({ status: 0, msg: "Some error occurred. Please try again later." });
     }
 });
@@ -83,7 +93,7 @@ Router.post('/adminlogin', async (req, res) => {
             res.send({ status: 0, msg: "Invalid Credentials" });
         }
     } catch (error) {
-
+        res.send({ status: 0, msg: "Something went wrong!" });
     }
 })
 

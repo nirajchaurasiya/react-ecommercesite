@@ -19,6 +19,10 @@ import { AuthContext } from './Context/AuthContext'
 import Editprofile from './components/EditProfile/Editprofile'
 import Logout from './components/Logout/Logout'
 import Dashboard from './components/Dashboard/Dashboard'
+import Category from './components/Category/Category'
+import CheckProductDestination from './components/CheckProductDestination/CheckProductDestination'
+import FAQ from './components/FAQ/FAQ'
+import Help from './components/Help/Help'
 export default function App() {
   const { user } = useContext(AuthContext);
   return (
@@ -39,9 +43,13 @@ export default function App() {
           <Route path='/profile' element={user ? <Profile /> : <Login />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile/editprofile' element={<Editprofile />} />
+          <Route path='/category' element={<Category />} />
+          <Route path='/product/status/:pid' element={<CheckProductDestination />} />
           <Route path='/checkout' element={user ? <Checkout /> : <Login />} />
           <Route path='/profile/logout' element={<Logout />} />
           <Route path='/product/:pid' element={<ProductDetails />} />
+          <Route path='/user/support/faq' element={<FAQ />} />
+          <Route path='/user/support/help' element={<Help />} />
         </Routes>
         <Footer />
       </Router>

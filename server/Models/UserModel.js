@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
 const UserModel = mongoose.Schema({
     fname: {
         required: true,
@@ -38,6 +39,17 @@ const UserModel = mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    cookie: {
+        type: String,
+    },
+    tokens: [
+        {
+            token: {
+                type: String,
+                required: true,
+            }
+        }
+    ],
     productOrders:
         [
             {
@@ -73,7 +85,6 @@ const UserModel = mongoose.Schema({
     }
 )
 
-
 UserModel.pre('save', async function (next) {
     // Only hash the password if it has been modified by the user
     if (!this.isModified('password')) {
@@ -85,4 +96,19 @@ UserModel.pre('save', async function (next) {
     this.password = hashedPassword;
     next();
 });
+
+// Generating token
+UserModel.methods.generateAuthToken = async function () {
+    try {
+        let token = jwt.sign({
+            _id: this._id,
+        }, process.env.SECRET_KEY)
+        this.tokens = this.tokens.concat({ token: token });
+        await this.save();
+        return token;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports = mongoose.model('userdata', UserModel);

@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '../../Context/AuthContext'
 import { TiTick } from 'react-icons/ti'
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 export default function Profile() {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
@@ -9,6 +9,12 @@ export default function Profile() {
     const handleLogOut = () => {
         navigate('/profile/logout');
     }
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }, [])
     return (
         <div>
             <section className="text-gray-600 body-font overflow-hidden">
@@ -83,7 +89,7 @@ export default function Profile() {
                                 Nrs 40000
                             </td>
                             <td className="px-6 py-4">
-                                <p className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</p>
+                                <NavLink to={`/product/status/${Math.round(Math.random * 1000)}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</NavLink>
                             </td>
                             <td className="px-6 py-4 flex items-center">
                                 Received <TiTick />

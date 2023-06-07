@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 export default function Cart() {
-    const [initialQnty, setInitialQnty] = useState(0)
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     const [loader, setLoader] = useState(true);
     const [count, setCount] = useState(0)
@@ -35,11 +34,6 @@ export default function Cart() {
             setUniquePidsState(uniquePids);
             setLoader(false);
             setCount(2)
-            const initialQuantities = parsedCartValue.map(item => ({
-                pid: item.pid,
-                quantity: item.quantity,
-            }));
-            setInitialQnty(initialQuantities);
         }
         else {
             setLoader(false);
@@ -79,6 +73,10 @@ export default function Cart() {
         }, 2000);
     }
     useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
         getAllProductFromLocalStore();
     }, []);
 
@@ -147,12 +145,12 @@ export default function Cart() {
                                                 </div>
                                                 <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                                                     <div className="flex items-center border-gray-100">
-                                                        <span
+                                                        <button
                                                             className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                                                             onClick={() => handleQuantityChange(pid, index, 'sub')}
                                                         >
                                                             -
-                                                        </span>
+                                                        </button>
                                                         <input
                                                             className="h-8 w-8 border bg-white text-center text-xs outline-none"
                                                             type="number"
@@ -160,12 +158,12 @@ export default function Cart() {
                                                             min="1"
                                                             readOnly
                                                         />
-                                                        <span
+                                                        <button
                                                             className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
                                                             onClick={() => handleQuantityChange(pid, index, 'add')}
                                                         >
                                                             +
-                                                        </span>
+                                                        </button>
                                                     </div>
                                                     <div className="flex items-center space-x-4">
                                                         <p className="text-sm">Nrs {product?.price}</p>
@@ -204,7 +202,7 @@ export default function Cart() {
                         </div>
                     </div>
                     :
-                    <div className=" bg-gray-100 pt-20">
+                    <div className=" bg-gray-100 pt-20 pb-32">
                         <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
                         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
                             <div className="rounded-lg md:w-2/3">
@@ -212,6 +210,10 @@ export default function Cart() {
                                     <div className="bg-white p-6 shadow-md">
                                         <p className="text-lg font-bold mb-2">Your cart is empty</p>
                                         <p>Please add items to your cart before checking out.</p>
+                                        <NavLink to='/products'>
+
+                                            <button type="submit" className="mt-10 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Start shopping</button>
+                                        </NavLink>
                                     </div>
                                 </div>
                             </div>

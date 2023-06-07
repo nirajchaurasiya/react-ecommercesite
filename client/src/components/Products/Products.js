@@ -50,9 +50,11 @@ export default function Products() {
             });
     }, [REACT_APP_API_URL]);
     useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
         fetchAlltheProducts()
-
-
     }, [fetchAlltheProducts])
 
     return (

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 const numberOfProduct = [
     {
@@ -40,6 +40,12 @@ const numberOfProduct = [
 ]
 export default function Search() {
     const { query } = useParams();
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }, [])
     return (
         <div>
             <section className="text-gray-600 body-font w-[90vw] m-auto ">
