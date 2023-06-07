@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 export default function Updates() {
     const [allUpdates, setAllUpdates] = useState([])
+    const [isThereUpdate, setIsThereUpdate] = useState(true)
     const [loader, setLoader] = useState(true);
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const navigate = useNavigate();
@@ -11,8 +12,11 @@ export default function Updates() {
             .then((data) => {
                 setAllUpdates(data.data.data)
                 setLoader(false)
+                setIsThereUpdate(true)
             })
             .catch((err) => {
+                setIsThereUpdate(false)
+                setLoader(false)
             });
     }, [REACT_APP_API_URL]);
     useEffect(() => {
@@ -112,7 +116,26 @@ export default function Updates() {
                     </div>
                 </section> :
 
-                allUpdates.length > 1 ?
+                !isThereUpdate ?
+                    <div className="flex items-center justify-center h-screen ">
+                        <div className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden">
+                            <img
+                                className="w-full h-72 object-cover"
+                                src="/images/noupdate.jpg"
+                                alt="No Updates"
+                            />
+                            <div className="p-4">
+                                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                                    No Updates
+                                </h2>
+                                <p className="text-gray-600">
+                                    There are currently no updates available.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    :
+
                     <section className="text-gray-600 body-font overflow-hidden">
                         <div className="container px-5 py-24 mx-auto lg:w-[85vw]">
                             <div className='mb-5 text-xl font-bold text-black underline'>
@@ -158,24 +181,6 @@ export default function Updates() {
                             </div>
                         </div>
                     </section>
-                    :
-                    <div className="flex items-center justify-center h-screen ">
-                        <div className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden">
-                            <img
-                                className="w-full h-72 object-cover"
-                                src="/images/noupdate.jpg"
-                                alt="No Updates"
-                            />
-                            <div className="p-4">
-                                <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                                    No Updates
-                                </h2>
-                                <p className="text-gray-600">
-                                    There are currently no updates available.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
             }
         </div>
     )

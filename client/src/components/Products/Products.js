@@ -9,6 +9,7 @@ export default function Products() {
     const [newProducts, setNewProducts] = useState(products)
     const [loader, setLoader] = useState(true)
     const [selectedValue, setSelectedValue] = useState('all');
+    const [productFound, setProductFound] = useState(false);
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
@@ -45,9 +46,11 @@ export default function Products() {
                 setProducts(data.data.data);
                 setNewProducts(data.data.data);
                 setLoader(false)
+                setProductFound(true);
             })
             .catch((err) => {
-                console.log(err);
+                setProductFound(false);
+                setLoader(false)
             });
     }, [REACT_APP_API_URL]);
     useEffect(() => {
@@ -115,7 +118,7 @@ export default function Products() {
 
                                         :
 
-                                        newProducts.length > 1 ?
+                                        productFound ?
                                             <>
                                                 <div>
                                                     <div className="flex flex-wrap w-full mb-5">

@@ -7,7 +7,7 @@ import axios from 'axios';
 export default function Profile() {
     const [userDatas, setUserDatas] = useState()
     const [loader, setLoader] = useState(true)
-    const [userDoesntExist, setUserDoesntExist] = useState(false)
+    const [userDoesntExist, setUserDoesntExist] = useState(true)
     const navigate = useNavigate();
     const { uid } = useParams();
     // const { user } = useContext(AuthContext);
@@ -29,11 +29,9 @@ export default function Profile() {
                     }
                 })
                 .catch(err => {
-                    console.log(err)
                     setLoader(false)
                 })
         } catch (error) {
-            console.log(error)
         }
     }, [REACT_APP_API_URL]);
     useEffect(() => {
@@ -47,9 +45,9 @@ export default function Profile() {
         return <div>
             <div className="flex items-center justify-center h-screen bg-gray-100">
                 <div className="max-w-md mx-auto p-6 bg-white shadow-md">
-                    <img src='/images/logo.jpg' alt="Logo" className="w-20 h-20 mx-auto mb-4" />
+                    <img src='/images/usernotfound.jpg' alt="user" className="w-24 h-24 mx-auto mb-4" />
                     <h2 className="text-center text-2xl font-bold mb-4">User Not Found</h2>
-                    <p className="text-center text-gray-600">Sorry, but there is no user found.</p>
+                    <p className="text-center text-gray-600">Sorry, Looks like user not found or the server is temporarily down.</p>
                 </div>
             </div>
         </div>
