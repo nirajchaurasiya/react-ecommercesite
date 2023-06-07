@@ -41,6 +41,7 @@ export default function Products() {
         axios
             .get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
             .then((data) => {
+                // console.log(typeof (data.data.data));
                 setProducts(data.data.data);
                 setNewProducts(data.data.data);
                 setLoader(false)
@@ -144,9 +145,20 @@ export default function Products() {
                                                     <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
                                                 </div>
                                             </>
-                                            : <div className="p-4 mb-4 w-full text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
-                                                <span className="font-medium">Sorry!</span> But, no product found. Change a few things up and try submitting again.
+                                            :
+                                            <div className="flex flex-wrap xl:w-1/3 border md:w-1/2">
+                                                <div className="max-w-sm rounded overflow-hidden shadow-lg p-2">
+                                                    <img src="/images/noproductfound.png" alt="No Product Found" className="w-full h-64 object-cover" />
+                                                    <div className="px-6 py-4">
+                                                        <div className="font-bold text-xl mb-2">No Product Found</div>
+                                                        <p className="text-gray-700 text-base">
+                                                            We apologize, but it seems that there are no products available at the moment.
+                                                        </p>
+                                                    </div>
+                                                </div>
+
                                             </div>
+
                                     }
                                 </div>
                             </div>
@@ -157,46 +169,3 @@ export default function Products() {
         </div>
     )
 }
-
-
-
-{/* <div className="flex border-t justify-between border-gray-200 py-2">
-                                <input
-                                    className="justify-end cursor-pointer bg-red-300"
-                                    type="checkbox"
-                                    name="checkbox1"
-                                    checked={checkboxes.checkbox1}
-                                    value={checkboxes.checkbox1}
-                                    onChange={handleCheckboxChange}
-                                />
-                                <input
-                                    className="justify-end cursor-pointer bg-red-300"
-                                    type="checkbox"
-                                    name="checkbox2"
-                                    checked={checkboxes.checkbox2}
-                                    value={checkboxes.checkbox2}
-                                    onChange={handleCheckboxChange}
-                                />
-                                <input
-                                    className="justify-end cursor-pointer bg-red-300"
-                                    type="checkbox"
-                                    name="checkbox3"
-                                    checked={checkboxes.checkbox3}
-                                    value={checkboxes.checkbox3}
-                                    onChange={handleCheckboxChange}
-                                />
-                                <input
-                                    className="justify-end cursor-pointer bg-red-300"
-                                    type="checkbox"
-                                    name="checkbox4"
-                                    checked={checkboxes.checkbox4}
-                                    value={checkboxes.checkbox4}
-                                    onChange={handleCheckboxChange}
-                                />
-                            </div> */}
-{/* <div className="flex border-gray-200 py-2">
-                                <span className="text-gray-500 text-sm">Red</span>
-                                <span className="ml-auto text-gray-900 text-sm">Black</span>
-                                <span className="ml-auto text-gray-900 text-sm">White</span>
-                                <span className="ml-auto text-gray-900 text-sm">Yellow</span>
-                            </div> */}

@@ -2,7 +2,6 @@ const Router = require('express').Router();
 const userImage = require('../multer/userImage');
 const UserModel = require('../Models/UserModel')
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
 Router.post('/register', userImage.single('profile'), async (req, res) => {
     try {
         const userDatas = req.body;

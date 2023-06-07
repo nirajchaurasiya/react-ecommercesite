@@ -50,22 +50,30 @@ const UserModel = mongoose.Schema({
             }
         }
     ],
-    productOrders:
+    productOrder:
         [
             {
-                _id: {
+                pid: {
                     type: String,
                     required: true
                 },
-                name: {
+                pcategory: {
+                    type: String,
+                    required: true,
+                },
+                pprice: {
+                    type: String,
+                    required: true,
+                },
+                pname: {
                     type: String,
                     required: true
                 },
-                productImage: {
+                pimage: {
                     type: String,
                     required: true
                 },
-                time: {
+                ordertime: {
                     type: Date,
                     required: true
                 },

@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../../Context/AuthContext'
+import React, { useCallback, useEffect, useState } from 'react'
+// import { AuthContext } from '../../Context/AuthContext'
 import { TiTick } from 'react-icons/ti'
+import { AiOutlineEye } from 'react-icons/ai'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 export default function Profile() {
@@ -9,12 +10,12 @@ export default function Profile() {
     const [userDoesntExist, setUserDoesntExist] = useState(false)
     const navigate = useNavigate();
     const { uid } = useParams();
-    const { user } = useContext(AuthContext);
+    // const { user } = useContext(AuthContext);
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const handleLogOut = () => {
         navigate('/profile/logout');
     }
-    const fetchUserDataFromDatabaseUsingID = (uid) => {
+    const fetchUserDataFromDatabaseUsingID = useCallback((uid) => {
         try {
             axios.get(`${REACT_APP_API_URL}/api/personactions/getuser/${uid}`)
                 .then((data) => {
@@ -34,14 +35,14 @@ export default function Profile() {
         } catch (error) {
             console.log(error)
         }
-    }
+    }, [REACT_APP_API_URL]);
     useEffect(() => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
         fetchUserDataFromDatabaseUsingID(uid)
-    }, [uid])
+    }, [uid, fetchUserDataFromDatabaseUsingID])
     if (userDoesntExist) {
         return <div>
             <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -61,46 +62,46 @@ export default function Profile() {
                         <div className="lg:w-2/3 mx-auto flex flex-wrap items-center">
                             <div className="lg:w-2/3 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
                                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">
-                                    <div role="status" class="max-w-sm animate-pulse">
-                                        <div class="h-7 bg-gray-200 rounded-md dark:bg-gray-700 w-48 mb-4"></div>
+                                    <div role="status" className="max-w-sm animate-pulse">
+                                        <div className="h-7 bg-gray-200 rounded-md dark:bg-gray-700 w-48 mb-4"></div>
                                     </div>
                                 </h1>
 
                                 <div className="flex items-center justify-between border-t border-gray-200 py-2">
                                     <span className="text-gray-500">Email</span>
-                                    <div role="status" class="max-w-sm animate-pulse">
-                                        <div class="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
+                                    <div role="status" className="max-w-sm animate-pulse">
+                                        <div className="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
                                     </div>
                                 </div>
                                 <div className="flex border-t border-gray-200 py-2">
                                     <span className="text-gray-500">Phone</span>
                                     <span className="ml-auto text-gray-900">
-                                        <div role="status" class="max-w-sm animate-pulse">
-                                            <div class="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
+                                        <div role="status" className="max-w-sm animate-pulse">
+                                            <div className="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
                                         </div>
                                     </span>
                                 </div>
                                 <div className="flex border-t border-gray-200 py-2">
                                     <span className="text-gray-500">Address1</span>
                                     <span className="ml-auto text-gray-900">
-                                        <div role="status" class="max-w-sm animate-pulse">
-                                            <div class="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
+                                        <div role="status" className="max-w-sm animate-pulse">
+                                            <div className="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
                                         </div>
                                     </span>
                                 </div>
                                 <div className="flex border-t border-gray-200 py-2">
                                     <span className="text-gray-500">Address2</span>
                                     <span className="ml-auto text-gray-900">
-                                        <div role="status" class="max-w-sm animate-pulse">
-                                            <div class="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
+                                        <div role="status" className="max-w-sm animate-pulse">
+                                            <div className="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
                                         </div>
                                     </span>
                                 </div>
                                 <div className="flex border-t border-gray-200 py-2">
                                     <span className="text-gray-500">Address3</span>
                                     <span className="ml-auto text-gray-900">
-                                        <div role="status" class="max-w-sm animate-pulse">
-                                            <div class="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
+                                        <div role="status" className="max-w-sm animate-pulse">
+                                            <div className="h-2 bg-gray-200 rounded-md dark:bg-gray-700 w-48"></div>
                                         </div>
                                     </span>
                                 </div> <br />
@@ -110,10 +111,10 @@ export default function Profile() {
                                 </div>
                             </div>
 
-                            <div role="status" class="lg:w-1/3 w-full lg:h-auto shadow-lg object-cover object-center  flex items-center justify-center h-56 max-w-sm bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700">
-                                <svg class="w-12 lg:h-96 text-gray-200 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 384 512">
+                            <div role="status" className="lg:w-1/3 w-full lg:h-auto shadow-lg object-cover object-center  flex items-center justify-center h-56 max-w-sm bg-gray-300 rounded-lg animate-pulse dark:bg-gray-700">
+                                <svg className="w-12 lg:h-96 text-gray-200 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 384 512">
                                 </svg>
-                                <span class="sr-only">Loading...</span>
+                                <span className="sr-only">Loading...</span>
                             </div>
 
                         </div>
@@ -146,27 +147,27 @@ export default function Profile() {
                         <tbody>
                             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white">
-                                    <div role="status" class="max-w-sm animate-pulse">
-                                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48"></div>
+                                    <div role="status" className="max-w-sm animate-pulse">
+                                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48"></div>
                                     </div>
                                 </th>
 
                                 <td className="px-6 py-4">
-                                    <div role="status" class="max-w-sm animate-pulse">
-                                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24 "></div>
+                                    <div role="status" className="max-w-sm animate-pulse">
+                                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24 "></div>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <div role="status" class="max-w-sm animate-pulse">
-                                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24 "></div>
+                                    <div role="status" className="max-w-sm animate-pulse">
+                                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24 "></div>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <NavLink to={`/product/status/${Math.round(Math.random * 1000)}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</NavLink>
+                                    <NavLink to={`/product/status/${Math.round(Math.random * 1000)}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center "><span>View</span><span className='ml-1 text-lg mt-0.5'><AiOutlineEye /></span></NavLink>
                                 </td>
                                 <td className="px-6 py-4 flex items-center">
-                                    <div role="status" class="max-w-sm animate-pulse">
-                                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24 "></div>
+                                    <div role="status" className="max-w-sm animate-pulse">
+                                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24 "></div>
                                     </div>
                                 </td>
                             </tr>
@@ -246,8 +247,11 @@ export default function Profile() {
                                     <td className="px-6 py-4">
                                         Nrs 40000
                                     </td>
+                                    {/* <td className="px-6 py-4">
+                                        <NavLink to={`/product/status/${Math.round(Math.random * 1000)}`} className="font-medium text-gray-600 dark:text-gray-500 cursor-not-allowed hover:underline flex items-center "><span>View</span><span className='ml-1 text-lg mt-0.5'><AiOutlineEye /></span></NavLink>
+                                    </td> */}
                                     <td className="px-6 py-4">
-                                        <NavLink to={`/product/status/${Math.round(Math.random * 1000)}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</NavLink>
+                                        <p className="font-medium text-gray-600 dark:text-gray-500 cursor-not-allowed hover:underline flex items-center "><span>View</span><span className='ml-1 text-lg mt-0.5'><AiOutlineEye /></span></p>
                                     </td>
                                     <td className="px-6 py-4 flex items-center">
                                         Received <TiTick />

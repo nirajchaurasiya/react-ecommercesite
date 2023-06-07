@@ -1,6 +1,7 @@
 const Router = require('express').Router();
 const productMulter = require('../multer/ProductImage');
 const ProductModel = require('../Models/ProductModel');
+const UpdatesModel = require('../Models/UpdatesModel');
 
 Router.post('/addproduct', productMulter.array('pictures'), async (req, res) => {
     try {
@@ -8,6 +9,7 @@ Router.post('/addproduct', productMulter.array('pictures'), async (req, res) => 
             title: req.body.title,
             desc: req.body.desc,
             price: req.body.price,
+            category: req.body.category,
         });
 
         if (req.files) {
@@ -19,9 +21,24 @@ Router.post('/addproduct', productMulter.array('pictures'), async (req, res) => 
             product.pictures = path;
         }
         await product.save();
-        res.send({ msg: 'Success' });
+
+        const productID = await product._id;
+        if (productID) {
+            let updates = new UpdatesModel({
+                title: product.title,
+                desc: product.desc,
+                price: product.price,
+                category: product.category,
+                pid: productID,
+                image: product.pictures,
+                price: product.price,
+            });
+            await updates.save();
+        }
+
+        res.send({ status: 1, msg: 'Success' });
     } catch (error) {
-        res.send({ msg: 'Error' });
+        res.send({ status: 0, msg: 'Error' });
     }
 });
 

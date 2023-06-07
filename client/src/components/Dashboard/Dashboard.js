@@ -1,58 +1,74 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
-
+const revenueData = [
+    { month: 'Jan', revenue: '$37,500' },
+    { month: 'Feb', revenue: '$45,000' },
+    { month: 'Mar', revenue: '$47,500' },
+    { month: 'Apr', revenue: '$50,000' },
+    { month: 'May', revenue: '$47,500' },
+    { month: 'Jun', revenue: '$55,000' },
+    { month: 'Jul', revenue: '$60,000' },
+    { month: 'Aug', revenue: '$57,500' },
+    { month: 'Sep', revenue: '$67,500' },
+    { month: 'Oct', revenue: '$65,000' },
+    { month: 'Nov', revenue: '$70,000' },
+    { month: 'Dec', revenue: '$75,000' },
+]
 export default function Dashboard() {
     // eslint-disable-next-line
     const [showAdminPanel, setShowAdminPanel] = useState(false);
     const [addProduct, setAddProduct] = useState(false);
     const [showDashboard, setshowDashboard] = useState(true)
-
-
-    const [revenueData, setRevenueData] = useState([
-        { month: 'Jan', revenue: '$37,500' },
-        { month: 'Feb', revenue: '$45,000' },
-        { month: 'Mar', revenue: '$47,500' },
-        { month: 'Apr', revenue: '$50,000' },
-        { month: 'May', revenue: '$47,500' },
-        { month: 'Jun', revenue: '$55,000' },
-        { month: 'Jul', revenue: '$60,000' },
-        { month: 'Aug', revenue: '$57,500' },
-        { month: 'Sep', revenue: '$67,500' },
-        { month: 'Oct', revenue: '$65,000' },
-        { month: 'Nov', revenue: '$70,000' },
-        { month: 'Dec', revenue: '$75,000' },
-    ]);
-
-    const updateRevenue = () => {
-        // Generate updated revenue data (replace with your own logic)
-        const updatedRevenueData = [
-            { month: 'Jan', revenue: '$40,000' },
-            { month: 'Feb', revenue: '$48,000' },
-            { month: 'Mar', revenue: '$52,000' },
-            { month: 'Apr', revenue: '$55,000' },
-            { month: 'May', revenue: '$50,000' },
-            { month: 'Jun', revenue: '$58,000' },
-            { month: 'Jul', revenue: '$63,000' },
-            { month: 'Aug', revenue: '$60,500' },
-            { month: 'Sep', revenue: '$70,000' },
-            { month: 'Oct', revenue: '$68,000' },
-            { month: 'Nov', revenue: '$72,500' },
-            { month: 'Dec', revenue: '$78,000' },
-        ];
-
-        setRevenueData(updatedRevenueData);
-    };
-
-
-
-    const email = useRef();
-    const password = useRef();
-    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
-    // eslint-disable-next-line
     const [products, setProducts] = useState([])
     const [newProducts, setNewProducts] = useState(products)
     const [loader, setLoader] = useState(true)
+    const [selectedImages, setSelectedImages] = useState([]);
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+    const title = useRef();
+    const desc = useRef();
+    const price = useRef();
+    const category = useRef();
+
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        setSelectedImages(files);
+        console.log(files);
+    };
+
+    const uploadProduct = (e) => {
+        e.preventDefault();
+        try {
+            const pd = new FormData();
+            pd.append('title', title.current.value);
+            pd.append('desc', desc.current.value);
+            pd.append('price', price.current.value);
+            pd.append('category', category.current.value);
+            Object.values(selectedImages).forEach(file => {
+                pd.append("pictures", file);
+            });
+            axios.post(`${REACT_APP_API_URL}/api/productactions/addproduct`, pd)
+                .then((data) => {
+                    if (data.data.status) {
+                        alert('Success')
+                        fetchAlltheProducts();
+                    }
+                    else {
+                        alert("Failed to add a new product");
+                    }
+                })
+                .catch((er) => {
+                    console.log(er);
+                })
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+    // eslint-disable-next-line
+    const email = useRef();
+    const password = useRef();
     const fetchAlltheProducts = useCallback(() => {
         axios
             .get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
@@ -96,7 +112,6 @@ export default function Dashboard() {
             console.log(error)
         }
     }
-    const maxRevenue = Math.max(...revenueData.map((data) => data.revenue));
     return (
         <div className='overflow-hidden'>
             {!showAdminPanel &&
@@ -259,30 +274,29 @@ export default function Dashboard() {
                     }
                     {
                         addProduct &&
-                        <div className='w-[85vw] p-12 flex flex-col gap-5 ml-auto'>
+                        <form className='w-[85vw] p-12 flex flex-col gap-5 ml-auto' encType='multipart/form-data'>
                             <div>
                                 <label for="Title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Title</label>
-                                <textarea type="text" id="Title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
+                                <textarea ref={title} type="text" id="Title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
                             </div>
                             <div>
                                 <label for="Description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Unique Description</label>
-                                <textarea type="text" id="Description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required />
+                                <textarea type="text" ref={desc} id="Description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required />
                             </div>
                             <div className="">
                                 <label for="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Price</label>
-                                <input type="text" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="john.doe@company.com" required />
+                                <input type="text" id="price" ref={price} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="john.doe@company.com" required />
                             </div>
                             <div className="">
                                 <label for="Category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Category</label>
-                                <input type="text" id="Category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                <input type="text" id="Category" ref={category} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                             </div>
-
                             <div className="">
                                 <label for="pictures" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">pictures</label>
-                                <input type="file" id="pictures" accept="image/*" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" multiple />
+                                <input type="file" onChange={handleImageChange} id="pictures" accept="image/*" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" multiple />
                             </div>
-                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                        </div>
+                            <button onClick={uploadProduct} type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                        </form>
                     }
                 </div>
             }

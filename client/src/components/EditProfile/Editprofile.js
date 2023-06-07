@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
 import axios from 'axios'
-import LoadingBar from 'react-top-loading-bar'
 export default function Editprofile() {
     const [profile, setProfile] = useState('')
     const [successAlert, setSuccessAlert] = useState(false);

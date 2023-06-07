@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom';
 import checkServiciabilityPinn from '../checkServiciabilityJSON/checkServiciabilityJSON.json'
 import axios from 'axios';
@@ -28,18 +28,17 @@ export default function ProductDetails() {
         }
     }
 
-    const fetchAlltheProducts = () => {
+    const fetchAlltheProducts = useCallback(() => {
         axios.get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
             .then((data) => {
                 setAllProducts(data.data.data)
                 setLoader2(false);
             })
             .catch((err) => {
-                console.log(err)
                 setLoader(false);
             })
-    }
-    const fetchTheProductWithId = (pid) => {
+    }, [REACT_APP_API_URL])
+    const fetchTheProductWithId = useCallback((pid) => {
         try {
             setShowImages('/images/message.png')
             axios.get(`${REACT_APP_API_URL}/api/productactions/getproducts/${pid}`)
@@ -51,14 +50,12 @@ export default function ProductDetails() {
                     setLoader(false)
                 })
                 .catch((err) => {
-                    console.log(err)
                     setLoader(false);
                 })
         } catch (error) {
-            console.log(error)
         }
         setAddToCartValue('Add to Cart')
-    }
+    }, [REACT_APP_API_URL]);
     const addtoCart = () => {
         const cartItem = {
             name: fetchProductsFromId.title,
@@ -79,19 +76,15 @@ export default function ProductDetails() {
                 }
                 else {
                     const updatedCartValue = [...parsedCartValue, cartItem];
-                    console.log(updatedCartValue)
                     localStorage.setItem('shopkartCarts', JSON.stringify(updatedCartValue));
                     const localStoreLength = JSON.parse(localStorage.getItem('shopkartCarts'))
                     setAddToCartValue(`Added to the cart ${localStoreLength.length}`);
-                    // window.location.reload();
                 }
             } else {
                 const updatedCartValue = [...parsedCartValue, cartItem];
-                console.log(updatedCartValue)
                 localStorage.setItem('shopkartCarts', JSON.stringify(updatedCartValue));
                 const localStoreLength = JSON.parse(localStorage.getItem('shopkartCarts'))
                 setAddToCartValue(`Added to the cart ${localStoreLength.length}`);
-                // window.location.reload();
             }
         }
 
@@ -104,7 +97,7 @@ export default function ProductDetails() {
         });
         fetchAlltheProducts()
         fetchTheProductWithId(pid)
-    }, [pid])
+    }, [pid, fetchAlltheProducts, fetchTheProductWithId])
     return (
         <div>
             {loader ?
@@ -277,7 +270,7 @@ export default function ProductDetails() {
                                         <div className='flex flex-col gap-5'>
                                             <h1 className='text-xl font-bold'>User's Questions</h1>
                                             {[1, 2, 3, 4].map(e => {
-                                                return <div className='animate-pulse'>
+                                                return <div key={e} className='animate-pulse'>
                                                     <div className="flex-grow">
                                                         <div className="w-full h-3 bg-gray-200 rounded-full dark:bg-gray-700 "></div>
                                                         <div className="w-20 h-2 bg-gray-200 rounded-full dark:bg-gray-700  mt-1"></div>
@@ -356,7 +349,7 @@ export default function ProductDetails() {
                                         <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0">
                                             <div className="flex flex-row items-start lg:flex-col">
                                                 {fetchProductsFromId?.pictures?.split(',')?.map(e => {
-                                                    return <button id={e} type="button" className={`flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg text-center ${showImages === REACT_APP_API_URL + "/" + e ? `${cardClassName}` : ""} `} onClick={() => { setShowImages(REACT_APP_API_URL + "/" + e) }}>
+                                                    return <button key={`${e}/@^*#!@YUVU!@*&YUTY&RYU!@`} type="button" className={`flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg text-center ${showImages === REACT_APP_API_URL + "/" + e ? `${cardClassName}` : ""} `} onClick={() => { setShowImages(REACT_APP_API_URL + "/" + e) }}>
                                                         <img className="h-full w-full object-cover" src={REACT_APP_API_URL + "/" + e} alt="" />
                                                     </button>
                                                 })}
