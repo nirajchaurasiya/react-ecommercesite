@@ -46,15 +46,8 @@ Router.post('/login', async (req, res) => {
                 const isPasswordMatch = await bcrypt.compare(enteredPassword, originalPassword);
                 if (isPasswordMatch) {
                     const data = isEmailFound.toObject(); // Convert Mongoose document to plain JavaScript object
-                    delete data.password; // Remove the password field
-
                     token = await isEmailFound.generateAuthToken();
-                    res.cookie('shopkartcookie', token, {
-                        expires: new Date(Date.now() + 25892000000),
-                        httpOnly: true,
-                    })
-
-                    res.send({ status: 1, msg: "Successfully login to your account. Redirecting you to the profile page within 2 seconds..", data: data });
+                    res.send({ status: 1, msg: "Successfully login to your account. Redirecting you to the profile page within 2 seconds..", data: data._id });
                 } else {
                     res.send({ status: 0, msg: "Invalid Credentials" });
                 }

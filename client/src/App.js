@@ -40,7 +40,7 @@ export default function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/updates' element={<Updates />} />
           <Route path='/admin/dashboard' element={<Dashboard />} />
-          <Route path='/profile' element={user ? <Profile /> : <Login />} />
+          <Route path='/profile/:uid' element={user ? <Profile /> : <Login />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile/editprofile' element={<Editprofile />} />
           <Route path='/category' element={<Category />} />

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 export default function Login() {
@@ -18,6 +18,7 @@ export default function Login() {
                     .then(data => {
                         if (data.data.status === 1) {
                             setSuccessAlert(true);
+                            console.log(data.data.data)
                             localStorage.setItem('shopkartStore', JSON.stringify(data.data.data));
                             window.location.href = '/';
                         }
@@ -58,6 +59,12 @@ export default function Login() {
             }, 2000);
         }
     }
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }, [])
     return (
         <>
             {successAlert && <div id="toast-notification" className="fixed right:0 lg:right-2 bottom-0 lg:bottom-2 w-full md:max-w-xs lg:max-w-xs p-4 text-gray-900 bg-white lg:rounded-lg shadow dark:bg-gray-800 dark:text-gray-300" role="alert">

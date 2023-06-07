@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 export default function Register() {
     const [profile, setProfile] = useState('')
@@ -78,6 +78,12 @@ export default function Register() {
             }, 2000);
         }
     }
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }, [])
     return (
         <>
 

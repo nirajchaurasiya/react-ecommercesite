@@ -13,16 +13,16 @@ export default function Footer() {
                             <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Quick Links</h2>
                             <nav className="list-none mb-10">
                                 <li>
-                                    <a href="index.php" className="text-gray-600 hover:text-gray-800">Home</a>
+                                    <NavLink to="/" className="text-gray-600 hover:text-gray-800">Home</NavLink>
                                 </li>
                                 <li>
-                                    <a href="about.php" className="text-gray-600 hover:text-gray-800">About</a>
+                                    <NavLink to="/about" className="text-gray-600 hover:text-gray-800">About</NavLink>
                                 </li>
                                 <li>
-                                    <a href="contact.php" className="text-gray-600 hover:text-gray-800">Contact</a>
+                                    <NavLink to="/contact" className="text-gray-600 hover:text-gray-800">Contact</NavLink>
                                 </li>
                                 <li>
-                                    <a href="services.php" className="text-gray-600 hover:text-gray-800">Services</a>
+                                    <NavLink to="/services" className="text-gray-600 hover:text-gray-800">Services</NavLink>
                                 </li>
                             </nav>
                         </div>
@@ -30,10 +30,10 @@ export default function Footer() {
                             <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Auth</h2>
                             <nav className="list-none mb-10">
                                 <li>
-                                    <a href="login.php" className="text-gray-600 hover:text-gray-800">Login</a>
+                                    <NavLink to="/login" className="text-gray-600 hover:text-gray-800">Login</NavLink>
                                 </li>
                                 <li>
-                                    <a href="register.php" className="text-gray-600 hover:text-gray-800">Register</a>
+                                    <NavLink to="/register" className="text-gray-600 hover:text-gray-800">Register</NavLink>
                                 </li>
                             </nav>
                         </div>

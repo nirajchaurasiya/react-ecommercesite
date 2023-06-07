@@ -29,6 +29,7 @@ app.use(express.static('uploads'))
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 app.use('/api/auth', require('./auth/auth'));
 app.use('/api/productactions', require('./productactions/productactions'));
+app.use('/api/personactions', require('./personactions/personactions'));
 app.get('/', (req, res) => {
     res.send({ "msg": "success" })
 })
