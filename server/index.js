@@ -11,6 +11,7 @@ const cors = require('cors')
 require('dotenv').config();
 const PORT = process.env.PORT
 app.use(bodyParser.json());
+const hostname = '0.0.0.0'
 app.use(express.json());
 require('./connection/conn')
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
@@ -24,6 +25,9 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+app.get('/', (req, res) => {
+    console.log({ "msg": "Success" })
+})
 
 app.use(express.static('uploads'))
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
@@ -35,5 +39,5 @@ app.get('/', (req, res) => {
     res.send({ "msg": "success" })
 })
 app.listen(PORT, () => {
-    console.log(`Backend is running on ${PORT}`)
+    console.log(`Backend is running on http://${hostname}:${PORT}/`)
 })
