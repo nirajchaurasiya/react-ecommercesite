@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom';
 import checkServiciabilityPinn from '../checkServiciabilityJSON/checkServiciabilityJSON.json'
 import axios from 'axios';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 export default function ProductDetails() {
     const [fetchProductsFromId, setFetchProductsFromId] = useState([])
     const [allProducts, setAllProducts] = useState([])
@@ -9,15 +10,20 @@ export default function ProductDetails() {
     const [showDesc, setShowDesc] = useState(true);
     const [showImages, setShowImages] = useState('/images/message.png')
     const [productDoesntExist, setProductDoesntExist] = useState(false)
+    const [showAlert, setShowAlert] = useState(false);
     const [loader, setLoader] = useState(true)
     const [loader2, setLoader2] = useState(true);
+    // eslint-disable-next-line
     const [addToCartValue, setAddToCartValue] = useState('Add to Cart')
     // eslint-disable-next-line
     const [cardClassName, setCardClassName] = useState('border-2 border-gray-900');
+    const [userData, setUserData] = useState([])
     const [serviceabilityMsg, setServiceabilityMsg] = useState('Check serviceability')
     const serviceabilityPin = useRef();
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const { pid } = useParams();
+    const questions = useRef();
+    const comment = useRef();
     const checkServiciability = () => {
         const enteredNumber = parseInt(serviceabilityPin.current.value);
 
@@ -55,7 +61,6 @@ export default function ProductDetails() {
                 })
         } catch (error) {
         }
-        setAddToCartValue('Add to Cart')
     }, [REACT_APP_API_URL]);
     const addtoCart = () => {
         const cartItem = {
@@ -78,29 +83,156 @@ export default function ProductDetails() {
                 else {
                     const updatedCartValue = [...parsedCartValue, cartItem];
                     localStorage.setItem('shopkartCarts', JSON.stringify(updatedCartValue));
-                    const localStoreLength = JSON.parse(localStorage.getItem('shopkartCarts'))
-                    setAddToCartValue(`Added to the cart ${localStoreLength.length}`);
+
+                    setShowAlert(true)
+                    setTimeout(() => {
+                        setShowAlert(false);
+                    }, 2000);
                 }
             } else {
                 const updatedCartValue = [...parsedCartValue, cartItem];
                 localStorage.setItem('shopkartCarts', JSON.stringify(updatedCartValue));
-                const localStoreLength = JSON.parse(localStorage.getItem('shopkartCarts'))
-                setAddToCartValue(`Added to the cart ${localStoreLength.length}`);
+
+                setShowAlert(true)
+                setTimeout(() => {
+                    setShowAlert(false);
+                }, 2000);
             }
         }
 
     };
 
+    const submitQuestions = () => {
+        if (questions.current.value) {
+            try {
+
+                const question = {
+                    name: userData.fname + " " + userData.lname,
+                    question: questions.current.value,
+                    pid: pid
+                }
+
+                axios.post(`${REACT_APP_API_URL}/api/productactions/addquestions`, question)
+                    .then((res) => {
+                        if (res.data.status === 1) {
+                            alert("Questions added, we will look to it as soon as possible.")
+                            fetchTheProductWithId(pid);
+
+                        } else {
+                            alert("Something went wrong. Please try again later.")
+                        }
+                    })
+                    .catch((err) => {
+                        alert("Something went wrong. Please try again later.")
+                    })
+            } catch (error) {
+            }
+        }
+        else {
+            alert("Something went wrong. Please try again later.")
+        }
+        comment.current.value = "";
+    }
+
+
+    const postComment = () => {
+        if (comment.current.value) {
+            try {
+                const comments = {
+                    name: userData.fname + " " + userData.lname,
+                    comment: comment.current.value,
+                    _id: userData._id,
+                    profile: userData.profile,
+                    pid: pid,
+                }
+                axios.post(`${REACT_APP_API_URL}/api/productactions/addcomment`, comments)
+                    .then((res) => {
+                        if (res.data.status === 1) {
+                            alert("Reviw added, we will look to it as soon as possible.")
+                            fetchTheProductWithId(pid);
+
+                        } else {
+                            alert("Something went wrong. Please try again later.")
+                        }
+                    })
+                    .catch((err) => {
+                        alert("Something went wrong. Please try again later.")
+                    })
+            } catch (error) {
+                alert("Something went wrong. Please try again later.")
+            }
+        }
+    }
+    const clickedToHelpFul = (reviewID) => {
+        try {
+            axios.post(`${REACT_APP_API_URL}/api/productactions/supporttoproduct`, {
+                reviewID: reviewID,
+                pid: pid,
+                uid: userData._id,
+            })
+                .then((res) => {
+                    if (res.data.status === 1) {
+                        console.log(res.data);
+                        fetchTheProductWithId(pid);
+                    } else {
+                        alert("Something went wrong");
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+
+    const fetchuserProfile = useCallback((uid) => {
+        try {
+            axios.get(`${REACT_APP_API_URL}/api/personactions/getuser/${uid}`)
+                .then((data) => {
+                    if (data.status === 200) {
+                        if (data.data.status === 1) {
+                            setUserData(data.data.data)
+                            setLoader(false)
+                        }
+                        else {
+                            setLoader(false);
+                        }
+                    } else {
+                        setLoader(false);
+                    }
+                })
+                .catch(err => {
+                    setLoader(false)
+                })
+        } catch (error) {
+        }
+    }, [REACT_APP_API_URL])
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        // window.scrollTo({
+        //     top: 0,
+        //     behavior: 'smooth'
+        // });
         fetchAlltheProducts()
         fetchTheProductWithId(pid)
-    }, [pid, fetchAlltheProducts, fetchTheProductWithId])
+        if (localStorage.getItem('shopkartStore')) {
+            const uid = localStorage.getItem('shopkartStore').replace(/"/g, '');
+            fetchuserProfile(uid);
+        }
+    }, [pid, fetchAlltheProducts, fetchTheProductWithId, fetchuserProfile])
     return (
         <div>
+            {showAlert && <div id="toast-notification" className="fixed left:0 lg:left-2 bottom-0 lg:bottom-2 w-full md:max-w-xs lg:max-w-xs p-4 text-gray-900 bg-white lg:rounded-lg shadow dark:bg-gray-800 dark:text-gray-300" role="alert">
+                <div className="flex items-center">
+                    <div className="ml-3 text-sm font-normal">
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">Success!</div>
+                        <div className="text-sm font-normal">Successfully, added to cart! You can view here. <NavLink to="/cart" className="text-red-300 underline">Cart</NavLink> </div>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
+                    </div>
+                </div>
+            </div>}
             {loader ?
                 <section className="py-12 sm:py-16 m-auto w-[90vw]">
 
@@ -207,24 +339,7 @@ export default function ProductDetails() {
                                 <div className="mt-8 flow-root">
                                     {showReviews &&
                                         <div>
-                                            <section className="">
-                                                <div className="max-w-2xl">
-                                                    <div className="flex justify-between items-center">
-                                                    </div>
-                                                    <div className="mb-6">
-                                                        <div className="mb-2 bg-white rounded-lg rounded-t-lg border border-white dark:bg-white dark:border-white">
-                                                            <label for="comment" className="sr-only">Your comment</label>
-                                                            <textarea id="comment" rows="6"
-                                                                className="w-full text-sm p-3 text-white border-1 border-gray-500 ring-1 focus:outline-none dark:text-gray-500 dark:placeholder-gray-500"
-                                                                placeholder="Write a comment..." required></textarea>
-                                                        </div>
-                                                        <button type="submit"
-                                                            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
-                                                            Post comment
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </section>
+
                                             <div role="status" className="max-w-sm animate-pulse">
                                                 <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
                                                 <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
@@ -282,8 +397,6 @@ export default function ProductDetails() {
                                         </div>
 
                                     }
-
-
                                 </div>
                             </div>
                         </div>
@@ -363,23 +476,6 @@ export default function ProductDetails() {
                                     <h1 className="sm: text-2xl font-bold text-gray-900 sm:text-3xl">{fetchProductsFromId?.title}</h1>
 
                                     <div className="mt-5 flex items-center">
-                                        <div className="flex items-center">
-                                            <svg className="block h-4 w-4 align-middle text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" className=""></path>
-                                            </svg>
-                                            <svg className="block h-4 w-4 align-middle text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" className=""></path>
-                                            </svg>
-                                            <svg className="block h-4 w-4 align-middle text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" className=""></path>
-                                            </svg>
-                                            <svg className="block h-4 w-4 align-middle text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" className=""></path>
-                                            </svg>
-                                            <svg className="block h-4 w-4 align-middle text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" className=""></path>
-                                            </svg>
-                                        </div>
                                         <p className="ml-2 text-sm font-medium text-gray-500">{fetchProductsFromId?.reviews?.length} Reviews</p>
                                     </div>
 
@@ -387,7 +483,6 @@ export default function ProductDetails() {
                                     <div className="mt-3 flex select-none flex-wrap items-center gap-1">
                                         {fetchProductsFromId?.desc}
                                     </div>
-
                                     <div className="mt-3">
                                         <div className='flex items-center gap-1 mt-3'>
                                             <input type="number" ref={serviceabilityPin} id="serviceability" className="bg-gray-50 border border-gray-300 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your pincode" />
@@ -428,105 +523,117 @@ export default function ProductDetails() {
                                 <div className="lg:col-span-3">
                                     <div className="border-b border-gray-300">
                                         <nav className="flex gap-4">
-                                            <div title="" className=" py-4 text-sm font-medium text-gray-600  hover:text-gray-800 cursor-pointer" onClick={() => { setShowReviews(false); setShowDesc(true) }}> Description </div>
-
+                                            <div className=" py-4 text-sm font-medium text-gray-600  hover:text-gray-800 cursor-pointer" onClick={() => { setShowReviews(false); setShowDesc(true) }} title="Questions asked by users"> Questions </div>
                                             <div title="" className="inline-flex items-center  border-transparent py-4 text-sm font-medium text-gray-600 hover:text-gray-800 cursor-pointer" onClick={() => { setShowReviews(true); setShowDesc(false) }}>
                                                 Reviews
                                                 <span className="ml-2 block rounded-full bg-gray-500 px-2 py-px text-xs font-bold text-gray-100"> {fetchProductsFromId?.reviews?.length} </span>
                                             </div>
                                         </nav>
                                     </div>
-                                    <div className="mt-8 flow-root sm:mt-12">
+                                    <div className="mt-8 flow-root sm:mt-5">
                                         {showReviews &&
                                             <div>
-                                                <div className="flex items-center mb-3">
-                                                    <svg aria-hidden="true" className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                    <svg aria-hidden="true" className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Second star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                    <svg aria-hidden="true" className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Third star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                    <svg aria-hidden="true" className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                    <svg aria-hidden="true" className="w-5 h-5 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fifth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                    <p className="ml-2 text-sm font-medium text-gray-900 dark:text-white">4.95 out of 5</p>
-                                                </div>
-                                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{fetchProductsFromId?.reviews?.length} global ratings</p>
-                                                <div className="flex items-center mt-4">
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">5 star</span>
-                                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                                                        <div className="h-5 bg-blue-400 rounded" style={{ width: "70%" }}></div>
+                                                <section className="">
+                                                    <div className="max-w-2xl">
+                                                        <h1 className='mb-2 font-bold'>Write a Comment</h1>
+                                                        <div className="flex justify-between items-center">
+                                                        </div>
+                                                        <div className="mb-6">
+                                                            <div className="mb-2 bg-white rounded-lg rounded-t-lg border border-white dark:bg-white dark:border-white">
+                                                                <label htmlFor="comment" className="sr-only">Your comment</label>
+                                                                <textarea ref={comment} id="comment" rows="3"
+                                                                    className="w-full text-sm p-3 text-white border-1 border-gray-500 ring-1 focus:outline-none dark:text-gray-500 dark:placeholder-gray-500"
+                                                                    placeholder="Write a comment..." required></textarea>
+                                                            </div>
+                                                            <button type="submit" onClick={postComment}
+                                                                className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                                                                Post comment
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">70%</span>
-                                                </div>
-                                                <div className="flex items-center mt-4">
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">4 star</span>
-                                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                                                        <div className="h-5 bg-blue-400 rounded" style={{ width: "17%" }}></div>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">17%</span>
-                                                </div>
-                                                <div className="flex items-center mt-4">
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">3 star</span>
-                                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                                                        <div className="h-5 bg-blue-400 rounded" style={{ width: "8%" }}></div>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">8%</span>
-                                                </div>
-                                                <div className="flex items-center mt-4">
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">2 star</span>
-                                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                                                        <div className="h-5 bg-blue-400 rounded" style={{ width: "4%" }}></div>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">4%</span>
-                                                </div>
-                                                <div className="flex items-center mt-4">
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">1 star</span>
-                                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                                                        <div className="h-5 bg-blue-400 rounded" style={{ width: "1%" }}></div>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-blue-600 dark:text-blue-500">1%</span>
-                                                </div>
-
-                                                <br />
+                                                </section>
 
                                                 <div className='flex flex-col gap-5'>
-                                                    {fetchProductsFromId?.reviews.map(e => {
-                                                        return <article className=''>
-                                                            <hr />
-                                                            <div key={e} className="flex items-center mt-2 space-x-4">
-                                                                <img className="w-10 h-10 rounded-full" src={e?.profile} alt="" />
-                                                                <div className="space-y-1 font-medium  text-black">
-                                                                    <p>{e?.name} <time dateTime="2014-08-16 19:00" className="block text-sm text-gray-500 dark:text-gray-400">Joined on {e?.time}</time></p>
+                                                    {fetchProductsFromId?.reviews.map((e, index) => {
+                                                        return (
+                                                            <article key={index} className=''>
+                                                                <hr />
+                                                                <div className="flex mt-2 space-x-4">
+                                                                    <div className="flex-shrink-0">
+                                                                        <img className="w-10 h-10 rounded-full" src={`${REACT_APP_API_URL}/${e?.profile}`} alt="" />
+                                                                    </div>
+                                                                    <div className="flex flex-col">
+                                                                        <div className="space-y-1 font-medium text-black">
+                                                                            <p>{e?.name} <time dateTime="2014-08-16 19:00" className="font-thin text-xs text-gray-500 dark:text-gray-400">({e?.date.slice(0, 10).replace('-', '/').replace('-', '/')})</time></p>
+                                                                        </div>
+                                                                        <p className="mb-2 text-gray-600 dark:text-gray-700 font-sans">{e?.comment}</p>
+                                                                        <aside>
+                                                                            <p className="text-xs text-gray-500 dark:text-gray-400">{e?.support.length} people support this</p>
+                                                                            <div className="flex items-center mt-1 space-x-3 divide-x divide-gray-200 dark:divide-gray-600">
+                                                                                <button disabled={e._id === userData._id} className="disabled:bg-gray-400 disabled:border-gray-400 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-2 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => { clickedToHelpFul(e._id) }}>Helpful</button>
+                                                                                <button className="pl-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Report abuse</button>
+                                                                            </div>
+                                                                        </aside>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="flex items-center mb-1">
-                                                                <svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                                <svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Second star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                                <svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Third star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                                <svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                                <svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fifth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                                <h3 className="ml-2 text-sm font-semibold text-gray-900 dark:text-white">{e?.title}</h3>
-                                                            </div>
-                                                            <p className="mb-2 text-gray-500 dark:text-gray-400">{e?.comment}</p>
-
-                                                            <aside>
-                                                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{e?.support} people support this</p>
-                                                                <div className="flex items-center mt-3 space-x-3 divide-x divide-gray-200 dark:divide-gray-600">
-                                                                    <button className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-2 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Helpful</button>
-                                                                    <button className="pl-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Report abuse</button>
-                                                                </div>
-                                                            </aside>
-                                                        </article>
+                                                            </article>
+                                                        );
                                                     })}
                                                 </div>
 
 
 
+
                                             </div>}
                                         {showDesc && <div className=''>
-                                            <h1 className="text-3xl font-bold">Delivered To Your Door</h1>
-                                            <p className="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia accusantium nesciunt fuga.</p>
-                                            <h1 className="mt-8 text-3xl font-bold">From the Fine Farms of Brazil</h1>
-                                            <p className="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio numquam enim facere.</p>
-                                            <p className="mt-4">Amet consectetur adipisicing elit. Optio numquam enim facere. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolore rerum nostrum eius facere, ad neque.</p>
-                                        </div>}
+                                            <h1 className='font-bold mb-2'>Ask a Question</h1>
+                                            <section className="">
+                                                <div className="max-w-2xl">
+                                                    <div className="flex justify-between items-center">
+                                                    </div>
+                                                    <div className="mb-6">
+                                                        <div className="mb-2 bg-white rounded-lg rounded-t-lg border border-white dark:bg-white dark:border-white">
+                                                            <input id="questions" rows="3"
+                                                                className="w-full text-sm p-3 text-white border-1 border-gray-500 ring-1 focus:outline-none dark:text-gray-500 dark:placeholder-gray-500"
+                                                                ref={questions} placeholder="Ask a Question..." required></input>
+                                                        </div>
+                                                        <button type="submit" onClick={submitQuestions}
+                                                            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-indigo-700 rounded-lg focus:ring-4 focus:ring-indigo-200 dark:focus:ring-indigo-900 hover:bg-indigo-800">
+                                                            Submit
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                            {
+                                                fetchProductsFromId?.conversation?.length < 1 ?
+                                                    <div className="bg-white shadow-lg rounded-lg p-6 w-64">
+                                                        <h2 className="text-xl font-bold mb-4">
+                                                            No Questions Asked
+                                                        </h2>
+                                                        <p className="text-gray-700">
+                                                            Be the first to ask a question.
+                                                        </p>
+                                                    </div>
+                                                    :
+                                                    fetchProductsFromId.conversation.map((e, index) => {
+                                                        return (
+                                                            <div className="max-w-lg relative" key={index}>
+                                                                <div className="mb-6">
+                                                                    <div className="border-l-2 border-gray-300 absolute left-0 top-0 h-full"></div> {/* Vertical line */}
+                                                                    <div className="pl-4">
+                                                                        <h3 className="text-xl font-medium mb-2">{e.question}</h3>
+                                                                        <p className="text-gray-700 flex items-center gap-2 font-mono"><AiOutlineArrowRight /> {e.answer ? e.answer : "Unanswered"}</p>
+                                                                        <p className="text-gray-500 text-xs mt-2">Asked by: {e.name}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })}
+
+
+                                        </div>
+
+                                        }
 
 
                                     </div>
@@ -561,7 +668,7 @@ export default function ProductDetails() {
                                                 <span className="sr-only">Loading...</span>
                                             </div>
                                         })}
-                                    </div> : allProducts.filter(e => e._id !== pid).map(e => {
+                                    </div> : allProducts.slice(0, 30).filter(e => e._id !== pid).map(e => {
                                         return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
                                             <div className="bg-gray-100 p-3 rounded-lg">
                                                 <img className="h-40 rounded w-full object-cover object-center mb-6" src={REACT_APP_API_URL + "/" + e.pictures.split(',')[0]} alt="content" />
@@ -572,14 +679,14 @@ export default function ProductDetails() {
                                             </div>
                                         </div>
                                     })
-
                                     }
-
                                 </div>
                             </div>
-                            <div className='flex m-auto justify-center'>
-                                <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
-                            </div>
+                            <NavLink to='/products'>
+                                <div className='flex m-auto justify-center'>
+                                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
+                                </div>
+                            </NavLink>
                         </section>
 
                     </section>

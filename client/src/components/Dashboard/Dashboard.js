@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
+import cate from '../CategoryJSON/category.json'
 const revenueData = [
     { month: 'Jan', revenue: '$37,500' },
     { month: 'Feb', revenue: '$45,000' },
@@ -18,6 +19,7 @@ const revenueData = [
 export default function Dashboard() {
     // eslint-disable-next-line
     const [showAdminPanel, setShowAdminPanel] = useState(false);
+    const [selectedValue, setSelectedValue] = useState('all');
     const [addProduct, setAddProduct] = useState(false);
     const [showDashboard, setshowDashboard] = useState(true)
     const [products, setProducts] = useState([])
@@ -112,6 +114,9 @@ export default function Dashboard() {
             console.log(error)
         }
     }
+    const handleSelectChange = (event) => {
+        setSelectedValue(event.target.value);
+    };
     return (
         <div className='overflow-hidden'>
             {!showAdminPanel &&
@@ -289,8 +294,14 @@ export default function Dashboard() {
                             </div>
                             <div className="">
                                 <label for="Category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Category</label>
-                                <input type="text" id="Category" ref={category} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                            </div>
+                                <select value={selectedValue}
+                                    onChange={handleSelectChange} className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
+                                    {
+                                        cate?.map(e => {
+                                            return <option key={e.name} value={e.short}>{e.name}</option>
+                                        })
+                                    }
+                                </select></div>
                             <div className="">
                                 <label for="pictures" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">pictures</label>
                                 <input type="file" onChange={handleImageChange} id="pictures" accept="image/*" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" multiple />

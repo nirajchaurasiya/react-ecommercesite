@@ -17,12 +17,16 @@ const ProductModel = mongoose.Schema({
     },
     conversation: [
         {
-            _id: String,
+            question: String,
+            answer: {
+                type: String,
+                default: ""
+            },
             name: String,
-            date: String,
-            profile: String,
-            questions: String,
-            answers: String,
+            date: {
+                type: Number,
+                default: Date.now() * 100000
+            }
         },
     ],
     reviews:
@@ -33,7 +37,7 @@ const ProductModel = mongoose.Schema({
                 _id: String,
                 profile: String,
                 support: [String],
-                time: {
+                date: {
                     type: Date,
                 },
                 reply:
@@ -44,7 +48,7 @@ const ProductModel = mongoose.Schema({
                             _id: String,
                             profile: String,
                             support: [String],
-                            time: {
+                            date: {
                                 type: Date,
                             },
                         }

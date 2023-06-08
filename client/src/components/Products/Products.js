@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
+import cate from '../CategoryJSON/category.json'
 
 export default function Products() {
     const [value, setValue] = useState(100000);
@@ -10,7 +11,9 @@ export default function Products() {
     const [loader, setLoader] = useState(true)
     const [selectedValue, setSelectedValue] = useState('all');
     const [productFound, setProductFound] = useState(false);
-    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    const [count, setCount] = useState(5)
+    const [currDatas, setCurrDatas] = useState([]);
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -21,21 +24,37 @@ export default function Products() {
     const clearFilters = () => {
         setValue(100000)
         setSelectedValue('all')
-        setNewProducts(products)
+        setProductFound(true)
+        setCurrDatas(products.slice(0, count));
     }
     const applyfilters = () => {
-        console.log(selectedValue)
         if (selectedValue === "all") {
+            setLoader(true)
             const filterCate = products.filter(e => e.price <= value)
-            console.log(filterCate)
-            setNewProducts(filterCate);
-            setLoader(false)
+            if (filterCate.length > 0) {
+                setNewProducts(filterCate)
+                setCurrDatas(filterCate.slice(0, 5));
+                setLoader(false)
+                setProductFound(true);
+            }
+            else {
+                setLoader(false);
+                setProductFound(false);
+            }
         }
         else {
+            setLoader(true)
             const filterCate = products.filter(e => e.category === selectedValue && e.price <= value)
-            console.log(filterCate)
-            setNewProducts(filterCate);
-            setLoader(false)
+            if (filterCate.length > 0) {
+                setNewProducts(filterCate)
+                setProductFound(true);
+                setCurrDatas(filterCate.slice(0, 5));
+                setLoader(false)
+            }
+            else {
+                setLoader(false);
+                setProductFound(false);
+            }
         }
     }
     const fetchAlltheProducts = useCallback(() => {
@@ -45,9 +64,10 @@ export default function Products() {
                 // console.log(typeof (data.data.data));
                 if (response.status === 200) {
                     setProducts(response.data.data);
-                    setNewProducts(response.data.data);
+                    setNewProducts(response.data.data)
                     setLoader(false)
                     setProductFound(true);
+                    setCurrDatas(response.data.data.slice(0, count));
                 }
                 else {
                     setLoader(false)
@@ -67,6 +87,15 @@ export default function Products() {
         fetchAlltheProducts()
     }, [fetchAlltheProducts])
 
+    const fetchData = () => {
+        const infiniteScroll = newProducts?.slice(count, count + 5)
+        setCurrDatas([...currDatas, ...infiniteScroll]);
+        setCount(count + 5);
+        console.log(currDatas.length)
+    }
+    // const createMarkup = (html) => {
+    //     return { __html: html };
+    // };
     return (
         <div>
             <section className="text-gray-600 body-font">
@@ -78,9 +107,7 @@ export default function Products() {
                             <select value={selectedValue}
                                 onChange={handleSelectChange} className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
                                 <option value="all"  >All Products</option>
-                                <option value="gm">Garam Masala</option>
-                                <option value="op">Others Product</option>
-                                <option value="sale">Sale</option>
+                                {cate.map((e, index) => { return <option key={index} value={e.short}>{e.name}</option> })}
                             </select>
 
                             <div className="mb-4">
@@ -134,24 +161,25 @@ export default function Products() {
                                                         </div>
                                                         <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Checkout our premium collection of different variety of Gamra</p>
                                                     </div>
+
                                                     <div className="flex flex-wrap -m-4">
-                                                        {newProducts?.map(e => {
+                                                        {currDatas?.map(e => {
                                                             return <div key={e._id} className="xl:w-1/3 md:w-1/2 p-2">
                                                                 <div className="bg-gray-100 p-3 rounded-lg">
                                                                     <img className="h-40 rounded w-full object-cover object-center mb-6" src={`${REACT_APP_API_URL}/${e.pictures.split(',')[0]}`} alt="content" />
                                                                     <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
                                                                     <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
+                                                                    {/* <div className="text-lg text-gray-900 font-medium title-font mb-4" dangerouslySetInnerHTML={createMarkup(e.title.slice(0, 40))} /> */}
                                                                     <p className="leading-relaxed text-base">{e.desc.slice(0, 90)}...</p>
+
                                                                     <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
                                                                 </div>
                                                             </div>
                                                         })}
-
                                                     </div>
-
                                                 </div>
                                                 <div className='flex m-auto justify-center py-12'>
-                                                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
+                                                    <button type="button" disabled={newProducts.length === count} onClick={fetchData} className="disabled:bg-gray-500 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
                                                 </div>
                                             </>
                                             :
