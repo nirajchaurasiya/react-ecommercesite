@@ -35,13 +35,13 @@ export default function Home() {
         });
         fetchAlltheProducts()
         const interval = setInterval(() => {
-            setCurrentSlide((prevSlide) => (prevSlide === slides.length - 1 ? 0 : prevSlide + 1));
+            setCurrentSlide((prevSlide) => (prevSlide === slides?.length - 1 ? 0 : prevSlide + 1));
         }, 2000); // Change slide every 2 seconds
 
         return () => {
             clearInterval(interval);
         };
-    }, [fetchAlltheProducts, slides.length])
+    }, [fetchAlltheProducts, slides?.length])
     return (
         <div className=''>
 
@@ -193,7 +193,7 @@ export default function Home() {
                     <div>
                         <section className="text-gray-600 body-font">
                             {
-                                products.length > 1 ?
+                                products?.length > 1 ?
                                     <div>
                                         <div className="container px-5 mx-auto">
                                             <div className="flex flex-wrap w-full mb-6">
@@ -252,7 +252,7 @@ export default function Home() {
                             }
                         </section>
                         <section className="text-gray-600 body-font">
-                            {products.length > 1 ? <div>
+                            {products?.length > 1 ? <div>
                                 <div className="container px-5 py-12 mx-auto">
                                     <div className="flex flex-wrap w-full mb-5">
                                         <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
