@@ -6,7 +6,8 @@
   "author": "Niraj Chaurasiya",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "webpack --config webpack.config.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
