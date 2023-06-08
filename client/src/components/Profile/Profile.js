@@ -19,11 +19,16 @@ export default function Profile() {
         try {
             axios.get(`${REACT_APP_API_URL}/api/personactions/getuser/${uid}`)
                 .then((data) => {
-                    if (data.data.status === 1) {
-                        setUserDatas(data.data.data)
-                        setLoader(false)
-                    }
-                    else {
+                    if (data.status === 200) {
+                        if (data.data.status === 1) {
+                            setUserDatas(data.data.data)
+                            setLoader(false)
+                        }
+                        else {
+                            setUserDoesntExist(true);
+                            setLoader(false);
+                        }
+                    } else {
                         setUserDoesntExist(true);
                         setLoader(false);
                     }

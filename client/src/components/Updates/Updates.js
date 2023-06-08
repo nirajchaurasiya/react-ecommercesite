@@ -9,10 +9,15 @@ export default function Updates() {
     const navigate = useNavigate();
     const getAllUpdates = useCallback(() => {
         axios.get(`${REACT_APP_API_URL}/api/updates/getallupdates`)
-            .then((data) => {
-                setAllUpdates(data.data.data)
-                setLoader(false)
-                setIsThereUpdate(true)
+            .then((response) => {
+                if (response.status === 200) {
+                    setAllUpdates(response.data.data)
+                    setLoader(false)
+                    setIsThereUpdate(true)
+                } else {
+                    setIsThereUpdate(false)
+                    setLoader(false)
+                }
             })
             .catch((err) => {
                 setIsThereUpdate(false)

@@ -18,12 +18,20 @@ export default function Home() {
     const fetchAlltheProducts = useCallback(() => {
         axios
             .get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
-            .then((data) => {
-                setProducts(data.data.data);
-                setLoader(false)
+            .then((response) => {
+                if (response.status === 200) {
+                    setProducts(response.data.data);
+                    setLoader(false);
+                } else {
+                    setLoader(false);
+                }
             })
-            .catch((err) => {
-                setLoader(false)
+            .catch((error) => {
+                if (error.response && error.response.status === 404) {
+                    setLoader(false);
+                } else {
+                    setLoader(false);
+                }
             });
     }, [REACT_APP_API_URL]);
 
