@@ -15,8 +15,8 @@ app.use(express.json());
 require('./connection/conn')
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
 const corsOptions = {
-    // origin: 'https://twiittr.netlify.app'
-    origin: 'http://localhost:3000'
+    origin: 'https://onlinedukan.netlify.app'
+    // origin: 'http://localhost:3000'
 };
 app.use(cors(corsOptions));
 app.use(function (req, res, next) {
