@@ -33,7 +33,7 @@ export default function Search() {
             setLoader(false)
             setProductFound(false)
         }
-    }, [REACT_APP_API_URL])
+    }, [REACT_APP_API_URL, count])
 
     const handleSearchMoreProduct = () => {
         setLoader(true);
@@ -46,7 +46,7 @@ export default function Search() {
 
     useEffect(() => {
         searchAllProducts(query)
-    }, [query])
+    }, [query, searchAllProducts])
 
     return (
         <div>

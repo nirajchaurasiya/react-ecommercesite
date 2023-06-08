@@ -78,7 +78,7 @@ export default function Products() {
                 setProductFound(false);
                 setLoader(false)
             });
-    }, [REACT_APP_API_URL]);
+    }, [REACT_APP_API_URL, count]);
     useEffect(() => {
         window.scrollTo({
             top: 0,

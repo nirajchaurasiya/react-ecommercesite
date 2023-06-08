@@ -12,7 +12,7 @@ export default function Category() {
             <section className="text-gray-600 body-font sm:w-[60vw] md:w-[70vw] lg:w-[80vw] xl:w-[95vw] mx-auto pb-20">
                 <div className="container px-5 py-12">
                     <div className="text-center mb-20">
-                        <img className="h-auto max-w-full m-auto" src="/images/categoryimage.png" alt="image description" />
+                        <img className="h-auto max-w-full m-auto" src="/images/categoryimage.png" alt="description" />
                     </div>
                     <div className="flex flex-wrap items-center justify-center">
                         <div className="p-4 lg:w-1/6 sm:w-1/2">
