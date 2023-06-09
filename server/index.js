@@ -31,6 +31,7 @@ app.use('/api/auth', require('./auth/auth'));
 app.use('/api/productactions', require('./productactions/productactions'));
 app.use('/api/personactions', require('./personactions/personactions'));
 app.use('/api/updates', require('./updates/updates'));
+app.use('/api/orderactions', require('./orders/orderactions'));
 app.get('/', (req, res) => {
     res.send({ "msg": "success" })
 })

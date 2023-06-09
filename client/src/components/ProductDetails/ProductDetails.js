@@ -670,13 +670,13 @@ export default function ProductDetails() {
                                                 <span className="sr-only">Loading...</span>
                                             </div>
                                         })}
-                                    </div> : allProducts.slice(0, 30).filter(e => e._id !== pid)?.map(e => {
+                                    </div> : allProducts?.slice(0, 30).filter(e => e._id !== pid)?.map(e => {
                                         return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
                                             <div className="bg-gray-100 p-3 rounded-lg">
-                                                <img className="h-40 rounded w-full object-cover object-center mb-6" src={REACT_APP_API_URL + "/" + e.pictures.split(',')[0]} alt="content" />
+                                                <img className="h-40 rounded w-full object-cover object-center mb-6" src={REACT_APP_API_URL + "/" + e?.pictures?.split(',')[0]} alt="content" />
                                                 <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
-                                                <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
-                                                <p className="leading-relaxed text-base">{e.desc.slice(0, 90)}...</p>
+                                                <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e?.title?.slice(0, 40)}...</h2>
+                                                <p className="leading-relaxed text-base">{e?.desc?.slice(0, 90)}...</p>
                                                 <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
                                             </div>
                                         </div>

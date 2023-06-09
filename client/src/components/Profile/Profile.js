@@ -8,6 +8,7 @@ export default function Profile() {
     const [userDatas, setUserDatas] = useState()
     const [loader, setLoader] = useState(true)
     const [userDoesntExist, setUserDoesntExist] = useState(false)
+    const [orderDetails, setOrderDetails] = useState([])
     const navigate = useNavigate();
     const { uid } = useParams();
     // const { user } = useContext(AuthContext);
@@ -36,13 +37,29 @@ export default function Profile() {
             setUserDoesntExist(true);
         }
     }, [REACT_APP_API_URL]);
+
+    const getUserOrder = useCallback((uid) => {
+        try {
+            axios.get(`${REACT_APP_API_URL}/api/orderactions/users/${uid}/orders`)
+                .then((data) => {
+                    setOrderDetails(data.data.data)
+                })
+                .catch((err => {
+                    console.log(err)
+                }))
+        } catch (error) {
+            console.log(error)
+        }
+    }, [REACT_APP_API_URL])
+
     useEffect(() => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
         fetchUserDataFromDatabaseUsingID(uid)
-    }, [uid, fetchUserDataFromDatabaseUsingID])
+        getUserOrder(uid);
+    }, [uid, fetchUserDataFromDatabaseUsingID, getUserOrder])
     if (userDoesntExist) {
         return <div>
             <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -237,27 +254,93 @@ export default function Profile() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <th scope="row" className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white">
-                                        Apple MacBook Pro 17"
-                                    </th>
 
-                                    <td className="px-6 py-4">
-                                        Laptop
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        Nrs 40000
-                                    </td>
-                                    {/* <td className="px-6 py-4">
-                                        <NavLink to={`/product/status/${Math.round(Math.random * 1000)}`} className="font-medium text-gray-600 dark:text-gray-500 cursor-not-allowed hover:underline flex items-center "><span>View</span><span className='ml-1 text-lg mt-0.5'><AiOutlineEye /></span></NavLink>
-                                    </td> */}
-                                    <td className="px-6 py-4">
-                                        <p className="font-medium text-gray-600 dark:text-gray-500 cursor-not-allowed hover:underline flex items-center "><span>View</span><span className='ml-1 text-lg mt-0.5'><AiOutlineEye /></span></p>
-                                    </td>
-                                    <td className="px-6 py-4 flex items-center">
-                                        Received <TiTick />
-                                    </td>
-                                </tr>
+                                {
+                                    orderDetails && orderDetails.length > 0 ? (
+                                        orderDetails.map((e, index) => {
+                                            const renderedProductIds = [];
+
+                                            return e.status === true ? (
+                                                e?.orderItems?.map((data, innerIndex) => {
+                                                    // Check if the product ID has already been rendered
+                                                    if (renderedProductIds.includes(data.pid)) {
+                                                        return null; // Skip rendering for duplicate product IDs
+                                                    }
+
+                                                    renderedProductIds.push(data.pid);
+
+                                                    const productQuantity = e.orderItems.reduce((total, item) => {
+                                                        if (item.pid === data.pid) {
+                                                            return total + item.quantity;
+                                                        }
+                                                        return total;
+                                                    }, 0);
+
+                                                    return (
+                                                        <tr
+                                                            key={data._id}
+                                                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                        >
+                                                            <th
+                                                                scope="row"
+                                                                className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
+                                                            >
+                                                                {data.name}
+                                                            </th>
+                                                            <td className="px-6 py-4">{productQuantity}</td>
+                                                            <td className="px-6 py-4">{data.price}</td>
+                                                            <td className="px-6 py-4">
+                                                                <NavLink
+                                                                    to={`/product/status/${e?._id}`}
+                                                                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center"
+                                                                >
+                                                                    <span>View</span>
+                                                                    <span className="ml-1 text-lg mt-0.5">
+                                                                        <AiOutlineEye />
+                                                                    </span>
+                                                                </NavLink>
+                                                            </td>
+                                                            <td className="px-6 py-4 flex items-center">
+                                                                <span>Shipping</span>{" "}
+                                                                <span className="rounded-full w-3 h-3 border-2 mt-1 border-r-0 border-t-0 animate-spin bg-transparent border-indigo-300"></span>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            ) : (
+                                                <tr
+                                                    key={e._id}
+                                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                >
+                                                    <th
+                                                        scope="row"
+                                                        className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
+                                                    >
+                                                        Apple MacBook Pro 17"
+                                                    </th>
+                                                    <td className="px-6 py-4">Laptop</td>
+                                                    <td className="px-6 py-4">Nrs 40000</td>
+                                                    <td className="px-6 py-4">
+                                                        <p className="font-medium text-gray-600 dark:text-gray-500 cursor-not-allowed hover:underline flex items-center">
+                                                            <span>View</span>
+                                                            <span className="ml-1 text-lg mt-0.5">
+                                                                <AiOutlineEye />
+                                                            </span>
+                                                        </p>
+                                                    </td>
+                                                    <td className="px-6 py-4 flex items-center">
+                                                        Shipped <TiTick />
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    ) : (
+                                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td colSpan="5" className="px-6 py-4 text-center text-gray-600 dark:text-gray-500">
+                                                No orders available
+                                            </td>
+                                        </tr>
+                                    )}
                             </tbody>
                         </table>
                     </div>

@@ -27,6 +27,7 @@ export default function Dashboard() {
     const [numberOfUsers, setNumberOfUsers] = useState(0)
     const [loader, setLoader] = useState(true)
     const [selectedImages, setSelectedImages] = useState([]);
+    // eslint-disable-next-line
     const [addClassToNav, setAddClassToNav] = useState('white')
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 

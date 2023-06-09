@@ -5,9 +5,9 @@ export default function Cart() {
     const [loader, setLoader] = useState(true);
     const [count, setCount] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
+    const [uniquePidsState, setUniquePidsState] = useState(null)
     const [showWarning, setShowWarning] = useState(false)
     const [localStoreDatas, setLocalStoreDatas] = useState()
-    const [uniquePidsState, setUniquePidsState] = useState(null)
 
     const deleteTheProductFromArray = (pid) => {
         const updatedData = localStoreDatas.filter(e => e.pid !== pid);
