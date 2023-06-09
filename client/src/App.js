@@ -23,6 +23,7 @@ import Category from './components/Category/Category'
 import CheckProductDestination from './components/CheckProductDestination/CheckProductDestination'
 import FAQ from './components/FAQ/FAQ'
 import Help from './components/Help/Help'
+import CategoryProduct from './components/CategoryProduct/CategoryProduct'
 export default function App() {
   const { user } = useContext(AuthContext);
   return (
@@ -48,6 +49,7 @@ export default function App() {
           <Route path='/checkout' element={user ? <Checkout /> : <Login />} />
           <Route path='/profile/logout' element={<Logout />} />
           <Route path='/product/:pid' element={<ProductDetails />} />
+          <Route path='/product/category/:query' element={<CategoryProduct />} />
           <Route path='/user/support/faq' element={<FAQ />} />
           <Route path='/user/support/help' element={<Help />} />
         </Routes>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-
+import category from '../CategoryJSON/category.json'
 export default function Footer() {
     return (
         <div>
@@ -92,20 +92,15 @@ export default function Footer() {
                         <div className="lg:w-1/6 md:w-1/2 w-full px-4">
                             <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Category</h2>
                             <nav className="list-none mb-10">
-                                <li>
-                                    <NavLink to="/product/category/gm"
-                                        className="text-gray-600 hover:text-gray-800">Garam Masala</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/product/category/tech"
-                                        className="text-gray-600 hover:text-gray-800">Technology</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/product/category/devices"
-                                        className="text-gray-600 hover:text-gray-800">Devices</NavLink>
-                                </li>
+                                {
+                                    category.map((e, index) => {
+                                        return <li key={index}>
+                                            <NavLink to={`/product/category/${e.short}`}
+                                                className="text-gray-600 hover:text-gray-800">{e.name}</NavLink>
+                                        </li>
+                                    })
+                                }
                             </nav>
-
                         </div>
                     </div>
                 </div>

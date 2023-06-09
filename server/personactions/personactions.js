@@ -20,6 +20,15 @@ Router.get('/getuser/:uid', async (req, res) => {
 })
 
 
+Router.get('/getusers', async (req, res) => {
+    try {
+        const allusers = await UserModel.find();
+        res.send({ status: 1, msg: allusers.length })
+    } catch (error) {
+        res.send({ status: 0, msg: "User doesn't exists" })
+    }
+})
+
 
 
 module.exports = Router;

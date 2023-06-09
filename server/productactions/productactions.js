@@ -145,6 +145,16 @@ Router.post('/supporttoproduct', async (req, res) => {
 });
 
 
+Router.get('/getproducts/category/:query', async (req, res) => {
+    try {
+        const getAllProducts = await ProductModel.find({ category: req.params.query });
+        res.send({ status: 1, msg: 'Success', data: getAllProducts });
+    } catch (error) {
+        res.send({ status: 0, msg: 'Something went wrong.' });
+    }
+});
+
+
 
 
 

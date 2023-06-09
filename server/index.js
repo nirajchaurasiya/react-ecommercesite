@@ -11,13 +11,12 @@ const cors = require('cors')
 require('dotenv').config();
 const PORT = process.env.PORT
 app.use(bodyParser.json());
-const hostname = '0.0.0.0'
 app.use(express.json());
 require('./connection/conn')
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
 const corsOptions = {
-    origin: 'https://onlinedukan.netlify.app'
-    // origin: 'http://localhost:3000'
+    // origin: 'https://onlinedukan.netlify.app'
+    origin: 'http://localhost:3000'
 };
 app.use(cors(corsOptions));
 app.use(function (req, res, next) {
@@ -25,9 +24,6 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.get('/', (req, res) => {
-    console.log({ "msg": "Success" })
-})
 
 app.use(express.static('uploads'))
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
@@ -39,5 +35,5 @@ app.get('/', (req, res) => {
     res.send({ "msg": "success" })
 })
 app.listen(PORT, () => {
-    console.log(`Backend is running on http://${hostname}:${PORT}/`)
+    console.log(`Backend is running on http://localhost:${PORT}`)
 })

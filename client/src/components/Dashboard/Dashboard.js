@@ -24,6 +24,7 @@ export default function Dashboard() {
     const [showDashboard, setshowDashboard] = useState(true)
     const [products, setProducts] = useState([])
     const [newProducts, setNewProducts] = useState(products)
+    const [numberOfUsers, setNumberOfUsers] = useState(0)
     const [loader, setLoader] = useState(true)
     const [selectedImages, setSelectedImages] = useState([]);
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -83,13 +84,32 @@ export default function Dashboard() {
                 console.log(err);
             });
     }, [REACT_APP_API_URL]);
+    const getAllUser = useCallback(() => {
+        try {
+            axios.get(`${REACT_APP_API_URL}/api/personactions/getusers`)
+                .then((data) => {
+                    if (data.data.status === 1 || data.status === 200) {
+                        setNumberOfUsers(data.data.msg)
+                    }
+                    else {
+                        setNumberOfUsers(0);
+                    }
+                })
+                .catch(err => {
+                    setNumberOfUsers(0);
+                });
+        } catch (error) {
+            setNumberOfUsers(0);
+        }
+    }, [REACT_APP_API_URL])
     useEffect(() => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
         fetchAlltheProducts()
-    }, [fetchAlltheProducts])
+        getAllUser();
+    }, [fetchAlltheProducts, getAllUser])
 
     const handleAdminPanel = () => {
         try {
@@ -187,27 +207,49 @@ export default function Dashboard() {
                             <section className="text-gray-600 body-font">
                                 <div className="container px-5 py-24 w-[90vw] mx-auto ">
 
-                                    <div className="flex flex-col items-center w-full max-w-screen-md p-6 pb-6 bg-white rounded-lg shadow-xl sm:p-8">
-                                        <h2 className="text-xl font-bold">Monthly Revenue</h2>
-                                        <span className="text-sm font-semibold text-gray-500 mb-6">2023</span>
-                                        <div className="flex items-end flex-grow w-full mt-2 space-x-2 sm:space-x-3">
-                                            {revenueData.map((data, index) => {
-                                                const previousRevenue = index > 0 ? revenueData[index - 1].revenue : 0;
-                                                const colorClass = data.revenue > previousRevenue ? 'bg-green-400' : 'bg-red-400';
+                                    <div className='flex items-center gap-4'>
+                                        <div className="flex flex-col items-center w-full max-w-screen-md p-6 pb-6 bg-white rounded-lg shadow-xl sm:p-8">
+                                            <h2 className="text-xl font-bold">Monthly Revenue</h2>
+                                            <span className="text-sm font-semibold text-gray-500 mb-6">2023</span>
+                                            <div className="flex items-end flex-grow w-full mt-2 space-x-2 sm:space-x-3">
+                                                {revenueData.map((data, index) => {
+                                                    const previousRevenue = index > 0 ? revenueData[index - 1].revenue : 0;
+                                                    const colorClass = data.revenue > previousRevenue ? 'bg-green-400' : 'bg-red-400';
 
-                                                return (
-                                                    <div key={index} className="relative flex flex-col items-center flex-grow pb-5 group">
-                                                        <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
-                                                            {data.revenue}
-                                                        </span>
-                                                        <div className={`relative flex justify-center w-full h-10 ${colorClass}`}></div>
-                                                        <div className={`relative flex justify-center w-full h-8 ${colorClass}`}></div>
-                                                        <div className={`relative flex justify-center w-full h-20 ${colorClass}`}></div>
-                                                        <span className="absolute bottom-0 text-xs font-bold">{data.month}</span>
-                                                        <span className='text-xs absolute top-16 font-thin' >{data.revenue}</span>
-                                                    </div>
-                                                );
-                                            })}
+                                                    return (
+                                                        <div key={index} className="relative flex flex-col items-center flex-grow pb-5 group">
+                                                            <span className="absolute top-0 hidden -mt-6 text-xs font-bold group-hover:block">
+                                                                {data.revenue}
+                                                            </span>
+                                                            <div className={`relative flex justify-center w-full h-10 ${colorClass}`}></div>
+                                                            <div className={`relative flex justify-center w-full h-8 ${colorClass}`}></div>
+                                                            <div className={`relative flex justify-center w-full h-20 ${colorClass}`}></div>
+                                                            <span className="absolute bottom-0 text-xs font-bold">{data.month}</span>
+                                                            <span className='text-xs absolute top-16 font-thin' >{data.revenue}</span>
+                                                        </div>
+                                                    );
+                                                })}
+
+
+
+
+                                            </div>
+                                        </div>
+                                        <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+                                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-800">All Users</h5>
+                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Number of User: {numberOfUsers}</p>
+                                            {/* <div class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                Actions
+                                                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                            </div> */}
+                                        </div>
+                                        <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+                                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-800">All Products</h5>
+                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Number of Product: {newProducts?.length}</p>
+                                            {/* <div class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                Actions
+                                                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                            </div> */}
                                         </div>
                                     </div>
                                     <br />
@@ -238,31 +280,48 @@ export default function Dashboard() {
 
                                                         newProducts.length > 1 ?
                                                             <>
+
                                                                 <div>
                                                                     <div className="flex flex-wrap w-full mb-5">
                                                                         <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
-                                                                            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">All Products</h1>
+                                                                            <h1 className="sm:text-3xl lg:text-xl font-medium title-font mb-2 text-gray-900">All Products ({newProducts.length}) </h1>
                                                                             <div className="h-1 w-20 bg-indigo-500 rounded"></div>
                                                                         </div>
                                                                     </div>
                                                                     <div className="flex flex-wrap -m-4">
-                                                                        {newProducts?.map(e => {
+                                                                        {newProducts.slice(0, 30)?.map(e => {
                                                                             return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
                                                                                 <div className="bg-gray-100 p-3 rounded-lg">
-                                                                                    <img className="h-40 rounded w-full object-cover object-center mb-6" src={`${REACT_APP_API_URL}/${e.pictures.split(',')[0]}`} alt="content" />
                                                                                     <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
                                                                                     <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
-                                                                                    <p className="leading-relaxed text-base">{e.desc.slice(0, 90)}...</p>
+                                                                                    <p className="leading-relaxed text-base">{e.desc.slice(0, 60)}...</p>
                                                                                     <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
                                                                                 </div>
                                                                             </div>
                                                                         })}
 
                                                                     </div>
-
                                                                 </div>
-                                                                <div className='flex m-auto justify-center py-12'>
-                                                                    <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">More</button>
+                                                                <div>
+                                                                    <div className="flex flex-wrap w-full mb-5">
+                                                                        <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
+                                                                            <h1 className="sm:text-3xl lg:text-xl font-medium title-font mb-2 text-gray-900">All Products ({newProducts.length}) </h1>
+                                                                            <div className="h-1 w-20 bg-indigo-500 rounded"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="flex flex-wrap -m-4">
+                                                                        {newProducts.slice(0, 30)?.map(e => {
+                                                                            return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
+                                                                                <div className="bg-gray-100 p-3 rounded-lg">
+                                                                                    <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
+                                                                                    <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
+                                                                                    <p className="leading-relaxed text-base">{e.desc.slice(0, 60)}...</p>
+                                                                                    <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
+                                                                                </div>
+                                                                            </div>
+                                                                        })}
+
+                                                                    </div>
                                                                 </div>
                                                             </>
                                                             : <div className="p-4 mb-4 w-full text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
