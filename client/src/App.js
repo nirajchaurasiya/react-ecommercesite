@@ -24,6 +24,7 @@ import CheckProductDestination from './components/CheckProductDestination/CheckP
 import FAQ from './components/FAQ/FAQ'
 import Help from './components/Help/Help'
 import CategoryProduct from './components/CategoryProduct/CategoryProduct'
+import PageNotFound from './components/PageNotFound/PageNotFound'
 export default function App() {
   const { user } = useContext(AuthContext);
   return (
@@ -36,22 +37,23 @@ export default function App() {
           <Route path='/products' element={<Products />} />
           <Route path='/search/:query' element={<Search />} />
           <Route path='/contact' element={<Contact />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={user ? <Home /> : <Login />} />
+          <Route path='/register' element={user ? <Home /> : <Register />} />
           <Route path='/forgotpassword' element={<ForgotPassword />} />
-          <Route path='/register' element={<Register />} />
           <Route path='/updates' element={<Updates />} />
-          <Route path='/admin/dashboard' element={<Dashboard />} />
+          <Route path='/admin/dashboard' element={user ? <Home /> : <Dashboard />} />
           <Route path='/profile/:uid' element={user ? <Profile /> : <Login />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/profile/editprofile' element={<Editprofile />} />
           <Route path='/category' element={<Category />} />
-          <Route path='/product/status/:pid' element={<CheckProductDestination />} />
+          <Route path='/product/status/:orderID' element={<CheckProductDestination />} />
           <Route path='/checkout' element={user ? <Checkout /> : <Login />} />
           <Route path='/profile/logout' element={<Logout />} />
           <Route path='/product/:pid' element={<ProductDetails />} />
           <Route path='/product/category/:query' element={<CategoryProduct />} />
           <Route path='/user/support/faq' element={<FAQ />} />
           <Route path='/user/support/help' element={<Help />} />
+          <Route path='/*' element={<PageNotFound />} />
         </Routes>
         <Footer />
       </Router>

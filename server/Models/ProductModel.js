@@ -18,10 +18,12 @@ const ProductModel = mongoose.Schema({
     conversation: [
         {
             question: String,
-            answer: {
-                type: String,
-                default: ""
-            },
+            answer: [
+                {
+                    type: String,
+                    default: ""
+                }
+            ],
             name: String,
             date: {
                 type: Number,

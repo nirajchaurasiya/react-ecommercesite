@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 import cate from '../CategoryJSON/category.json'
-
+import { AuthContext } from '../../Context/AuthContext'
 export default function Products() {
     const [value, setValue] = useState(100000);
     // eslint-disable-next-line
+
     const [products, setProducts] = useState([])
     const [newProducts, setNewProducts] = useState(products)
     const [loader, setLoader] = useState(true)
@@ -62,7 +63,7 @@ export default function Products() {
             .get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
             .then((response) => {
                 // console.log(typeof (data.data.data));
-                if (response.status === 200) {
+                if (response.status === 200 && response.data.status === 1) {
                     setProducts(response.data.data);
                     setNewProducts(response.data.data)
                     setLoader(false)
@@ -91,7 +92,6 @@ export default function Products() {
         const infiniteScroll = newProducts?.slice(count, count + 5)
         setCurrDatas([...currDatas, ...infiniteScroll]);
         setCount(count + 5);
-        console.log(currDatas.length)
     }
     // const createMarkup = (html) => {
     //     return { __html: html };
@@ -131,7 +131,7 @@ export default function Products() {
 
                         <section className="text-gray-600 body-font lg:w-3/4 w-full h-auto object-cover object-center rounded">
                             <div className="container px-5 py-12 mx-auto">
-                                <div className="flex flex-wrap -m-9">
+                                <div className="">
                                     {loader ?
                                         [1, 2, 3, 4, 5, 6].map(e => {
                                             return <div key={e} role="status" className="xl:w-1/3 md:w-1/2 p-4 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
@@ -151,7 +151,7 @@ export default function Products() {
 
                                         :
 
-                                        productFound ?
+                                        productFound === true && currDatas.length > 0 ?
                                             <>
                                                 <div>
                                                     <div className="flex flex-wrap w-full mb-5">
@@ -169,7 +169,6 @@ export default function Products() {
                                                                     <img className="h-40 rounded w-full object-cover object-center mb-6" src={`${REACT_APP_API_URL}/${e.pictures.split(',')[0]}`} alt="content" />
                                                                     <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
                                                                     <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
-                                                                    {/* <div className="text-lg text-gray-900 font-medium title-font mb-4" dangerouslySetInnerHTML={createMarkup(e.title.slice(0, 40))} /> */}
                                                                     <p className="leading-relaxed text-base">{e.desc.slice(0, 90)}...</p>
 
                                                                     <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>

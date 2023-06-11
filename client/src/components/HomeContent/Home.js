@@ -18,7 +18,7 @@ export default function Home() {
         axios
             .get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
             .then((response) => {
-                if (response.status === 200) {
+                if (response.status === 200 || response.data.status === 1) {
                     setProducts(response.data.data);
                     setLoader(false);
                 } else {
@@ -95,8 +95,6 @@ export default function Home() {
                                     ))}
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </section>
@@ -201,34 +199,63 @@ export default function Home() {
                         {
                             cate.map((data, index) => {
                                 return <section key={index} className="text-gray-600 body-font">
-                                    {products?.length > 1 ? <div>
-                                        <div className="container px-5 py-12 mx-auto">
-                                            <div className="flex flex-wrap w-full mb-5">
-                                                <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
-                                                    <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">{data.name}</h1>
-                                                    <div className="h-1 w-20 bg-indigo-500 rounded"></div>
-                                                </div>
-                                                <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Checkout our premium collection of different variety of Gamra</p>
-                                            </div>
-                                            <div className="flex flex-wrap -m-4">
-                                                {products.filter(e => e.category === data.short).slice(0, 10)?.map(e => {
-                                                    return <div key={e._id} className="xl:w-1/4 md:w-1/3 sm:w-1/2 p-2">
-                                                        <div className="bg-gray-100 p-3 rounded-lg">
-                                                            <img className="h-40 rounded w-full object-cover object-center mb-6" src={`${REACT_APP_API_URL}/${e.pictures.split(',')[0]}`} alt="content" />
-                                                            <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
-                                                            <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
-                                                            <p className="leading-relaxed text-base">{e.desc.slice(0, 90)}...</p>
-                                                            <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
-                                                        </div>
+                                    {products?.length > 0 && products.filter(e => e.category === data.short).length > 0 ?
+                                        <div>
+                                            <div className="container px-5 py-12 mx-auto">
+                                                <div className="flex flex-wrap w-full mb-5">
+                                                    <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
+                                                        <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">{data.name}</h1>
+                                                        <div className="h-1 w-20 bg-indigo-500 rounded"></div>
                                                     </div>
-                                                })}
+                                                    <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Checkout our premium collection of different variety of Gamra</p>
+                                                </div>
+                                                <div className="flex flex-wrap -m-4">
+                                                    {products?.length > 0 && products.filter(e => e.category === data.short).length > 0
+                                                        ?
+                                                        products.filter(e => e.category === data.short).slice(0, 10)?.map(e => {
+                                                            return <div key={e._id} className="xl:w-1/4 md:w-1/3 sm:w-1/2 p-2">
+                                                                <div className="bg-gray-100 p-3 rounded-lg">
+                                                                    <img className="h-40 rounded w-full object-cover object-center mb-6" src={`${REACT_APP_API_URL}/${e.pictures.split(',')[0]}`} alt="content" />
+                                                                    <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
+                                                                    <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
+                                                                    <p className="leading-relaxed text-base">{e.desc.slice(0, 90)}...</p>
+                                                                    <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
+                                                                </div>
+                                                            </div>
+                                                        })
 
+                                                        :
+                                                        <div>
+                                                            <div className="container px-5 py-12 mx-auto">
+                                                                <div className="flex flex-wrap w-full mb-5">
+                                                                    <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
+                                                                        <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">{data.name}</h1>
+                                                                        <div className="h-1 w-20 bg-indigo-500 rounded"></div>
+                                                                    </div>
+                                                                    <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Checkout our premium collection of {data.name} products</p>
+                                                                </div>
+                                                                <div className="flex flex-wrap xl:w-1/4 md:w-1/2">
+                                                                    <div className="max-w-sm rounded overflow-hidden shadow-lg">
+                                                                        <img src="/images/noproductfound.png" alt="No Product Found" className="w-full h-64 object-cover" />
+                                                                        <div className="px-6 py-4">
+                                                                            <div className="font-bold text-xl mb-2">No Product Found</div>
+                                                                            <p className="text-gray-700 text-base">
+                                                                                We apologize, but it seems that there are no products available at the moment.
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='flex justify-center'>
-                                            <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => { navigate('/products') }}>More</button>
-                                        </div>
-                                    </div> :
+                                            <div className='flex justify-center'>
+                                                <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => { navigate('/products') }}>More</button>
+                                            </div>
+                                        </div> :
                                         <div>
                                             <div className="container px-5 py-12 mx-auto">
                                                 <div className="flex flex-wrap w-full mb-5">

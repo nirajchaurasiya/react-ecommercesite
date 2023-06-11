@@ -2,7 +2,7 @@ const Router = require('express').Router();
 const productMulter = require('../multer/ProductImage');
 const ProductModel = require('../Models/ProductModel');
 const UpdatesModel = require('../Models/UpdatesModel');
-
+const mongoose = require('mongoose');
 Router.get('/searchproduct/:query', async (req, res) => {
     try {
         const query = req.params.query; // Get the search query from the request parameters
@@ -69,7 +69,7 @@ Router.post('/addproduct', productMulter.array('pictures'), async (req, res) => 
             await updates.save();
         }
 
-        res.send({ status: 1, msg: 'Success' });
+        res.status(200).send({ status: 1, msg: 'Success' });
     } catch (error) {
         res.send({ status: 0, msg: 'Error' });
     }
@@ -79,7 +79,7 @@ Router.post('/addproduct', productMulter.array('pictures'), async (req, res) => 
 Router.get('/getproducts', async (req, res) => {
     try {
         const getAllProducts = await ProductModel.find();
-        res.send({ status: 1, msg: 'Success', data: getAllProducts });
+        res.status(200).send({ status: 1, msg: 'Success', data: getAllProducts });
     } catch (error) {
         res.send({ status: 0, msg: 'Something went wrong.' });
     }
@@ -88,7 +88,7 @@ Router.get('/getproducts', async (req, res) => {
 Router.get('/getproducts/:id', async (req, res) => {
     try {
         const getAllProducts = await ProductModel.findOne({ _id: req.params.id });
-        res.send({ status: 1, msg: 'Success', data: getAllProducts });
+        res.status(200).send({ status: 1, msg: 'Success', data: getAllProducts });
     } catch (error) {
         res.send({ status: 0, msg: 'Something went wrong.' });
     }
@@ -100,7 +100,7 @@ Router.post('/addquestions', async (req, res) => {
         const { pid, name, question } = req.body
         await ProductModel.findByIdAndUpdate(pid, { $push: { conversation: { name, question } } });
         const findProductWithId = await ProductModel.findById(pid);
-        res.send({ status: 1, msg: findProductWithId });
+        res.status(200).send({ status: 1, msg: findProductWithId });
     } catch (error) {
         res.send({ status: 0, msg: error });
     }
@@ -114,7 +114,7 @@ Router.post('/addcomment', async (req, res) => {
         const date = findProduct.updatedAt;
         await ProductModel.findByIdAndUpdate(pid, { $push: { reviews: { name, _id, comment, profile, date } } });
         const findProductWithId = await ProductModel.findById(pid);
-        res.send({ status: 1, msg: findProductWithId });
+        res.status(200).send({ status: 1, msg: findProductWithId });
     } catch (error) {
         res.send({ status: 0, msg: error });
     }
@@ -133,10 +133,7 @@ Router.post('/supporttoproduct', async (req, res) => {
             { $addToSet: { 'reviews.$.support': uid } },
             { new: true }
         );
-
-        console.log('Support updated successfully'); // Add this line
-
-        res.send({ status: 1, msg: "Support updated successfully" });
+        res.status(200).send({ status: 1, msg: "Support updated successfully" });
     } catch (error) {
         console.log('Error:', error); // Add this line
 
@@ -148,14 +145,39 @@ Router.post('/supporttoproduct', async (req, res) => {
 Router.get('/getproducts/category/:query', async (req, res) => {
     try {
         const getAllProducts = await ProductModel.find({ category: req.params.query });
-        res.send({ status: 1, msg: 'Success', data: getAllProducts });
+        res.status(200).send({ status: 1, msg: 'Success', data: getAllProducts });
     } catch (error) {
         res.send({ status: 0, msg: 'Something went wrong.' });
     }
 });
 
 
+Router.post(`/postanswers/:questionID`, async (req, res) => {
+    try {
+        const { questionID } = req.params;
+        const { answer } = req.body;
+        console.log(questionID);
+        console.log(answer);
 
+        if (!mongoose.Types.ObjectId.isValid(questionID)) {
+            res.send({ status: 0, msg: 'Invalid questionID' });
+            return;
+        }
 
+        const findProductID = await ProductModel.findOneAndUpdate(
+            { 'conversation._id': questionID },
+            { $set: { 'conversation.$.answer': answer } },
+            { new: true }
+        );
+
+        console.log(findProductID);
+        if (findProductID) {
+            res.status(200).send({ status: 1, msg: "Answered successfully" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.send({ status: 0, msg: 'Something went wrong.' });
+    }
+});
 
 module.exports = Router;

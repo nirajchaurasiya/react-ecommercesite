@@ -10,10 +10,11 @@ export default function Updates() {
     const getAllUpdates = useCallback(() => {
         axios.get(`${REACT_APP_API_URL}/api/updates/getallupdates`)
             .then((response) => {
-                if (response.status === 200) {
+                if (response.status === 200 && response.data.status === 1) {
                     setAllUpdates(response.data.data)
                     setLoader(false)
                     setIsThereUpdate(true)
+                    // console.log(object)
                 } else {
                     setIsThereUpdate(false)
                     setLoader(false)
@@ -121,7 +122,7 @@ export default function Updates() {
                     </div>
                 </section> :
 
-                !isThereUpdate ?
+                !isThereUpdate || allUpdates.length < 1 ?
                     <div className="flex items-center justify-center h-screen ">
                         <div className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden">
                             <img

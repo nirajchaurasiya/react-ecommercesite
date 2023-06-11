@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 import cate from '../CategoryJSON/category.json'
+import Answer from './Answer'
 const revenueData = [
     { month: 'Jan', revenue: '$37,500' },
     { month: 'Feb', revenue: '$45,000' },
@@ -34,12 +35,10 @@ export default function Dashboard() {
     const title = useRef();
     const desc = useRef();
     const price = useRef();
-    const category = useRef();
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         setSelectedImages(files);
-        console.log(files);
     };
 
     const uploadProduct = (e) => {
@@ -49,7 +48,7 @@ export default function Dashboard() {
             pd.append('title', title.current.value);
             pd.append('desc', desc.current.value);
             pd.append('price', price.current.value);
-            pd.append('category', category.current.value);
+            pd.append('category', selectedValue);
             Object.values(selectedImages).forEach(file => {
                 pd.append("pictures", file);
             });
@@ -105,13 +104,14 @@ export default function Dashboard() {
         }
     }, [REACT_APP_API_URL])
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        // window.scrollTo({
+        //     top: 0,
+        //     behavior: 'smooth'
+        // });
         fetchAlltheProducts()
         getAllUser();
     }, [fetchAlltheProducts, getAllUser])
+
 
     const handleAdminPanel = () => {
         try {
@@ -208,7 +208,6 @@ export default function Dashboard() {
                         <div>
                             <section className="text-gray-600 body-font">
                                 <div className="container px-5 py-24 w-[90vw] mx-auto ">
-
                                     <div className='flex items-center gap-4'>
                                         <div className="flex flex-col items-center w-full max-w-screen-md p-6 pb-6 bg-white rounded-lg shadow-xl sm:p-8">
                                             <h2 className="text-xl font-bold">Monthly Revenue</h2>
@@ -231,33 +230,45 @@ export default function Dashboard() {
                                                         </div>
                                                     );
                                                 })}
-
-
-
-
                                             </div>
                                         </div>
-                                        <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
-                                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-800">All Users</h5>
-                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Number of User: {numberOfUsers}</p>
-                                            {/* <div class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                Actions
-                                                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                            </div> */}
+                                        <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-800">All Users</h5>
+                                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Number of User: {numberOfUsers}</p>
+
                                         </div>
-                                        <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
-                                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-800">All Products</h5>
-                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Number of Product: {newProducts?.length}</p>
-                                            {/* <div class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                Actions
-                                                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                            </div> */}
+                                        <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-800">All Products</h5>
+                                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Number of Product: {newProducts?.length}</p>
+
                                         </div>
                                     </div>
                                     <br />
-                                    <div className="flex flex-wrap">
 
-                                        {/*  */}
+
+
+                                    <div className="shadow-lg mb-4 mt-2">
+                                        {products.length > 0 ?
+                                            products.map(data => {
+                                                return <div key={data._id} className=''>
+                                                    <div className='pl-6 pt-2 text-gray-800 mb-3'>
+                                                        Conversation: <span className='text-xs px-2 p-1 rounded-3xl text-gray-900 bg-gray-200'>{data?.conversation?.length}</span>
+                                                    </div>
+                                                    {
+                                                        data.conversation.map(e => {
+                                                            return (
+                                                                e.answer && <Answer e={e} />
+                                                            )
+                                                        })
+                                                    }
+
+                                                </div>
+                                            })
+                                            : "No"
+                                        }
+                                    </div>
+
+                                    <div className="flex flex-wrap ml-5">
                                         <section className="text-gray-600 body-font lg:w-5/6 w-full h-auto object-cover object-center rounded">
                                             <div className="container px-5 py-12 mx-auto">
                                                 <div className="flex flex-wrap -m-9">
@@ -280,51 +291,27 @@ export default function Dashboard() {
 
                                                         :
 
-                                                        newProducts.length > 1 ?
+                                                        newProducts.length > 0 ?
                                                             <>
-
-                                                                <div>
+                                                                <>
                                                                     <div className="flex flex-wrap w-full mb-5">
                                                                         <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
                                                                             <h1 className="sm:text-3xl lg:text-xl font-medium title-font mb-2 text-gray-900">All Products ({newProducts.length}) </h1>
                                                                             <div className="h-1 w-20 bg-indigo-500 rounded"></div>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="flex flex-wrap -m-4">
-                                                                        {newProducts.slice(0, 30)?.map(e => {
-                                                                            return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
-                                                                                <div className="bg-gray-100 p-3 rounded-lg">
-                                                                                    <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
-                                                                                    <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
-                                                                                    <p className="leading-relaxed text-base">{e.desc.slice(0, 60)}...</p>
-                                                                                    <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
-                                                                                </div>
+                                                                    {newProducts.slice(0, 30)?.map(e => {
+                                                                        return <div key={e._id} className="xl:w-1/4 shadow-lg md:w-1/3 p-2">
+                                                                            <div className="p-3 rounded-lg">
+                                                                                <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
+                                                                                <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
+                                                                                <p className="leading-relaxed text-base">{e.desc.slice(0, 60)}...</p>
+                                                                                <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
                                                                             </div>
-                                                                        })}
-
-                                                                    </div>
-                                                                </div>
-                                                                <div>
-                                                                    <div className="flex flex-wrap w-full mb-5">
-                                                                        <div className="lg:w-1/2 w-full mb-6 lg:mb-0">
-                                                                            <h1 className="sm:text-3xl lg:text-xl font-medium title-font mb-2 text-gray-900">All Products ({newProducts.length}) </h1>
-                                                                            <div className="h-1 w-20 bg-indigo-500 rounded"></div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div className="flex flex-wrap -m-4">
-                                                                        {newProducts.slice(0, 30)?.map(e => {
-                                                                            return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
-                                                                                <div className="bg-gray-100 p-3 rounded-lg">
-                                                                                    <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
-                                                                                    <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e.title.slice(0, 40)}...</h2>
-                                                                                    <p className="leading-relaxed text-base">{e.desc.slice(0, 60)}...</p>
-                                                                                    <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
-                                                                                </div>
-                                                                            </div>
-                                                                        })}
+                                                                    })}
 
-                                                                    </div>
-                                                                </div>
+                                                                </>
                                                             </>
                                                             : <div className="p-4 mb-4 w-full text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
                                                                 <span className="font-medium">Sorry!</span> But, no product found. Change a few things up and try submitting again.
@@ -332,29 +319,31 @@ export default function Dashboard() {
                                                     }
                                                 </div>
                                             </div>
+
                                         </section>
                                     </div>
                                 </div>
                             </section>
+
                         </div>
                     }
                     {
                         addProduct &&
                         <form className='w-[85vw] p-12 flex flex-col gap-5 ml-auto' encType='multipart/form-data'>
                             <div>
-                                <label for="Title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Title</label>
+                                <label htmlFor="Title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Title</label>
                                 <textarea ref={title} type="text" id="Title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="flowbite.com" required />
                             </div>
                             <div>
-                                <label for="Description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Unique Description</label>
+                                <label htmlFor="Description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Unique Description</label>
                                 <textarea type="text" ref={desc} id="Description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" required />
                             </div>
                             <div className="">
-                                <label for="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Price</label>
+                                <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Price</label>
                                 <input type="text" id="price" ref={price} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="john.doe@company.com" required />
                             </div>
                             <div className="">
-                                <label for="Category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Category</label>
+                                <label htmlFor="Category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">Category</label>
                                 <select value={selectedValue}
                                     onChange={handleSelectChange} className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
                                     {
@@ -364,7 +353,7 @@ export default function Dashboard() {
                                     }
                                 </select></div>
                             <div className="">
-                                <label for="pictures" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">pictures</label>
+                                <label htmlFor="pictures" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-900">pictures</label>
                                 <input type="file" onChange={handleImageChange} id="pictures" accept="image/*" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500" multiple />
                             </div>
                             <button onClick={uploadProduct} type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>

@@ -31,4 +31,15 @@ router.get('/users/:uid/orders', async (req, res) => {
     }
 });
 
+router.get('/getAllOrders/:uid', async (req, res) => {
+    try {
+        const findAllOrders = await OrderModel.find();
+        res.json({ status: 1, data: findAllOrders });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
 module.exports = router;

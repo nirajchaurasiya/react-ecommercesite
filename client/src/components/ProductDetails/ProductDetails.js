@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom';
 import checkServiciabilityPinn from '../checkServiciabilityJSON/checkServiciabilityJSON.json'
 import axios from 'axios';
+import { AuthContext } from '../../Context/AuthContext';
 import { AiOutlineArrowRight } from 'react-icons/ai';
+import category from '../CategoryJSON/category.json'
 export default function ProductDetails() {
     const [fetchProductsFromId, setFetchProductsFromId] = useState([])
     const [allProducts, setAllProducts] = useState([])
@@ -17,8 +19,10 @@ export default function ProductDetails() {
     const [addToCartValue, setAddToCartValue] = useState('Add to Cart')
     // eslint-disable-next-line
     const [cardClassName, setCardClassName] = useState('border-2 border-gray-900');
+    const { user } = useContext(AuthContext);
     const [userData, setUserData] = useState([])
     const [serviceabilityMsg, setServiceabilityMsg] = useState('Check serviceability')
+    const [showUserDoesntExist, setSetShowUserDoesntExist] = useState(false)
     const serviceabilityPin = useRef();
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const { pid } = useParams();
@@ -33,7 +37,6 @@ export default function ProductDetails() {
             setServiceabilityMsg("We don't deliver to this pincode yet.")
         }
     }
-
     const fetchAlltheProducts = useCallback(() => {
         axios.get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
             .then((data) => {
@@ -49,9 +52,12 @@ export default function ProductDetails() {
             setShowImages('/images/message.png')
             axios.get(`${REACT_APP_API_URL}/api/productactions/getproducts/${pid}`)
                 .then((data) => {
-                    setFetchProductsFromId(data.data.data)
-                    if (data.data.data === undefined) {
+                    if (data.data.status === 0 || data.data.data === undefined) {
                         setProductDoesntExist(true);
+                    }
+                    else if (data.status === 200 || data.status === 201 || data.data.status === 1) {
+                        setFetchProductsFromId(data.data.data)
+                        console.log(data.data.data)
                     }
                     setLoader(false)
                 })
@@ -69,7 +75,9 @@ export default function ProductDetails() {
             name: fetchProductsFromId.title,
             pid: fetchProductsFromId._id,
             image: fetchProductsFromId?.pictures?.split(',')[0],
-            price: fetchProductsFromId.price
+            price: fetchProductsFromId.price,
+            category: fetchProductsFromId.category,
+            desc: fetchProductsFromId.desc,
         };
 
         if (localStorage) {
@@ -103,93 +111,106 @@ export default function ProductDetails() {
         }
 
     };
-
     const submitQuestions = () => {
-        if (questions.current.value) {
-            try {
+        if (user) {
+            if (questions.current.value) {
+                try {
 
-                const question = {
-                    name: userData.fname + " " + userData.lname,
-                    question: questions.current.value,
-                    pid: pid
-                }
+                    const question = {
+                        name: userData.fname + " " + userData.lname,
+                        question: questions.current.value,
+                        pid: pid
+                    }
 
-                axios.post(`${REACT_APP_API_URL}/api/productactions/addquestions`, question)
-                    .then((res) => {
-                        if (res.data.status === 1) {
-                            alert("Questions added, we will look to it as soon as possible.")
-                            fetchTheProductWithId(pid);
+                    axios.post(`${REACT_APP_API_URL}/api/productactions/addquestions`, question)
+                        .then((res) => {
+                            if (res.data.status === 1) {
+                                fetchTheProductWithId(pid);
 
-                        } else {
+                            } else {
+                                alert("Something went wrong. Please try again later.")
+                            }
+                        })
+                        .catch((err) => {
                             alert("Something went wrong. Please try again later.")
-                        }
-                    })
-                    .catch((err) => {
-                        alert("Something went wrong. Please try again later.")
-                    })
-            } catch (error) {
+                        })
+                } catch (error) {
+                }
             }
-        }
-        else {
-            alert("Something went wrong. Please try again later.")
-        }
-        comment.current.value = "";
-    }
-
-
-    const postComment = () => {
-        if (comment.current.value) {
-            try {
-                const comments = {
-                    name: userData.fname + " " + userData.lname,
-                    comment: comment.current.value,
-                    _id: userData._id,
-                    profile: userData.profile,
-                    pid: pid,
-                }
-                axios.post(`${REACT_APP_API_URL}/api/productactions/addcomment`, comments)
-                    .then((res) => {
-                        if (res.data.status === 1) {
-                            alert("Reviw added, we will look to it as soon as possible.")
-                            fetchTheProductWithId(pid);
-
-                        } else {
-                            alert("Something went wrong. Please try again later.")
-                        }
-                    })
-                    .catch((err) => {
-                        alert("Something went wrong. Please try again later.")
-                    })
-            } catch (error) {
+            else {
                 alert("Something went wrong. Please try again later.")
             }
         }
+        else {
+            setSetShowUserDoesntExist(true);
+            setTimeout(() => {
+                setSetShowUserDoesntExist(false);
+            }, 2000);
+        }
+    }
+    const postComment = () => {
+        if (user) {
+            if (comment.current.value) {
+                try {
+                    const comments = {
+                        name: userData.fname + " " + userData.lname,
+                        comment: comment.current.value,
+                        _id: userData._id,
+                        profile: userData.profile,
+                        pid: pid,
+                    }
+                    axios.post(`${REACT_APP_API_URL}/api/productactions/addcomment`, comments)
+                        .then((res) => {
+                            if (res.data.status === 1) {
+                                fetchTheProductWithId(pid);
+
+                            } else {
+                                alert("Something went wrong. Please try again later.")
+                            }
+                        })
+                        .catch((err) => {
+                            alert("Something went wrong. Please try again later.")
+                        })
+                } catch (error) {
+                    alert("Something went wrong. Please try again later.")
+                }
+            }
+        } else {
+            setSetShowUserDoesntExist(true);
+            setTimeout(() => {
+                setSetShowUserDoesntExist(false);
+            }, 2000);
+        }
     }
     const clickedToHelpFul = (reviewID) => {
-        try {
-            axios.post(`${REACT_APP_API_URL}/api/productactions/supporttoproduct`, {
-                reviewID: reviewID,
-                pid: pid,
-                uid: userData._id,
-            })
-                .then((res) => {
-                    if (res.data.status === 1) {
-                        console.log(res.data);
-                        fetchTheProductWithId(pid);
-                    } else {
-                        alert("Something went wrong");
-                    }
+        if (user) {
+            try {
+                axios.post(`${REACT_APP_API_URL}/api/productactions/supporttoproduct`, {
+                    reviewID: reviewID,
+                    pid: pid,
+                    uid: userData._id,
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
-        } catch (error) {
-            console.log(error);
+                    .then((res) => {
+                        if (res.data.status === 1) {
+                            console.log(res.data);
+                            fetchTheProductWithId(pid);
+                        } else {
+                            alert("Something went wrong");
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            setSetShowUserDoesntExist(true);
+            setTimeout(() => {
+                setSetShowUserDoesntExist(false);
+            }, 2000);
         }
-    };
-
-
-
+    }
     const fetchuserProfile = useCallback((uid) => {
         try {
             axios.get(`${REACT_APP_API_URL}/api/personactions/getuser/${uid}`)
@@ -212,11 +233,15 @@ export default function ProductDetails() {
         } catch (error) {
         }
     }, [REACT_APP_API_URL])
+    const fetchCategoryName = (cate) => {
+        const name = category.filter(e => e.short === cate);
+        return name[0].name;
+    }
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        // window.scrollTo({
+        //     top: 0,
+        //     behavior: 'smooth'
+        // });
         fetchAlltheProducts()
         fetchTheProductWithId(pid)
         if (localStorage.getItem('shopkartStore')) {
@@ -226,11 +251,20 @@ export default function ProductDetails() {
     }, [pid, fetchAlltheProducts, fetchTheProductWithId, fetchuserProfile])
     return (
         <div>
-            {showAlert && <div id="toast-notification" className="fixed left:0 lg:left-2 bottom-0 lg:bottom-2 w-full md:max-w-xs lg:max-w-xs p-4 text-gray-900 bg-white lg:rounded-lg shadow dark:bg-gray-800 dark:text-gray-300" role="alert">
+            {showAlert && <div id="toast-notification" className="fixed right:0 lg:right-2 bottom-0 lg:bottom-2 w-full md:max-w-xs lg:max-w-xs p-4 text-gray-900 bg-white lg:rounded-lg shadow dark:bg-gray-800 dark:text-gray-300" role="alert">
                 <div className="flex items-center">
                     <div className="ml-3 text-sm font-normal">
                         <div className="text-sm font-semibold text-gray-900 dark:text-white">Success!</div>
                         <div className="text-sm font-normal">Successfully, added to cart! You can view here. <NavLink to="/cart" className="text-red-300 underline">Cart</NavLink> </div>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
+                    </div>
+                </div>
+            </div>}
+            {showUserDoesntExist && <div id="toast-notification" className="fixed right:0 lg:right-2 bottom-0 lg:bottom-2 w-full md:max-w-xs lg:max-w-xs p-4 text-gray-900 bg-white lg:rounded-lg shadow dark:bg-gray-800 dark:text-gray-300" role="alert">
+                <div className="flex items-center">
+                    <div className="ml-3 text-sm font-normal">
+                        <div className="text-sm font-semibold text-gray-900 dark:text-white">Warning!</div>
+                        <div className="text-sm font-normal">Want to share your opinion. <NavLink to="/login" className="text-red-300 underline">Login</NavLink> to continue </div>
                         <span className="text-xs font-medium text-blue-600 dark:text-blue-500">a few seconds ago</span>
                     </div>
                 </div>
@@ -463,7 +497,7 @@ export default function ProductDetails() {
                                         </div>
 
                                         <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0">
-                                            <div className="flex flex-row items-start lg:flex-col">
+                                            <div className="flex flex-row items-start lg:flex-col gap-4">
                                                 {fetchProductsFromId?.pictures?.split(',')?.map(e => {
                                                     return <button key={`${e}/@^*#!@YUVU!@*&YUTY&RYU!@`} type="button" className={`flex-0 aspect-square mb-3 h-20 overflow-hidden rounded-lg text-center ${showImages === REACT_APP_API_URL + "/" + e ? `${cardClassName}` : ""} `} onClick={() => { setShowImages(REACT_APP_API_URL + "/" + e) }}>
                                                         <img className="h-full w-full object-cover" src={REACT_APP_API_URL + "/" + e} alt="" />
@@ -475,15 +509,15 @@ export default function ProductDetails() {
                                 </div>
 
                                 <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">
-                                    <h1 className="sm: text-2xl font-bold text-gray-900 sm:text-3xl">{fetchProductsFromId?.title}</h1>
+                                    <h1 className="text-2xl font-bold text-gray-900 sm:text-2xl">{fetchProductsFromId?.title}</h1>
 
                                     <div className="mt-5 flex items-center">
                                         <p className="ml-2 text-sm font-medium text-gray-500">{fetchProductsFromId?.reviews?.length} Reviews</p>
+                                        <p className="ml-2 text-sm font-medium text-gray-500">. {fetchProductsFromId?.conversation?.length >= 2 ? fetchProductsFromId?.conversation?.length + " Questions Asked" : fetchProductsFromId?.conversation?.length === 1 ? fetchProductsFromId?.conversation?.length + " Question Asked" : fetchProductsFromId?.conversation?.length + " Question Asked"} </p>
                                     </div>
-
-                                    <h2 className="mt-8 text-base text-gray-900">Category {fetchProductsFromId?.category}</h2>
+                                    <h2 className="mt-2 text-base text-gray-900">Category: {fetchCategoryName(fetchProductsFromId?.category)}</h2>
                                     <div className="mt-3 flex select-none flex-wrap items-center gap-1">
-                                        {fetchProductsFromId?.desc}
+                                        {fetchProductsFromId?.desc.replace('. ', ". ")}
                                     </div>
                                     <div className="mt-3">
                                         <div className='flex items-center gap-1 mt-3'>
@@ -497,7 +531,7 @@ export default function ProductDetails() {
                                             <h1 className="text-3xl font-bold">Nrs {fetchProductsFromId?.price}</h1>
                                         </div>
 
-                                        <button onClick={addtoCart} type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-blue-600 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-blue-500">
+                                        <button onClick={addtoCart} type="button" className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-blue-600 bg-none px-7 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-blue-500">
                                             <svg xmlns="http://www.w3.org/2000/svg" className="shrink-0 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                             </svg>
@@ -525,7 +559,9 @@ export default function ProductDetails() {
                                 <div className="lg:col-span-3">
                                     <div className="border-b border-gray-300">
                                         <nav className="flex gap-4">
-                                            <div className=" py-4 text-sm font-medium text-gray-600  hover:text-gray-800 cursor-pointer" onClick={() => { setShowReviews(false); setShowDesc(true) }} title="Questions asked by users"> Questions </div>
+                                            <div className="inline-flex items-center  border-transparent py-4 text-sm font-medium text-gray-600 hover:text-gray-800 cursor-pointer" onClick={() => { setShowReviews(false); setShowDesc(true) }} title="Questions asked by users"> Questions
+                                                <span className="ml-2 block rounded-full bg-gray-500 px-2 py-px text-xs font-bold text-gray-100"> {fetchProductsFromId?.conversation?.length} </span>
+                                            </div>
                                             <div title="" className="inline-flex items-center  border-transparent py-4 text-sm font-medium text-gray-600 hover:text-gray-800 cursor-pointer" onClick={() => { setShowReviews(true); setShowDesc(false) }}>
                                                 Reviews
                                                 <span className="ml-2 block rounded-full bg-gray-500 px-2 py-px text-xs font-bold text-gray-100"> {fetchProductsFromId?.reviews?.length} </span>
@@ -556,31 +592,46 @@ export default function ProductDetails() {
                                                 </section>
 
                                                 <div className='flex flex-col gap-5'>
-                                                    {fetchProductsFromId?.reviews?.map((e, index) => {
-                                                        return (
-                                                            <article key={index} className=''>
-                                                                <hr />
-                                                                <div className="flex mt-2 space-x-4">
-                                                                    <div className="flex-shrink-0">
-                                                                        <img className="w-10 h-10 rounded-full" src={`${REACT_APP_API_URL}/${e?.profile}`} alt="" />
-                                                                    </div>
-                                                                    <div className="flex flex-col">
-                                                                        <div className="space-y-1 font-medium text-black">
-                                                                            <p>{e?.name} <time dateTime="2014-08-16 19:00" className="font-thin text-xs text-gray-500 dark:text-gray-400">({e?.date.slice(0, 10).replace('-', '/').replace('-', '/')})</time></p>
+                                                    {fetchProductsFromId?.reviews?.length > 0 ?
+
+                                                        fetchProductsFromId?.reviews?.map((e, index) => {
+                                                            return (
+                                                                <article key={index} className=''>
+                                                                    <hr />
+                                                                    <div className="flex mt-2 space-x-4">
+                                                                        <div className="flex-shrink-0">
+                                                                            <img className="w-10 h-10 rounded-full" src={`${REACT_APP_API_URL}/${e?.profile}`} alt="" />
                                                                         </div>
-                                                                        <p className="mb-2 text-gray-600 dark:text-gray-700 font-sans">{e?.comment}</p>
-                                                                        <aside>
-                                                                            <p className="text-xs text-gray-500 dark:text-gray-400">{e?.support.length} people support this</p>
-                                                                            <div className="flex items-center mt-1 space-x-3 divide-x divide-gray-200 dark:divide-gray-600">
-                                                                                <button disabled={e._id === userData._id} className="disabled:bg-gray-400 disabled:border-gray-400 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-2 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => { clickedToHelpFul(e._id) }}>Helpful</button>
-                                                                                <button className="pl-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Report abuse</button>
+                                                                        <div className="flex flex-col">
+                                                                            <div className="space-y-1 font-medium text-black">
+                                                                                <p>{e?.name} <time dateTime="2014-08-16 19:00" className="font-thin text-xs text-gray-500 dark:text-gray-400">({e?.date.slice(0, 10).replace('-', '/').replace('-', '/')})</time></p>
                                                                             </div>
-                                                                        </aside>
+                                                                            <p className="mb-2 text-gray-600 dark:text-gray-700 font-sans">{e?.comment}</p>
+                                                                            <aside>
+                                                                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">{e?.support.length} people support this</p>
+                                                                                <div className="flex items-center mt-1 space-x-3 divide-x divide-gray-200 dark:divide-gray-600">
+                                                                                    <button disabled={e?._id === userData._id} className="disabled:bg-gray-400 disabled:border-gray-400 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-2 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => { clickedToHelpFul(e._id) }}>Helpful</button>
+                                                                                    {e?._id !== userData._id && <button className="pl-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Report abuse</button>}
+                                                                                </div>
+                                                                            </aside>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </article>
-                                                        );
-                                                    })}
+                                                                </article>
+                                                            );
+                                                        })
+
+                                                        :
+
+                                                        <div className="bg-white shadow-lg rounded-lg p-6 w-64">
+                                                            <h2 className="text-xl font-bold mb-4">
+                                                                No Comments
+                                                            </h2>
+                                                            <p className="text-gray-700">
+                                                                Be the first to add a comment.
+                                                            </p>
+                                                        </div>
+
+                                                    }
                                                 </div>
 
 
@@ -624,7 +675,7 @@ export default function ProductDetails() {
                                                                     <div className="border-l-2 border-gray-300 absolute left-0 top-0 h-full"></div> {/* Vertical line */}
                                                                     <div className="pl-4">
                                                                         <h3 className="text-xl font-medium mb-2">{e.question}</h3>
-                                                                        <p className="text-gray-700 flex items-center gap-2 font-mono"><AiOutlineArrowRight /> {e.answer ? e.answer : "Unanswered"}</p>
+                                                                        <p className="text-gray-700 flex items-center gap-2 font-mono"><AiOutlineArrowRight /> {e.answer.length > 0 ? `${"Admin: " + e.answer[0]}` : "Unanswered"}</p>
                                                                         <p className="text-gray-500 text-xs mt-2">Asked by: {e.name}</p>
                                                                     </div>
                                                                 </div>
@@ -654,33 +705,51 @@ export default function ProductDetails() {
                                     <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">People also search this</p>
                                 </div>
                                 <div className="flex flex-wrap -m-4">
-                                    {loader2 ? <div className="flex flex-wrap -m-4">
-                                        {[1, 2, 3, 4, 5, 6]?.map(e => {
-                                            return <div key={e} role="status" className="xl:w-1/4 md:w-1/2 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
-                                                <div className="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700">
-                                                    <svg className="w-12 h-12 text-gray-200 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
-                                                </div>
-                                                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-                                                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                                    {loader2 ?
+                                        <div className="flex flex-wrap -m-4">
+                                            {[1, 2, 3, 4, 5, 6]?.map(e => {
+                                                return <div key={e} role="status" className="xl:w-1/4 md:w-1/2 rounded shadow animate-pulse md:p-6 dark:border-gray-700">
+                                                    <div className="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700">
+                                                        <svg className="w-12 h-12 text-gray-200 dark:text-gray-600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
+                                                    </div>
+                                                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+                                                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+                                                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
 
-                                                <span className="sr-only">Loading...</span>
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                            })}
+                                        </div> :
+                                        allProducts?.filter(e => e.category === fetchProductsFromId.category).length > 1 ?
+
+                                            allProducts?.filter(e => e.category === fetchProductsFromId.category).slice(0, 30).filter(e => e._id !== pid)?.map(e => {
+                                                return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
+                                                    <div className="bg-gray-100 p-3 rounded-lg">
+                                                        <img className="h-40 rounded w-full object-cover object-center mb-6" src={REACT_APP_API_URL + "/" + e?.pictures?.split(',')[0]} alt="content" />
+                                                        <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
+                                                        <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e?.title?.slice(0, 40)}...</h2>
+                                                        <p className="leading-relaxed text-base">{e?.desc?.slice(0, 90)}...</p>
+                                                        <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
+                                                    </div>
+                                                </div>
+                                            })
+
+                                            :
+                                            <div className="flex flex-wrap xl:w-1/4 md:w-1/3">
+                                                <div className="max-w-sm rounded overflow-hidden shadow-lg p-2">
+                                                    <img src="/images/noproductfound.png" alt="No Product Found" className="w-full h-64 object-cover" />
+                                                    <div className="px-6 py-4">
+                                                        <div className="font-bold text-xl mb-2">No Product Found</div>
+                                                        <p className="text-gray-700 text-base">
+                                                            We apologize, but it seems that there are no recommended products available at the moment.
+                                                        </p>
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                        })}
-                                    </div> : allProducts?.slice(0, 30).filter(e => e._id !== pid)?.map(e => {
-                                        return <div key={e._id} className="xl:w-1/4 md:w-1/2 p-2">
-                                            <div className="bg-gray-100 p-3 rounded-lg">
-                                                <img className="h-40 rounded w-full object-cover object-center mb-6" src={REACT_APP_API_URL + "/" + e?.pictures?.split(',')[0]} alt="content" />
-                                                <h3 className="tracking-widest text-blue-700 text-xs font-medium title-font">Nrs {e.price}</h3>
-                                                <h2 className="text-lg text-gray-900 font-medium title-font mb-4">{e?.title?.slice(0, 40)}...</h2>
-                                                <p className="leading-relaxed text-base">{e?.desc?.slice(0, 90)}...</p>
-                                                <NavLink to={`/product/${e._id}`} type="button" className="text-blue-500 text-sm underline">Expand details</NavLink>
-                                            </div>
-                                        </div>
-                                    })
                                     }
                                 </div>
                             </div>
