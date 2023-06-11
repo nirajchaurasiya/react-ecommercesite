@@ -283,14 +283,15 @@ export default function Profile() {
                                                                 key={data._id}
                                                                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                                                             >
+
                                                                 <th
                                                                     scope="row"
                                                                     className="px-6 py-4 font-medium text-white whitespace-nowrap dark:text-white"
                                                                 >
-                                                                    {data.name}
+                                                                    {data.name.slice(0, 50)}...
                                                                 </th>
                                                                 <td className="px-6 py-4">{productQuantity}</td>
-                                                                <td className="px-6 py-4">{data.price}</td>
+                                                                <td className="px-6 py-4">NRs {data.price}/Per</td>
                                                                 <td className="px-6 py-4">
                                                                     <NavLink
                                                                         to={`/product/status/${e?._id}`}

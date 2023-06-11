@@ -9,8 +9,8 @@ export default function Loader() {
                 <h1 className="text-3xl  lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
                     <div role="status" className="max-w-sm animate-pulse">
                         <div className="h-5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div></div></h1>
-                <p className="text-base text-gray-300 font-medium leading-6 "><div role="status" className="max-w-sm animate-pulse">
-                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div></div></p>
+                <div className="text-base text-gray-300 font-medium leading-6 "><div role="status" className="max-w-sm animate-pulse">
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div></div></div>
             </div>
             <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
                 <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
@@ -151,11 +151,9 @@ export default function Loader() {
 
                             </div>
 
-                            <NavLink to={`/profile/${user}`}>
-                                <div className="w-full flex justify-center items-center">
-                                    <button className=" bg-white text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full  text-base font-medium leading-4 ">Edit Profile</button>
-                                </div>
-                            </NavLink>
+                            <div className="w-full flex justify-center items-center">
+                                <button className=" bg-white text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full  text-base font-medium leading-4 ">Edit Profile</button>
+                            </div>
                         </div>
 
                     </div>

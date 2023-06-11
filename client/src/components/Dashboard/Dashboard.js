@@ -257,7 +257,7 @@ export default function Dashboard() {
                                                     {
                                                         data.conversation.map(e => {
                                                             return (
-                                                                e.answer && <Answer e={e} />
+                                                                e.answer && <Answer e={e} key={e._id} data={data} />
                                                             )
                                                         })
                                                     }
@@ -267,7 +267,6 @@ export default function Dashboard() {
                                             : "No"
                                         }
                                     </div>
-
                                     <div className="flex flex-wrap ml-5">
                                         <section className="text-gray-600 body-font lg:w-5/6 w-full h-auto object-cover object-center rounded">
                                             <div className="container px-5 py-12 mx-auto">

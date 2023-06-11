@@ -517,7 +517,12 @@ export default function ProductDetails() {
                                     </div>
                                     <h2 className="mt-2 text-base text-gray-900">Category: {fetchCategoryName(fetchProductsFromId?.category)}</h2>
                                     <div className="mt-3 flex select-none flex-wrap items-center gap-1">
-                                        {fetchProductsFromId?.desc.replace('. ', ". ")}
+                                        {fetchProductsFromId?.desc.split('. ').map((sentence, index) => (
+                                            <li key={index}>
+                                                {sentence}.
+                                                <br /><br />
+                                            </li>
+                                        ))}
                                     </div>
                                     <div className="mt-3">
                                         <div className='flex items-center gap-1 mt-3'>

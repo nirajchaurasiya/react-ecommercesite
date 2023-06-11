@@ -8,68 +8,80 @@ export default function SomeQuestions() {
                 <div className="grid pt-8 text-left border-t  md:gap-16 border-gray-700 md:grid-cols-2">
                     <div>
                         <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium  text-gray-700">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
-                                What do you mean by "Figma assets"?
+                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-700">
+                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
+                                </svg>
+                                What does "Verifying product" mean?
                             </h3>
-                            <p className="text-gray-500 ">You will have access to download the full Figma project including all of the pages, the components, responsive pages, and also the icons, illustrations, and images included in the screens.</p>
+                            <p className="text-gray-500">
+                                "Verifying product" indicates that the product's details, such as description, model number, and additional features, are currently being reviewed and confirmed for accuracy.
+                            </p>
                         </div>
+
+
                         <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900 ">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
-                                What does "lifetime access" exactly mean?
-                            </h3>
-                            <p className="text-gray-500 ">Once you have purchased either the design, code, or both packages, you will have access to all of the future updates based on the roadmap, free of charge.</p>
-                        </div>
-                        <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900 ">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
+                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900">
+                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
+                                </svg>
                                 How does support work?
                             </h3>
-                            <p className="text-gray-500 ">We're aware of the importance of well qualified support, that is why we decided that support will only be provided by the authors that actually worked on this project.</p>
-                            <p className="text-gray-500 ">Feel free to <span className="font-medium underline text-primary-600 text-primary-500 hover:no-underline" target="_blank" rel="noreferrer">contact us</span> and we'll help you out as soon as we can.</p>
+                            <p className="text-gray-500">
+                                We're aware of the importance of well-qualified support, which is why we have decided that support will only be provided by the authors who actually worked on this project.
+                            </p>
+                            <p className="text-gray-500">
+                                Feel free to <span className="font-medium underline text-primary-600 text-primary-500 hover:no-underline" target="_blank" rel="noreferrer">contact us</span> and we'll help you out as soon as we can.
+                            </p>
                         </div>
                         <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900 ">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
-                                I want to build more than one project. Is that allowed?
+                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900">
+                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
+                                </svg>
+                                What is the VAT rate for the products?
                             </h3>
-                            <p className="text-gray-500 ">You can use Windster for an unlimited amount of projects, whether it's a personal website, a SaaS app, or a website for a client. As long as you don't build a product that will directly compete with Windster either as a UI kit, theme, or template, it's fine.</p>
-                            <p className="text-gray-500 ">Find out more information by <span className="font-medium underline text-primary-600 text-primary-500 hover:no-underline">reading the license</span>.</p>
+                            <p className="text-gray-500">
+                                The VAT rate for the products is 13%. This is the applicable tax added to the product price during the checkout process.
+                            </p>
                         </div>
+
                     </div>
                     <div>
+
                         <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900 ">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
-                                What does "free updates" include?
+                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900">
+                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
+                                </svg>
+                                What does "Shipping in Progress" signify in the product status page?
                             </h3>
-                            <p className=" text-gray-700">The free updates that will be provided is based on the <span className="font-medium underline text-primary-600 text-primary-500 hover:no-underline">roadmap</span> that we have laid out for this project. It is also possible that we will provide extra updates outside of the roadmap as well.</p>
+                            <p className="text-gray-500">
+                                When the product status page shows "Shipping in Progress," it means that the ordered product is currently being processed and prepared for shipment. It suggests that the product is currently in the stage of being packed, labeled, and handed over to the shipping carrier for delivery.
+                            </p>
+                        </div>
+
+                        <div className="mb-10">
+                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900">
+                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
+                                </svg>
+                                What does "Being Delivered" mean in the product status page?
+                            </h3>
+                            <p className="text-gray-500">
+                                "Being Delivered" in the product status page currently indicates that the ordered product is currently in the process of being delivered to the specified address. This status confirms that the delivery process is currently underway, and the product is in the process of being transported to the customer.
+                            </p>
                         </div>
                         <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-700">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
-                                What does the free version include?
+                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-900">
+                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
+                                </svg>
+                                Is there a delivery fee for the products?
                             </h3>
-                            <p className=" text-gray-700">The <span className="font-medium underline text-primary-600 text-primary-500 hover:no-underline">free version</span> of Windster includes a minimal style guidelines, component variants, and a dashboard page with the mobile version alongside it.</p>
-                            <p className=" text-gray-700">You can use this version for any purposes, because it is open-source under the MIT license.</p>
-                        </div>
-                        <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-700">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
-                                What is the difference between Windster and Tailwind UI?
-                            </h3>
-                            <p className=" text-gray-700">Although both Windster and Tailwind UI are built for integration with Tailwind CSS, the main difference is in the design, the pages, the extra components and UI elements that Windster includes.</p>
-                            <p className=" text-gray-700">Additionally, Windster is a project that is still in development, and later it will include both the application, marketing, and e-commerce UI interfaces.</p>
-                        </div>
-                        <div className="mb-10">
-                            <h3 className="flex items-center mb-4 text-lg font-medium text-gray-700">
-                                <svg className="flex-shrink-0 mr-2 w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path></svg>
-                                Can I use Windster in open-source projects?
-                            </h3>
-                            <p className=" text-gray-700">Generally, it is accepted to use Windster in open-source projects, as long as it is not a UI library, a theme, a template, a page-builder that would be considered as an alternative to Windster itself.</p>
-                            <p className=" text-gray-700">With that being said, feel free to use this design kit for your open-source projects.</p>
-                            <p className=" text-gray-700">Find out more information by <span className="font-medium underline text-primary-600 text-primary-500 hover:no-underline">reading the license</span>.</p>
+                            <p className="text-gray-500">
+                                Yes, there is a delivery fee for the products. The exact fee may vary depending on factors such as the shipping destination, product weight, and shipping method chosen during checkout. The delivery fee will be displayed during the checkout process before making the payment.
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
+import category from '../CategoryJSON/category.json'
 export default function Cart() {
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     const [loader, setLoader] = useState(true);
@@ -79,7 +80,10 @@ export default function Cart() {
         });
         getAllProductFromLocalStore();
     }, []);
-
+    const fetchCategoryName = (cate) => {
+        const name = category.filter(e => e.short === cate);
+        return name[0].name;
+    }
     return (
         <div className=''>
             {loader ?
@@ -140,8 +144,8 @@ export default function Cart() {
                                             </NavLink>
                                             <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                                                 <div className="mt-5 sm:mt-0">
-                                                    <h2 className="text-lg font-bold text-gray-900">{product?.name}</h2>
-                                                    <p className="mt-1 text-xs text-gray-700">36EU - 4US</p>
+                                                    <h2 className="text-lg font-bold text-gray-900">{product?.name.slice(0, 100)}...</h2>
+                                                    <p className="mt-1 text-xs text-gray-700">Category: {fetchCategoryName(product?.category)}</p>
                                                 </div>
                                                 <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                                                     <div className="flex items-center border-gray-100">
@@ -211,7 +215,6 @@ export default function Cart() {
                                         <p className="text-lg font-bold mb-2">Your cart is empty</p>
                                         <p>Please add items to your cart before checking out.</p>
                                         <NavLink to='/products'>
-
                                             <button type="submit" className="mt-10 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Start shopping</button>
                                         </NavLink>
                                     </div>

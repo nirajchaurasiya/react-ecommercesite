@@ -1,0 +1,82 @@
+[
+    {
+        "question": "How do I create an account on your website?",
+        "answer": "To create an account, click on the \"Register\" button on the homepage and fill out the required information."
+    },
+    {
+        "question": "I forgot my password. How can I reset it?",
+        "answer": "On the login page, click on the \"Forgot Password\" link and follow the instructions to reset your password."
+    },
+    {
+        "question": "Can I change my email address associated with my account?",
+        "answer": "Yes, you can change your email address by going to your account settings and updating your information."
+    },
+    {
+        "question": "How can I update my shipping address?",
+        "answer": "In your account settings, you can edit your shipping address and save the changes."
+    },
+    {
+        "question": "Is it possible to view my order history?",
+        "answer": "Yes, you can find your order history in the \"My Account\" section, where you can track and view details of your past orders."
+    },
+    {
+        "question": "How can I search for products on your website?",
+        "answer": "You can use the search bar located at the top of every page to search for products by keyword, category, or brand."
+    },
+    {
+        "question": "Do you offer international shipping?",
+        "answer": "No, we recently don't have international shipping."
+    },
+    {
+        "question": "Can I cancel my order after it has been placed?",
+        "answer": "You may be able to cancel your order within a certain timeframe. Contact our customer support as soon as possible to inquire about canceling your order."
+    },
+    {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept various payment methods, including credit/debit cards, PayPal, and other popular electronic payment options."
+    },
+    {
+        "question": "How can I track my order?",
+        "answer": "Once your order has been placed, you will be able to view the product status on your account page (profile page)."
+    },
+    {
+        "question": "What is your return policy?",
+        "answer": "We have a hassle-free return policy. You can review our return policy on our website to understand the conditions and process for returning an item."
+    },
+    {
+        "question": "Can I exchange a product for a different size or color?",
+        "answer": "Yes, we offer exchanges for size or color. Please refer to our exchange policy for more details and follow the instructions provided."
+    },
+    {
+        "question": "How long does it take to process my refund?",
+        "answer": "Once we receive your returned item, it typically takes 3-5 business days to process the refund. The refund will be issued using the original payment method."
+    },
+    {
+        "question": "Are my personal and payment details secure on your website?",
+        "answer": "Yes, we take customer security seriously. Our website uses secure encryption protocols to protect your personal and payment information."
+    },
+    {
+        "question": "Do you offer discounts or promotions?",
+        "answer": "Yes, we periodically offer discounts and promotions. Stay updated by subscribing to our newsletter or following us on social media."
+    },
+    {
+        "question": "What should I do if I receive a defective or damaged product?",
+        "answer": "Please contact our customer support immediately and provide details about the issue. We will assist you in resolving the problem."
+    },
+    {
+        "question": "How can I contact your customer support?",
+        "answer": "You can reach our customer support team through the \"Contact Us\" page on our website. We typically respond within 24 hours."
+    },
+    {
+        "question": "Can I add multiple shipping addresses to my account?",
+        "answer": "No, we don't currently support multiple shipping address. We will add that functionality as soon as possible. For now, to order to other shipping address, you can first update the address on your profile page and then you can order."
+    },
+    {
+        "question": "Can I save items in my cart for future purchase?",
+        "answer": "Yes, items in your cart will be saved for future purchase unless you remove them or complete the checkout process."
+    },
+    {
+        "question": "Do you offer gift cards?",
+        "answer": "Yes, we offer gift cards that can be purchased and redeemed on our website. They make great gifts for friends and family."
+    }
+]

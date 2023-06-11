@@ -36,10 +36,10 @@ export default function Home() {
 
     useEffect(() => {
 
-        // window.scrollTo({
-        //     top: 0,
-        //     behavior: 'smooth'
-        // });
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
         fetchAlltheProducts()
         const interval = setInterval(() => {
             setCurrentSlide((prevSlide) => (prevSlide === slides?.length - 1 ? 0 : prevSlide + 1));

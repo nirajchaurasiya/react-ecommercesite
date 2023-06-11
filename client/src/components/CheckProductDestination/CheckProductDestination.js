@@ -19,7 +19,6 @@ export default function CheckProductDestination() {
                 .then((response) => {
                     if (response.status === 200 || response.status === 201 || response.data.status === 1) {
                         setOrdersData(response.data.data)
-                        console.log(response.data.data)
                     } else {
                         console.log("Error");
                         setOrdersdoesntExist(true);
@@ -45,7 +44,6 @@ export default function CheckProductDestination() {
                 .then((response) => {
                     if (response.status === 200 || response.status === 201 || response.data.status === 1) {
                         setUserData(response.data.data)
-                        console.log(response.data.data)
                     } else {
                         console.log("Error");
                         setOrdersdoesntExist(true);
@@ -64,10 +62,10 @@ export default function CheckProductDestination() {
     }, [REACT_APP_API_URL])
 
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        // window.scrollTo({
+        //     top: 0,
+        //     behavior: 'smooth'
+        // });
         fetchOrderDatas(orderID);
         fetchuserData(user);
     }, [fetchOrderDatas, orderID, user, fetchuserData])
@@ -97,7 +95,7 @@ export default function CheckProductDestination() {
                 :
                 ordersData ? ordersData.length > 0 &&
                     <div>
-                        <ol className="flex items-center w-full text-sm font-medium text-center text-gray-700 sm:text-base">
+                        <ol className="flex items-center justify-center w-full text-sm font-medium text-center text-gray-700 sm:text-base">
                             <li className="flex md:w-full items-center text-blue-600  sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 after:border-gray-700">
                                 <span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-500">
                                     <svg aria-hidden="true" className="w-4 h-4 mr-2 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path className='' fill="blue" fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
@@ -117,15 +115,13 @@ export default function CheckProductDestination() {
                         </ol>
                         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
                             <div className="flex justify-start item-start space-y-2 flex-col">
-                                <h1 className="text-3xl  lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Order #13432</h1>
-                                <p className="text-base text-gray-300 font-medium leading-6 ">21st Mart 2021 at 10:34 PM</p>
+                                <h1 className="md:text-2xl sm:text-xl lg:text-2xl font-semibold leading-7 lg:leading-6 text-gray-800">Order #{ordersData.map(e => e._id)}</h1>
+                                <p className="text-base text-gray-300 font-medium leading-6 ">{ordersData.map(e => <span key={Math.floor(Math.random() * 1000)}>{e.createdAt.slice(0, 10)}</span>)}</p>
                             </div>
-                            <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
+                            <div className="mt-5 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
                                 <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
                                     <div className="flex flex-col justify-start items-start  bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
                                         <p className="text-lg md:text-xl  font-semibold leading-6 xl:leading-5 text-gray-800">Customer’s Cart</p>
-
-
                                         {
                                             ordersData && ordersData.length > 0 ? (
                                                 ordersData.map((e, index) => {
@@ -150,17 +146,18 @@ export default function CheckProductDestination() {
                                                                 }, 0);
 
                                                                 return (
-                                                                    <> <div key={innerIndex} className="mt-12 md:mt-12 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
-                                                                        <div className="pb-4 md:pb-8 w-full md:w-40">
-                                                                            {/* <img className="w-full md:block" src={`${REACT_APP_API_URL}/${data.image}`} alt="dress" /> */}
-                                                                            <img className="w-full md:block" src='/images/apple.jpeg' alt="dress" />
-                                                                        </div>
+                                                                    <div key={innerIndex} className="mt-12 md:mt-12 flex flex-col md:flex-row justify-start md:space-x-6 xl:space-x-8 w-full">
+                                                                        <NavLink to={`/product/${data.pid}`}>
+                                                                            <div className="pb-4 md:pb-8 w-full md:w-40">
+                                                                                <img className="w-48 md:block" src={`${REACT_APP_API_URL}/${data.image}`} alt="dress" />
+                                                                            </div>
+                                                                        </NavLink>
                                                                         <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full pb-8 space-y-4 md:space-y-0">
                                                                             <div className="w-full flex flex-col justify-start items-start">
-                                                                                <h3 className="text-xl  xl:text-2xl font-semibold leading-6 text-gray-800">{data.name}</h3>
-                                                                                <div className="flex justify-start items-start flex-col space-y-2">
+                                                                                <h3 className="text-xl  xl:text-lg font-semibold leading-6 text-gray-800">{data.name.slice(0, 30)}...</h3>
+                                                                                <div className="flex justify-start items-start flex-col space-y-1">
                                                                                     <p className="text-xs  leading-none text-gray-800"><span className="text-gray-400 ">Category: {data.category}</span></p>
-                                                                                    <p className="text-sm  leading-none text-gray-800"><span className="text-gray-400 "></span> {data.desc.slice(0, 100)}...</p>
+                                                                                    <p className="text-xs text-gray-800"><span className="text-gray-400 font-extralight"></span> {data.desc.slice(0, 100)}...</p>
                                                                                 </div>
                                                                             </div>
                                                                             <div className="flex justify-between space-x-8 items-start w-full">
@@ -170,8 +167,6 @@ export default function CheckProductDestination() {
                                                                             </div>
                                                                         </div>
                                                                     </div>
-
-                                                                    </>
                                                                 );
                                                             })
                                                         )
@@ -191,7 +186,7 @@ export default function CheckProductDestination() {
                                                             </div>
                                                         );
                                                 })
-                                            ) : (
+                                            ) :
                                                 <div className="flex items-center justify-center h-screen">
                                                     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center justify-center">
                                                         <img
@@ -205,9 +200,7 @@ export default function CheckProductDestination() {
                                                         </p>
                                                     </div>
                                                 </div>
-                                            )}
-
-
+                                        }
                                     </div>
                                     <div className="flex justify-center flex-col md:flex-row items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
                                         <div className="flex flex-col px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50  space-y-6">
@@ -238,13 +231,12 @@ export default function CheckProductDestination() {
                                     <div className="flex flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0">
                                         <div className="flex flex-col justify-start items-start flex-shrink-0">
                                             <div className="flex justify-center w-full md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
-                                                <img src="/images/userimage.png" className='w-10 border p-2' alt="avatar" />
-                                                <div className="flex justify-start items-start flex-col space-y-2">
+                                                <img src={`${REACT_APP_API_URL}/${userData.profile}`} className='w-10 border p-2' alt="avatar" />
+                                                <div className="flex justify-start items-start flex-col">
                                                     <p className="text-base  font-semibold leading-4 text-left text-gray-800">{userData?.fname + " " + userData?.lname}</p>
                                                 </div>
                                             </div>
-
-                                            <div className="flex justify-center text-gray-800  md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
+                                            <div className="flex justify-center text-gray-800 md:justify-start items-center space-x-4 py-3 border-b border-gray-200 w-full">
                                                 <p className="cursor-pointer text-sm leading-5 ">{userData?.email}</p>
                                             </div>
                                         </div>

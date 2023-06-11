@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useRef } from 'react'
+import { NavLink } from 'react-router-dom';
 
-export default function Answer({ e }) {
+export default function Answer({ e, data }) {
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const answer = useRef();
     const postAnswers = (questionID) => {
@@ -27,9 +28,20 @@ export default function Answer({ e }) {
             alert('Answer field cant be empty.')
         }
     }
+
+    const convertToDate = (microsecond) => {
+        const timestamp = microsecond;
+        const date = new Date(timestamp / 100000);
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const formattedDate = date.toLocaleDateString(undefined, options);
+        return formattedDate
+    };
     return (
-        <>
-            <div key={e._id} className='ml-6 border p-3'>
+        <div className=' mt-1'><hr />
+            <div className='ml-6 mt-1 mb-3'>
+                <NavLink to={`/product/${data?._id}`}><p className='font-medium'>Comment from: {data?.title.slice(0, 40)}...</p></NavLink>
+            </div>
+            <div className='ml-6 p-3'>
                 <div className='flex gap-2 items-center'>
                     <div className='font-bold'>
                         <p><span className='text-gray-400 font-medium'>
@@ -38,7 +50,7 @@ export default function Answer({ e }) {
                             <span> {e.name}</span></p>
                     </div>
                     <div>
-                        <p className='text-xs'>. {e.date}</p>
+                        <p className='text-xs'>. {convertToDate(e.date)}</p>
                     </div>
                 </div>
                 <div className='ml-2'>
@@ -63,6 +75,6 @@ export default function Answer({ e }) {
                         </div>
                 }
             </div>
-        </>
+        </div>
     )
 }

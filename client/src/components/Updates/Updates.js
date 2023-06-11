@@ -141,7 +141,6 @@ export default function Updates() {
                         </div>
                     </div>
                     :
-
                     <section className="text-gray-600 body-font overflow-hidden">
                         <div className="container px-5 py-24 mx-auto lg:w-[85vw]">
                             <div className='mb-5 text-xl font-bold text-black underline'>
@@ -164,12 +163,12 @@ export default function Updates() {
                                                     <hr className='w-4' />
                                                     <span className="font-thin title-font text-gray-700 pl-1">{e.createdAt.slice(0, 10).replace('-', '/').replace('-', '/')}</span>
                                                 </div>
-                                                <img className='h-auto w-48 border mt-5' src="/images/samsung.jpg" alt="" />
+                                                <img className='h-auto w-48 border mt-5' src={`${REACT_APP_API_URL}/${e.image.split(',')[0]}`} alt="" />
                                             </div>
                                             <div className="md:flex-grow">
-                                                <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">{e.title}</h2>
+                                                <h2 className="text-2xl font-medium text-gray-900 title-font mb-2">{e?.title.slice(0, 100)}...</h2>
                                                 <p className="leading-relaxed">
-                                                    {e.desc}
+                                                    {e.desc.slice(0, 400)}...
                                                 </p>
                                                 <p className="leading-relaxed">
                                                     Price : <span className='text-bold text-gray-800'>NRs {e.price}</span>
