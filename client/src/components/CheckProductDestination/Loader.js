@@ -1,8 +1,5 @@
-import React, { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
-import { AuthContext } from '../../Context/AuthContext'
+import React from 'react'
 export default function Loader() {
-    const { user } = useContext(AuthContext);
     return (
         <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
             <div className="flex justify-start item-start space-y-2 flex-col">

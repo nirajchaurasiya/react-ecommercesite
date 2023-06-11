@@ -1,8 +1,7 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 import cate from '../CategoryJSON/category.json'
-import { AuthContext } from '../../Context/AuthContext'
 export default function Products() {
     const [value, setValue] = useState(100000);
     // eslint-disable-next-line
