@@ -32,6 +32,8 @@ app.use('/api/productactions', require('./productactions/productactions'));
 app.use('/api/personactions', require('./personactions/personactions'));
 app.use('/api/updates', require('./updates/updates'));
 app.use('/api/orderactions', require('./orders/orderactions'));
+
+app.use('/api/forget-password', require('./forget-password/forgetPassword'));
 app.get('/', (req, res) => {
     res.send({ "msg": "success" })
 })

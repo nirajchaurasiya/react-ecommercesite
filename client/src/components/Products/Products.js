@@ -17,7 +17,6 @@ export default function Products() {
     const handleSelectChange = (event) => {
         setSelectedValue(event.target.value);
     };
-
     const handleRangeChange = (event) => {
         setValue(parseInt(event.target.value));
     };
@@ -147,9 +146,7 @@ export default function Products() {
                                                 <span className="sr-only">Loading...</span>
                                             </div>
                                         })
-
                                         :
-
                                         productFound === true && currDatas.length > 0 ?
                                             <>
                                                 <div>
@@ -191,9 +188,7 @@ export default function Products() {
                                                         </p>
                                                     </div>
                                                 </div>
-
                                             </div>
-
                                     }
                                 </div>
                             </div>
