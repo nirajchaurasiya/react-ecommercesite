@@ -1,7 +1,23 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { NavLink } from 'react-router-dom'
-
+import axios from 'axios';
 export default function ForgotPassword() {
+    const email = useRef();
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    const send_email = (e) => {
+        e.preventDefault();
+        try {
+            axios.post(`${REACT_APP_API_URL}/api/forget-password/forget-password`, { email: email })
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch((err) => {
+                    console.log("Err");
+                })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <div className='py-16'>
             <div className='flex justify-center '>
@@ -37,7 +53,7 @@ export default function ForgotPassword() {
                     </div>
                     <button
                         className="block w-full bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
-                        type="submit"
+                        type="submit" onClick={send_email}
                     >Request OTP</button><br />
                 </div>
                 <div className="w-full md:w-2/3 p-6 flex flex-col justify-between">

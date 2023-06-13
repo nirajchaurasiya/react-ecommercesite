@@ -50,6 +50,17 @@ const UserModel = mongoose.Schema({
             }
         }
     ],
+    reset_pass:
+    {
+        token_expiration_time: {
+            type: String,
+            default: undefined
+        },
+        six_digit_random_num: {
+            type: String,
+            default: undefined
+        },
+    },
     productOrder:
         [
             {
