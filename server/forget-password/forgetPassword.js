@@ -1,20 +1,15 @@
 const nodemailer = require('nodemailer');
 const Router = require('express').Router();
 require('dotenv').config();
-// Set up Nodemailer transporter
 var transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
-    secure: false,
+    host: process.env.HOST,
+    port: 465,
     auth: {
-        user: "7ed5629e12b6a7",
-        pass: "663b83b48e4b91"
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
     }
 });
-
-// Send email function
 const sendEmail = async (email, subject, text) => {
-    // Configure email options
     const mailOptions = {
         from: process.env.EMAIL,
         to: email,
@@ -23,7 +18,6 @@ const sendEmail = async (email, subject, text) => {
     };
 
     try {
-        // Send email
         await transporter.sendMail(mailOptions);
         console.log('Email sent successfully.');
     } catch (error) {
