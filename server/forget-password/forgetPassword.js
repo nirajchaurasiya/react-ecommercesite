@@ -10,12 +10,12 @@ var transporter = nodemailer.createTransport({
         pass: process.env.PASSWORD
     }
 });
-const sendEmail = async (email, subject, text) => {
+const sendEmail = async (email, subject, emailContent) => {
     const mailOptions = {
         from: process.env.EMAIL,
         to: email,
         subject: subject,
-        text: text
+        html: emailContent
     };
 
     try {
@@ -38,7 +38,7 @@ Router.post('/forget-password', async (req, res) => {
         if (user) {
             // Generate 6-digit random number and set token expiration time
             const sixDigitRandomNum = Math.floor(100000 + Math.random() * 900000).toString();
-            const tokenExpirationTime = Date.now() + 3600000; // Set token expiration time to 1 hour from now
+            const tokenExpirationTime = Date.now() + 600000; // Set token expiration time to 1 hour from now
 
             // Set the reset_pass fields in the user document
             user.reset_pass.six_digit_random_num = sixDigitRandomNum;
@@ -47,17 +47,26 @@ Router.post('/forget-password', async (req, res) => {
             // Save the user document
             await user.save();
 
-            res.status(200).json({ message: 'Reset password information saved.' });
+
             const subject = "Password Reset"
-            const text = `Hello sir, you requested your password reset request. Your code is below ${sixDigitRandomNum}`;
-            sendEmail(email, subject, text)
+            const emailContent = `
+                <h1>Password Reset</h1>
+                <p>Hello,</p>
+                <p>You have requested to reset your password. Please use the following token to proceed:</p>
+                <h2>${sixDigitRandomNum}</h2>
+                <p>This token will expire after a certain period of time.</p>
+                <p>If you did not request this password reset, please ignore this email.</p>
+                <p>Thank you.</p>
+            `;
+            sendEmail(email, subject, emailContent)
+            res.json({ status: 1, message: 'Reset password information saved.' });
         }
         else {
-            res.status(500).json({ message: "Email doesn't exits" });
+            res.json({ status: 0, message: "Email doesn't exits" });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal server error.' });
+        res.json({ status: 2, message: 'Internal server error.' });
     }
 });
 
