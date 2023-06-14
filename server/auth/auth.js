@@ -1,7 +1,37 @@
 const Router = require('express').Router();
+require('dotenv').config();
 const userImage = require('../multer/userImage');
 const UserModel = require('../Models/UserModel')
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+
+
+
+var transporter = nodemailer.createTransport({
+    host: process.env.HOST,
+    port: 465,
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+    }
+});
+const sendEmail = async (email, subject, emailContent) => {
+    const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: subject,
+        html: emailContent
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Email sent successfully.');
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+};
+
+
 Router.post('/register', userImage.single('profile'), async (req, res) => {
     try {
         const userDatas = req.body;
@@ -20,6 +50,53 @@ Router.post('/register', userImage.single('profile'), async (req, res) => {
                     password: userDatas.password,
                     isAdmin: userDatas.isAdmin,
                 });
+                const email = userDatas.email;
+                const subject = 'Account Created Successfully';
+                const emailContent = `
+                        <!DOCTYPE html>
+                            <html>
+                            <head>
+                            <meta charset="UTF-8">
+                            <title>Account Created Successfully</title>
+                            <style>
+                                body {
+                                background-color: #f2f2f2;
+                                font-family: Arial, sans-serif;
+                                }
+                                .container {
+                                max-width: 600px;
+                                margin: 0 auto;
+                                padding: 20px;
+                                background-color: #ffffff;
+                                border-radius: 5px;
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                                }
+                                h1 {
+                                color: #333333;
+                                }
+                                p {
+                                color: #666666;
+                                }
+                                .button {
+                                display: inline-block;
+                                padding: 10px 20px;
+                                background-color: #4CAF50;
+                                color: #ffffff;
+                                text-decoration: none;
+                                border-radius: 3px;
+                                }
+                            </style>
+                            </head>
+                            <body>
+                            <div class="container">
+                                <h1>Account Created Successfully</h1>
+                                <p>Your account has been successfully created. Welcome aboard! 🎉</p>
+                                <p>Click the button below to go to your profile:</p>
+                                <a href="https://www.example.com/profile" class="button">Go to Profile</a>
+                            </div>
+                            </body>
+                        </html>`;
+                sendEmail(email, subject, emailContent)
                 res.send({ status: 1, msg: "Account Registered Successfully." });
             } else {
                 res.send({ status: 0, msg: "All the input fields are mandatory. Pleas fill all the fields before submitting the form." });

@@ -70,39 +70,53 @@ Router.post('/forget-password', async (req, res) => {
     }
 });
 
-Router.post('/reset-password', async (req, res) => {
-    const { email, code, newPassword } = req.body;
+Router.post('/check-token', async (req, res) => {
+    const { email, token } = req.body;
 
     try {
         // Find the user based on the email
         const user = await UserModel.findOne({ email });
 
-        // Check if code is valid and within the token expiration time
-        const {
-            six_digit_random_num,
-            token_expiration_time,
-        } = user.reset_pass;
-
-        if (
-            six_digit_random_num !== code ||
-            token_expiration_time < Date.now()
-        ) {
-            return res.status(400).json({ message: 'Invalid or expired reset code.' });
+        // Check if the token matches and is not expired
+        if (user.reset_pass.six_digit_random_num === token && user.reset_pass.token_expiration_time > Date.now()) {
+            res.json({ status: 1, message: 'OTP is valid' });
+        } else {
+            res.json({ status: 0, message: "OTP is invalid or expired." });
         }
-
-        // Reset password and clear reset_pass fields
-        user.password = newPassword;
-        user.reset_pass.six_digit_random_num = undefined;
-        user.reset_pass.token_expiration_time = undefined;
-
-        // Save the user document
-        await user.save();
-
-        res.status(200).json({ message: 'Password reset successful.' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Internal server error.' });
+        res.json({ status: 2, message: 'Internal server error.' });
     }
 });
+
+// API route for updating password
+Router.post('/update-password', async (req, res) => {
+    const { email, token, newPassword } = req.body;
+
+    try {
+        // Find the user based on the email
+        const user = await UserModel.findOne({ email });
+
+        // Check if the token matches and is not expired
+        if (user.reset_pass.six_digit_random_num === token && user.reset_pass.token_expiration_time > Date.now()) {
+            // Update the password
+            user.password = newPassword;
+            // Clear the reset_pass fields
+            user.reset_pass.six_digit_random_num = undefined;
+            user.reset_pass.token_expiration_time = undefined;
+
+            // Save the user document
+            await user.save();
+
+            res.json({ status: 1, message: 'Password updated successfully.' });
+        } else {
+            res.json({ status: 0, message: 'Token is invalid or expired.' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ status: 2, message: 'Internal server error.' });
+    }
+});
+
 
 module.exports = Router;
