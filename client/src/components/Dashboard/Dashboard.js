@@ -264,7 +264,10 @@ export default function Dashboard() {
 
                                                 </div>
                                             })
-                                            : "No"
+                                            :
+                                            <div className='font-extrabold text-2xl p-5'>
+                                                There are currently no question.
+                                            </div>
                                         }
                                     </div>
                                     <div className="flex flex-wrap ml-5">
@@ -313,7 +316,7 @@ export default function Dashboard() {
                                                                 </>
                                                             </>
                                                             : <div className="p-4 mb-4 w-full text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
-                                                                <span className="font-medium">Sorry!</span> But, no product found. Change a few things up and try submitting again.
+                                                                <span className="font-medium">Sorry!</span> But, no product found.
                                                             </div>
                                                     }
                                                 </div>

@@ -80,10 +80,14 @@ Router.post('/register', userImage.single('profile'), async (req, res) => {
                                 .button {
                                 display: inline-block;
                                 padding: 10px 20px;
-                                background-color: #4CAF50;
-                                color: #ffffff;
+                                background-color: white;
+                                border:1px solid black;
+                                color: white;
                                 text-decoration: none;
                                 border-radius: 3px;
+                                }
+                                a{
+                                    color:white;
                                 }
                             </style>
                             </head>
@@ -92,7 +96,7 @@ Router.post('/register', userImage.single('profile'), async (req, res) => {
                                 <h1>Account Created Successfully</h1>
                                 <p>Your account has been successfully created. Welcome aboard! 🎉</p>
                                 <p>Click the button below to go to your profile:</p>
-                                <a href="https://www.example.com/profile" class="button">Go to Profile</a>
+                                <a href="https://onlinestore.shop/" class="button">Go to the Website</a>
                             </div>
                             </body>
                         </html>`;
@@ -123,6 +127,7 @@ Router.post('/login', async (req, res) => {
                 if (isPasswordMatch) {
                     const data = isEmailFound.toObject(); // Convert Mongoose document to plain JavaScript object
                     token = await isEmailFound.generateAuthToken();
+                    res.cookie('onlinestore.shop', token)
                     res.send({ status: 1, msg: "Successfully login to your account. Redirecting you to the profile page within 2 seconds..", data: data._id });
                 } else {
                     res.send({ status: 0, msg: "Invalid Credentials" });

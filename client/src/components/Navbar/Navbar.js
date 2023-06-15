@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai';
+import { AiOutlineSearch } from 'react-icons/ai';
 import { AuthContext } from '../../Context/AuthContext';
 
 export default function Navbar() {
     const { user } = useContext(AuthContext);
-    //
     const [uid, setUid] = useState('');
     const navigate = useNavigate();
     const searchQuery = useRef();
@@ -37,15 +36,15 @@ export default function Navbar() {
                         <img src="/images/logo.jpg" className="h-8 mr-3 rounded-full" alt="Flowbite Logo" />
                         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">OnlineStore.shop</span>
                     </NavLink>
-
                     <div className="flex items-center md:order-2">
-                        <div className=''>
-                            <li className='flex items-center'>
+                        <div className="">
+                            <li className="flex items-center">
                                 <NavLink
                                     to="/cart"
-                                    className="-m-5 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 text-2xl"
+                                    className="-m-6 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 text-2xl"
                                 >
-                                    <AiOutlineShoppingCart />
+                                    {/* <AiOutlineShoppingCart /> */}
+                                    <img src="/images/cart.jpg" className='w-8 h-8' />
                                 </NavLink>
                             </li>
                         </div>
@@ -131,48 +130,12 @@ export default function Navbar() {
                                     </NavLink>
                                 </li>
                             )}
-                            <li>
-                                <label
-                                    htmlFor="search"
-                                    className=" text-sm font-medium text-gray-900 sr-only dark:text-white"
-                                >
-                                    Search
-                                </label>
-                                <div className="relative flex items-center gap-1">
-                                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg
-                                            aria-hidden="true"
-                                            className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                            ></path>
-                                        </svg>
-                                    </div>
-                                    <input
-                                        ref={searchQuery}
-                                        type="search"
-                                        id="search"
-                                        className="block w-full p-1.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Search"
-                                        required
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="text-white right-2.5 bottom-0.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pt-2 pb-2 pr-2 pl-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                        onClick={handleSearchQuery}
-                                    >
-                                        <AiOutlineSearch />
-                                    </button>
+                            <div className=''>
+                                <div className="flex items-center bg-transparent border border-gray-500 rounded-md">
+                                    <input type="search" ref={searchQuery} placeholder="Search" className="bg-transparent text-black dark:text-white rounded-l px-4 py-2 focus:outline-none" />
+                                    <button className="block py-2 pl-3 pr-4 text-gray-900 mr-1 rounded text-2xl hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" onClick={handleSearchQuery} ><AiOutlineSearch /></button>
                                 </div>
-                            </li>
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -180,3 +143,4 @@ export default function Navbar() {
         </>
     );
 }
+

@@ -79,12 +79,12 @@ export default function Footer() {
                             <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">Business Email</h2>
                             <nav className="list-none mb-10">
                                 <li>
-                                    <a href="mailto: agarbati@officialstore.com"
-                                        className="text-gray-600 hover:text-gray-800">agarbati@officialstore.com</a>
+                                    <a href="mailto: onlinestore.shopofficial@gmail.com"
+                                        className="text-gray-600 hover:text-gray-800">onlinestore.shopofficial@gmail.com</a>
                                 </li>
                                 <li>
-                                    <a href="mailto: garammasala@officialstore.com"
-                                        className="text-gray-600 hover:text-gray-800">garammasala@officialstore.com</a>
+                                    <a href="mailto: nirajkumarchaurasiya6@gmail.com"
+                                        className="text-gray-600 hover:text-gray-800">nirajkumarchaurasiya6@gmail.com</a>
                                 </li>
                             </nav>
 
@@ -107,9 +107,9 @@ export default function Footer() {
 
                 <div className="bg-gray-100">
                     <div className="container mx-auto py-4 px-5 flex flex-wrap justify-between items-center flex-col sm:flex-row">
-                        <p className="text-gray-500 text-sm text-center sm:text-left">© 2022 nirajchaurasiya —
-                            <span href="https://nirajchaurasiya.com" className="text-gray-600 ml-1" target="_blank"
-                                rel="noopener noreferrer">@nirajchaurasiya</span>
+                        <p className="text-gray-500 text-sm text-center sm:text-left">© {new Date().getFullYear()} OnlineStore.shop —
+                            <span className="text-gray-600 ml-1"
+                            >@OnlinStore.shop</span>
                         </p>
                         <span className="inline-flex lg:ml-auto lg:mt-0 mt-6 w-full justify-between md:justify-start md:w-auto">
                             <span className="cursor-pointer text-gray-500">
