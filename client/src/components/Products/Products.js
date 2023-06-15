@@ -61,12 +61,12 @@ export default function Products() {
         axios
             .get(`${REACT_APP_API_URL}/api/productactions/getproducts`)
             .then((response) => {
-                // console.log(typeof (data.data.data));
                 if (response.status === 200 && response.data.status === 1) {
                     setProducts(response.data.data);
                     setNewProducts(response.data.data)
                     setLoader(false)
                     setProductFound(true);
+                    setCount(response.data.data.length);
                     setCurrDatas(response.data.data.slice(0, count));
                 }
                 else {
@@ -127,7 +127,6 @@ export default function Products() {
                                 <button className="flex text-white bg-gray-500 border-0 py-1.5 px-2 text-sm focus:outline-none hover:bg-gray-600 rounded" onClick={clearFilters}>Clear filters</button>
                             </div>
                         </div>
-
                         <section className="text-gray-600 body-font lg:w-3/4 w-full h-auto object-cover object-center rounded">
                             <div className="container px-5 py-12 mx-auto">
                                 <div className="">

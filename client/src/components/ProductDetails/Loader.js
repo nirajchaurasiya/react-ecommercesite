@@ -14,7 +14,6 @@ export default function Loader() {
                                     <img className="h-full w-full max-w-full object-cover" src="/images/message.png" alt="" />
                                 </div>
                             </div>
-
                             <div className="mt-2 w-full lg:order-1 lg:w-32 lg:flex-shrink-0">
                                 <div className="flex flex-row gap-5 items-start lg:flex-col">
                                     {[1, 2, 3, 4]?.map(e => {

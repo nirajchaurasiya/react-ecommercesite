@@ -365,7 +365,7 @@ export default function ProductDetails() {
                                                             <div className="mb-2 bg-white rounded-lg rounded-t-lg border border-white dark:bg-white dark:border-white">
                                                                 <label htmlFor="comment" className="sr-only">Your comment</label>
                                                                 <textarea ref={comment} id="comment" rows="3"
-                                                                    className="w-full text-sm p-3 text-white border-1 border-gray-500 ring-1 focus:outline-none dark:text-gray-500 dark:placeholder-gray-500"
+                                                                    className="w-full text-sm p-3 dark:text-black border-1 border-gray-500 ring-1 focus:outline-none text-black dark:placeholder-gray-500"
                                                                     placeholder="Write a comment..." required></textarea>
                                                             </div>
                                                             <button type="submit" onClick={postComment}
@@ -404,9 +404,7 @@ export default function ProductDetails() {
                                                                 </article>
                                                             );
                                                         })
-
                                                         :
-
                                                         <div className="bg-white shadow-lg rounded-lg p-6 w-64">
                                                             <h2 className="text-xl font-bold mb-4">
                                                                 No Comments
@@ -415,13 +413,8 @@ export default function ProductDetails() {
                                                                 Be the first to add a comment.
                                                             </p>
                                                         </div>
-
                                                     }
                                                 </div>
-
-
-
-
                                             </div>}
                                         {showDesc && <div className=''>
                                             <h1 className='font-bold mb-2'>Ask a Question</h1>
@@ -432,7 +425,7 @@ export default function ProductDetails() {
                                                     <div className="mb-6">
                                                         <div className="mb-2 bg-white rounded-lg rounded-t-lg border border-white dark:bg-white dark:border-white">
                                                             <input id="questions" rows="3"
-                                                                className="w-full text-sm p-3 text-white border-1 border-gray-500 ring-1 focus:outline-none dark:text-gray-500 dark:placeholder-gray-500"
+                                                                className="w-full text-sm p-3 border-1 border-gray-500 ring-1 focus:outline-none text-black dark:placeholder-gray-500"
                                                                 ref={questions} placeholder="Ask a Question..." required></input>
                                                         </div>
                                                         <button type="submit" onClick={submitQuestions}
