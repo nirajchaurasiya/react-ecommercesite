@@ -51,17 +51,16 @@ export default function Home() {
     }, [fetchAlltheProducts, slides?.length])
     return (
         <div className=''>
-
             <div className='m-auto lg:w-[90vw]'>
                 <section className="text-gray-600 body-font">
                     <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center ">
-                        <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-                            <h1 className="title-font md:text-2xl sm:text-4xl text-2xl xl:text-4xl mb-4 font-medium text-gray-900 md:text-md">ShopKart: Streamlined
-                                <br className="hidden lg:inline-block" />E-commerce for Effortless Online Shopping
+                        <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center">
+                            <h1 className="title-font md:text-2xl sm:text-4xl text-2xl xl:text-4xl mb-4 font-medium text-gray-900 md:text-md">OnlineStore.shop: Streamlined
+                                <br className="hidden lg:inline-block" /> E-commerce for Effortless Online Shopping
                             </h1>
                             <p className="mb-8 leading-relaxed md:text-sm">Discover a seamless online shopping experience at ShopSmart. Browse a wide range of products, enjoy secure transactions, and get your purchases delivered right to your doorstep. With user-friendly navigation and trusted sellers, finding what you need has never been easier.</p>
                             <div className="flex justify-center">
-                                <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-3 text-sm lg:text-lg focus:outline-none hover:bg-indigo-600 rounded lg:px-6" onClick={() => { navigate('/products') }}>Browse Product</button>
+                                <button className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => { navigate('/products') }}>Browse Product</button>
                             </div>
                         </div>
                         <div className="lg:max-w-xl lg:w-full h-full object-cover md:w-1/2 w-[95%] border">

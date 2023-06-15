@@ -35,7 +35,7 @@ export default function Navbar() {
                 <div className="flex flex-wrap items-center justify-between mx-auto pr-2 pl-1 pb-3 pt-3">
                     <NavLink to="/" className="flex items-center">
                         <img src="/images/logo.jpg" className="h-8 mr-3 rounded-full" alt="Flowbite Logo" />
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ShopKart</span>
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">OnlineStore.shop</span>
                     </NavLink>
 
                     <div className="flex items-center md:order-2">

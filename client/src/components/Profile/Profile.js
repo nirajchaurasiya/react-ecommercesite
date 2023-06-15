@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-// import { AuthContext } from '../../Context/AuthContext'
 import { TiTick } from 'react-icons/ti'
 import { AiOutlineEye } from 'react-icons/ai'
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
@@ -11,7 +10,6 @@ export default function Profile() {
     const [orderDetails, setOrderDetails] = useState([])
     const navigate = useNavigate();
     const { uid } = useParams();
-    // const { user } = useContext(AuthContext);
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const handleLogOut = () => {
         navigate('/profile/logout');
@@ -124,8 +122,8 @@ export default function Profile() {
                                         </span>
                                     </div> <br />
                                     <div className="flex justify-between">
-                                        <button className="flex text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded" onClick={() => { navigate('/profile/editprofile') }}>Edit Profile</button>
-                                        <button className="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={handleLogOut}>Logout</button>
+                                        <button className="flex text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded">Edit Profile</button>
+                                        <button className="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Logout</button>
                                     </div>
                                 </div>
 
@@ -181,7 +179,7 @@ export default function Profile() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <NavLink to={`/product/status/${Math.round(Math.random * 1000)}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center "><span>View</span><span className='ml-1 text-lg mt-0.5'><AiOutlineEye /></span></NavLink>
+                                        <p className="font-medium text-blue-600 dark:text-blue-500 hover:underline flex items-center "><span>View</span><span className='ml-1 text-lg mt-0.5'></span></p>
                                     </td>
                                     <td className="px-6 py-4 flex items-center">
                                         <div role="status" className="max-w-sm animate-pulse">
@@ -198,34 +196,34 @@ export default function Profile() {
                         <div className="container px-5 py-24 mx-auto">
                             <div className="lg:w-2/3 mx-auto flex flex-wrap items-center">
                                 <div className="lg:w-2/3 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
-                                    <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">{userDatas.fname + " " + userDatas.lname}</h1>
+                                    <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">{userDatas?.fname + " " + userDatas?.lname}</h1>
 
                                     <div className="flex border-t border-gray-200 py-2">
                                         <span className="text-gray-500">Email</span>
-                                        <span className="ml-auto break-words text-gray-900">{userDatas.email}</span>
+                                        <span className="ml-auto break-words text-gray-900">{userDatas?.email}</span>
                                     </div>
                                     <div className="flex border-t border-gray-200 py-2">
                                         <span className="text-gray-500">Phone</span>
-                                        <span className="ml-auto text-gray-900">{userDatas.phone}</span>
+                                        <span className="ml-auto text-gray-900">{userDatas?.phone}</span>
                                     </div>
-                                    {userDatas.address1 && <div className="flex border-t border-gray-200 py-2">
+                                    {userDatas?.address1 && <div className="flex border-t border-gray-200 py-2">
                                         <span className="text-gray-500">Address1</span>
-                                        <span className="ml-auto text-gray-900">{userDatas.address1}</span>
+                                        <span className="ml-auto text-gray-900">{userDatas?.address1}</span>
                                     </div>}
-                                    {userDatas.address2 && <div className="flex border-t border-gray-200 py-2">
+                                    {userDatas?.address2 && <div className="flex border-t border-gray-200 py-2">
                                         <span className="text-gray-500">Address2</span>
-                                        <span className="ml-auto text-gray-900">{userDatas.address2}</span>
+                                        <span className="ml-auto text-gray-900">{userDatas?.address2}</span>
                                     </div>}
-                                    {userDatas.address3 && <div className="flex border-t border-gray-200 py-2">
+                                    {userDatas?.address3 && <div className="flex border-t border-gray-200 py-2">
                                         <span className="text-gray-500">Address3</span>
-                                        <span className="ml-auto text-gray-900">{userDatas.address3}</span>
+                                        <span className="ml-auto text-gray-900">{userDatas?.address3}</span>
                                     </div>} <br />
                                     <div className="flex justify-between">
                                         <button className="flex text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded" onClick={() => { navigate('/profile/editprofile') }}>Edit Profile</button>
                                         <button className="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onClick={handleLogOut}>Logout</button>
                                     </div>
                                 </div>
-                                <img alt="ecommerce" className="lg:w-1/3 w-full lg:h-auto h-64 shadow-lg object-cover object-center rounded" src={`${REACT_APP_API_URL}/${userDatas.profile}`} />
+                                <img alt="profile" className="lg:w-1/3 w-full lg:h-auto h-64 shadow-lg object-cover object-center rounded" src={`${REACT_APP_API_URL}/${userDatas?.profile}`} />
                             </div>
 
                         </div>
