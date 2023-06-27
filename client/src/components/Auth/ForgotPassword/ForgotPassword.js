@@ -27,7 +27,7 @@ export default function ForgotPassword() {
                     if (response.data.status === 1) {
                         setstepOne(false)
                         setstepTwo(true)
-                        setMessage('Code successfully sent to your requested email.');
+                        setMessage('Code successfully sent to your requested email. Make sure to check the spam.');
                         setSuccessAlert(true)
                         setTimeout(() => {
                             setSuccessAlert(false)
@@ -137,60 +137,72 @@ export default function ForgotPassword() {
     const submit_password = (e) => {
         setShowSpinner(true)
         setSetLoginText(false);
-        e.preventDefault();
+        e.preventDefault(); gjuhjlk
+        cbfcgfhgkuhjkj,
+            fvdfdhtfgj
+        xcdaetrtujyhkhjl
+
         const email = localStorage.getItem('shopkart_email')
         const OTP = localStorage.getItem('shopkart_token')
-        try {
-            axios.post(`${REACT_APP_API_URL}/api/forget-password/update-password`, { email: email, token: OTP, newPassword: password.current.value })
-                .then((response) => {
-                    if (response.data.status === 1) {
-                        setstepTwo(false)
-                        setstepThree(false)
-                        setSuccessMsg(true)
-                        setMessage('Password updated successfully.');
-                        setSuccessAlert(true)
-                        setTimeout(() => {
-                            setSuccessAlert(false)
-                        }, 2000);
-                        setShowSpinner(false)
-                        setSetLoginText(true);
-                        localStorage.clear();
-                    } else if (response.data.status === 0) {
-                        setMessage("Token is invalid or expired.");
-                        setErrorAlert(true);
-                        setTimeout(() => {
-                            setErrorAlert(false)
-                        }, 2000);
-                        setShowSpinner(false)
-                        setSetLoginText(true);
-                    }
-                    else if (response.data.status === 2) {
-                        setMessage("Internal server error.");
+        if (password.current.value === Cpassword.current.value) {
+            try {
+                axios.post(`${REACT_APP_API_URL}/api/forget-password/update-password`, { email: email, token: OTP, newPassword: password.current.value })
+                    .then((response) => {
+                        if (response.data.status === 1) {
+                            setstepTwo(false)
+                            setstepThree(false)
+                            setSuccessMsg(true)
+                            setMessage('Password updated successfully.');
+                            setSuccessAlert(true)
+                            setTimeout(() => {
+                                setSuccessAlert(false)
+                            }, 2000);
+                            setShowSpinner(false)
+                            setSetLoginText(true);
+                            localStorage.clear();
+                        } else if (response.data.status === 0) {
+                            setMessage("Token is invalid or expired.");
+                            setErrorAlert(true);
+                            setTimeout(() => {
+                                setErrorAlert(false)
+                            }, 2000);
+                            setShowSpinner(false)
+                            setSetLoginText(true);
+                        }
+                        else if (response.data.status === 2) {
+                            setMessage("Internal server error.");
+                            setErrorAlert(true)
+                            setTimeout(() => {
+                                setErrorAlert(false)
+                            }, 2000);
+                            setShowSpinner(false)
+                            setSetLoginText(true);
+                        }
+                    })
+                    .catch((err) => {
+                        setMessage("Something went wrong.");
                         setErrorAlert(true)
                         setTimeout(() => {
                             setErrorAlert(false)
                         }, 2000);
                         setShowSpinner(false)
                         setSetLoginText(true);
-                    }
-                })
-                .catch((err) => {
-                    setMessage("Something went wrong.");
-                    setErrorAlert(true)
-                    setTimeout(() => {
-                        setErrorAlert(false)
-                    }, 2000);
-                    setShowSpinner(false)
-                    setSetLoginText(true);
-                })
-        } catch (error) {
-            setMessage("Something went wrong.");
+                    })
+            } catch (error) {
+                setMessage("Something went wrong.");
+                setErrorAlert(true)
+                setTimeout(() => {
+                    setErrorAlert(false)
+                }, 2000);
+                setShowSpinner(false)
+                setSetLoginText(true);
+            }
+        } else {
+            setMessage("Password and Confirm password must be equal.");
             setErrorAlert(true)
             setTimeout(() => {
                 setErrorAlert(false)
             }, 2000);
-            setShowSpinner(false)
-            setSetLoginText(true);
         }
     }
     return (
