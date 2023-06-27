@@ -137,11 +137,7 @@ export default function ForgotPassword() {
     const submit_password = (e) => {
         setShowSpinner(true)
         setSetLoginText(false);
-        e.preventDefault(); gjuhjlk
-        cbfcgfhgkuhjkj,
-            fvdfdhtfgj
-        xcdaetrtujyhkhjl
-
+        e.preventDefault();
         const email = localStorage.getItem('shopkart_email')
         const OTP = localStorage.getItem('shopkart_token')
         if (password.current.value === Cpassword.current.value) {

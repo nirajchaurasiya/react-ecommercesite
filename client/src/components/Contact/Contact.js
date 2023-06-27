@@ -22,7 +22,7 @@ export default function Contact() {
                             <br />
                             Call/Whatsapp:
                             <a className="underline text-blue-600 dark:text-blue-400" rel="noreferrer" target="_blank" href="https://wa.link/rkzsx1">+977 9828758167</a><br />
-                            Email: care@codeswear.in<br />Morning: 10AM - 6PM<br /></div>
+                            Email: onlinestore.shopofficial@gmail.com<br />Morning: 10AM - 6PM<br /></div>
                     </div>
                 </div>
             </div>
