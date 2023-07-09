@@ -23,6 +23,7 @@ export default function Updates() {
             .catch((err) => {
                 setIsThereUpdate(false)
                 setLoader(false)
+                console.log(err);
             });
     }, [REACT_APP_API_URL]);
     useEffect(() => {
