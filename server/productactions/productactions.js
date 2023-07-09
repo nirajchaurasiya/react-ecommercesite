@@ -31,10 +31,6 @@ Router.get('/searchproduct/:query', async (req, res) => {
     }
 });
 
-module.exports = Router;
-
-
-
 
 Router.post('/addproduct', productMulter.array('pictures'), async (req, res) => {
     try {
@@ -84,6 +80,28 @@ Router.get('/getproducts', async (req, res) => {
         res.send({ status: 0, msg: 'Something went wrong.' });
     }
 });
+
+Router.get('/getproductss', async (req, res) => {
+    try {
+        const initialIndex = Number(req.query.initialNum);
+        const finalIndex = Number(req.query.finalNum);
+
+        if (isNaN(initialIndex) || isNaN(finalIndex) || initialIndex > finalIndex) {
+            return res.status(400).json({ error: 'Invalid parameters' });
+        }
+
+        const allProducts = await ProductModel.find({}); // Assuming you have a MongoDB model named "ProductModel"
+
+        const products = allProducts.slice(initialIndex, finalIndex);
+
+        res.status(200).json({ status: 1, msg: 'Success', data: products });
+    } catch (error) {
+        res.status(500).json({ status: 0, msg: 'Something went wrong.' });
+    }
+});
+
+
+
 
 Router.get('/getproducts/:id', async (req, res) => {
     try {

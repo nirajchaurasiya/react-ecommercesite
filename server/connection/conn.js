@@ -1,13 +1,18 @@
-const mongoose = require('mongoose')
-const URI = process.env.MONGO_URI
+const mongoose = require('mongoose');
+const URI = process.env.MONGO_URI;
+
+// Set the strictQuery option
+mongoose.set('strictQuery', false);
+
 try {
-    mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }, mongoose.set('strictQuery', false))
-        .then((data) => {
-            console.log(`Connected Successfully`)
+    console.log("Connecting....")
+    mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => {
+            console.log(`Connected Successfully`);
         })
         .catch((err) => {
-            console.log(`Some error occured`)
-        })
+            console.log(`Some error occurred` + err);
+        });
 } catch (error) {
-    console.log(error)
+    console.log(error);
 }

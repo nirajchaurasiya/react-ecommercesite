@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+.dark {
+  color: white;
+  background-color: black;
+}
+.light {
+  color: black;
+  background-color: aliceblue;
+}
+nav {
+  display: flex;
+  justify-content: end;
+}
+nav button {
+  padding: 10px;
+  border: 1px solid rgb(255, 251, 251);
+  outline: 0;
+  cursor: pointer;
+}
+.dramatic_dialogue_content_width {
+  padding: 15px 5px;
+  background-color: transparent;
+  max-width: 800px;
+  margin: auto;
+  border: 1px solid rgb(223, 222, 222);
+  border-top: 0px;
+  border-bottom: 0px;
+}
+.drama_title {
+  font-weight: 800;
+  font-size: 30px;
+  border-bottom: 1px solid rgb(222, 217, 217);
+  width: fit-content;
+  margin: auto;
+}
+.characters {
+  margin-top: 2%;
+}
+.characters p {
+  font-size: 20px;
+  font-weight: 100;
+}
+.characters_name {
+  list-style: none;
+  padding: 10px 15px;
+  display: grid;
+  gap: 4px;
+}
+.characters_play_line_1 {
+  margin-top: 4px;
+  position: absolute;
+  width: 4px;
+  height: 50px;
+  color: aqua;
+  background-color: rgb(78, 76, 76);
+  margin-bottom: 20px;
+}
+.characters_play_line_2 {
+  margin-top: 5px;
+  position: absolute;
+  width: 4px;
+  height: 50px;
+  color: aqua;
+  background-color: rgb(78, 76, 76);
+}
+.characters_1 {
+  padding-left: 15px;
+  margin-top: 10px;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  color: rgb(106, 108, 110);
+}
+.description {
+  font-size: 13px;
+}
+
+.hr_line {
+  margin-top: 2%;
+  margin-bottom: 1%;
+  border: 1px solid rgb(223, 221, 221);
+}
+
+.dialogues_content {
+  padding: 10px 15px;
+  display: grid;
+  gap: 5px;
+}
+.dialogues_conversation {
+  margin-top: 5px;
+}
+.dialogues_conversation .dialogue_conversation .character_name {
+  font-weight: 800;
+  font-size: 15px;
+  border-bottom: 1px solid rgb(176, 176, 176);
+  width: fit-content;
+}
+.dialogues_conversation .dialogue_conversation .character_dialogue {
+  padding: 4px 20px;
+}
+.dialogue_conversation {
+  margin-bottom: 4px;
+}
+.line_conversation {
+  border: 1px solid rgb(241, 241, 241);
+}
+.exit_word {
+  text-align: end;
+  margin-bottom: 1%;
+  margin-top: 1%;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(210, 209, 209);
+}

@@ -54,7 +54,7 @@ export default function Login() {
             else {
                 setErrorAlert(true)
                 setSuccessAlert(false);
-                setMessage('All the input fields are mandatory. Pleas fill all the fields before submitting the form.')
+                setMessage('All the input fields are mandatory. Please fill all the fields before submitting the form.')
                 setTimeout(() => {
                     setErrorAlert(false)
                     setSuccessAlert(false)
@@ -64,7 +64,7 @@ export default function Login() {
             }
         } catch (error) {
             setErrorAlert(true)
-            setMessage('Looks like, our server are busy to handle other requests, pleas try again later.')
+            setMessage('Looks like, our servers are busy to handle other requests, pleas try again later.')
             setTimeout(() => {
                 setErrorAlert(false)
                 setSuccessAlert(false)

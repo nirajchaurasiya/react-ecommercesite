@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Human's Mind - A Garden</title>
+</head>
+
+<body class="">
+
+    <div class="dramatic_dialogue_content_width">
+        <nav>
+            <button id="Mode">Mode</button>
+        </nav>
+        <div class="dramatic_dialogue_content">
+            <div>
+                <p class="drama_title">Human's Mind - A Garden</p>
+            </div>
+            <div class="characters">
+                <p>Characters of the play</p>
+                <p class="characters_1">College Students</p>
+                <div class="characters_play_line_1"></div>
+                <ul class="characters_name">
+                    <li>Marcus</li>
+                    <li>Angela</li>
+                </ul>
+                <p class="characters_1">At The Church</p>
+                <div class="characters_play_line_2"></div>
+                <ul class="characters_name">
+                    <li>Cales - <span class="description">Follower</span></li>
+                    <li>James - <span class="description">Church Father & A Reputed Teacher</span></li>
+                </ul>
+            </div>
+            <div class="hr_line"></div>
+
+            <!-- The container to hold all the parts -->
+            <div id="dialogue_parts_container"></div>
+        </div>
+    </div>
+    <div id="loader" class="loader"></div>
+
+    <script>
+        const btn = document.getElementById('Mode');
+        const dialoguePartsContainer = document.getElementById('dialogue_parts_container');
+        const loader = document.getElementById('loader'); // Get the loader element
+
+        btn.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+        });
+
+        // Function to fetch and populate dialogues_content sections from JSON
+        function loadDialoguesContent() {
+            // Show the loader while fetching the content
+            loader.style.display = 'block';
+
+            fetch('conversation_json/humansmind.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Clear existing dialogue parts
+                    dialoguePartsContainer.innerHTML = '';
+
+                    // Loop through the data and create parts dynamically
+                    data.forEach((partData, index) => {
+                        const dialoguePart = document.createElement('div');
+                        dialoguePart.className = 'dialogues_content';
+                        dialoguePart.innerHTML = `
+                            <p class="part_${index + 1}" style="font-weight: 600;">${partData.part}</p>
+                            <p class="part_${index + 1}">${partData.location}</p>
+                            <p class="characters_entry" style="font-size: 14px;">${partData.entry}</p>
+                            <div class="dialogues_conversation"></div>
+                            <p class="exit_word">(Exit)</p>
+                            <div class="line_conversation"></div>
+                        `;
+
+                        // Add the dialogue part to the container
+                        dialoguePartsContainer.appendChild(dialoguePart);
+
+                        // Get the conversation container for this part
+                        const conversationContainer = dialoguePart.querySelector('.dialogues_conversation');
+
+                        // Loop through the conversation and add dialogues for this part
+                        partData.conversation.forEach(item => {
+                            const dialogueItem = document.createElement('div');
+                            dialogueItem.classList.add('dialogue_conversation');
+                            dialogueItem.innerHTML = `
+                                <div class='character_name'>${item.name}</div>
+                                <div class='character_dialogue'>${item.dialogue}</div>
+                            `;
+                            conversationContainer.appendChild(dialogueItem);
+                        });
+                    });
+
+                    // Hide the loader after the content is loaded
+                    loader.style.display = 'none';
+                })
+                .catch(error => console.error('Error fetching dialogues content:', error));
+        }
+
+        // Load dialogues content when the window has finished loading
+        window.addEventListener('load', loadDialoguesContent);
+    </script>
+
+</body>
+
+</html>

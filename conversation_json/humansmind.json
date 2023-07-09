@@ -1,0 +1,60 @@
+[
+    {
+        "part": "Part - I",
+        "location": "Monti . A University In Rome",
+        "entry": "Enter Marcus and Angela",
+        "conversation": [
+            {
+                "name": "Marcus",
+                "dialogue": "Hey Angela! How're you doing?"
+            },
+            {
+                "name": "Angela",
+                "dialogue": "Hey Marcus! I'm doing great. Did you read the book, 'The Power Of Thought', which I suggested you?"
+            },
+            {
+                "name": "Marcus",
+                "dialogue": "Yes, I did. That was the most powerful book on thought which I ever read. Thank you for suggesting me, Angela!"
+            },
+            {
+                "name": "Angela",
+                "dialogue": "Welcome, Marcus. Yes, indeed I found it too. In the book the author has compared our mind with the garden. But, there was some tough words and sentences that I found it difficult in understanding. Did you get it?"
+            },
+            {
+                "name": "Marcus",
+                "dialogue": "Yeah, the sentence was a bit confusin especially when the author compared our mind with garden. Do you know someone to whom we can ask to clear our confusion?"
+            },
+            {
+                "name": "Angela",
+                "dialogue": "Well, I was suggested by our literature teacher Mr. James. So, I think he can help us however, I am afraid if he may be not available at the college."
+            },
+            {
+                "name": "Marcus",
+                "dialogue": "We can go to the church then, can't we?"
+            },
+            {
+                "name": "Angela",
+                "dialogue": "You are right; he will be available at the church at the evening. So, we can go to the church."
+            },
+            {
+                "name": "Marcus",
+                "dialogue": "Great!"
+            }
+        ]
+    },
+    {
+        "part": "Part - I",
+        "location": "Monti . A University In Rome",
+        "entry": "Enter Marcus and Angela",
+        "conversation": [
+            {
+                "name": "Marcus",
+                "dialogue": "Hey Angela! How're you doing?"
+            },
+            {
+                "name": "Angela",
+                "dialogue": "Hey Marcus! I'm doing great. Did you read the book, 'The Power Of Thought', which I suggested you?"
+            }
+        ]
+    }
+]
