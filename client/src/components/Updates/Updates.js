@@ -1,38 +1,60 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import ApiService from '../Apis/ApiService';
 export default function Updates() {
     const [allUpdates, setAllUpdates] = useState([])
     const [isThereUpdate, setIsThereUpdate] = useState(true)
     const [loader, setLoader] = useState(true);
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     const navigate = useNavigate();
-    const getAllUpdates = useCallback(() => {
-        axios.get(`${REACT_APP_API_URL}/api/updates/getallupdates`)
-            .then((response) => {
-                if (response.status === 200 && response.data.status === 1) {
-                    setAllUpdates(response.data.data)
-                    setLoader(false)
-                    setIsThereUpdate(true)
-                    // console.log(object)
-                } else {
-                    setIsThereUpdate(false)
-                    setLoader(false)
-                }
-            })
-            .catch((err) => {
-                setIsThereUpdate(false)
-                setLoader(false)
-                console.log(err);
-            });
-    }, [REACT_APP_API_URL]);
+    // const getAllUpdates = useCallback(() => {
+    //     axios.get(`${REACT_APP_API_URL}/api/updates/getallupdates`)
+    //         .then((response) => {
+    //             if (response.status === 200 && response.data.status === 1) {
+    //                 setAllUpdates(response.data.data)
+    //                 setLoader(false)
+    //                 setIsThereUpdate(true)
+    //                 // console.log(object)
+    //             } else {
+    //                 setIsThereUpdate(false)
+    //                 setLoader(false)
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             setIsThereUpdate(false)
+    //             setLoader(false)
+    //             console.log(err);
+    //         });
+    // }, [REACT_APP_API_URL]);
+
+    const getAllUpdates = async () => {
+        try {
+            const response = await ApiService.getAllUpdates();
+            if (response.status === 200 && response.data.status === 1) {
+                setAllUpdates(response.data.data);
+                setLoader(false);
+                setIsThereUpdate(true);
+            } else {
+                setIsThereUpdate(false);
+                setLoader(false);
+                alert('Error occurred while fetching updates.');
+            }
+        } catch (err) {
+            setIsThereUpdate(false);
+            setLoader(false);
+            // console.error('Error occurred:', err)
+            alert('Error occurred while fetching updates.');
+        }
+    };
+
+
     useEffect(() => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
         getAllUpdates();
-    }, [getAllUpdates])
+    }, [])
 
     return (
         <div>

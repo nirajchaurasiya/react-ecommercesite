@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        .container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            scroll-snap-align: start;
+        }
+
+        .one {
+            background-color: green;
+        }
+
+        .two {
+            background-color: red;
+        }
+
+        .three {
+            background-color: blue;
+        }
+
+        .four {
+            background-color: yellow;
+        }
+
+        .btns {
+            display: grid;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            gap: 10px;
+            bottom: 5px;
+            right: 20px;
+        }
+
+        .btns button {
+            padding: 3px;
+            background-color: transparent;
+            outline: 0;
+            border-radius: 100%;
+            border: 1px solid rgb(152, 153, 152);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="btns">
+        <button id="up">Up</button>
+        <button id="down">D</button>
+    </div>
+    <div class="container">
+        <section class="one">
+            <h1>First Page</h1>
+        </section>
+        <section class="two">
+            <h1>Second Page</h1>
+        </section>
+        <section class="three">
+            <h1>Third Page</h1>
+        </section>
+        <section class="four">
+            <h1>Fourth Page</h1>
+        </section>
+    </div>
+</body>
+<script>
+    const upBtn = document.querySelector('#up');
+    const downBtn = document.querySelector('#down');
+    const container = document.querySelector('.container');
+    const sections = document.querySelectorAll('.container > section');
+    let currentSectionIndex = 0;
+
+    upBtn.addEventListener('click', () => {
+        currentSectionIndex = Math.max(currentSectionIndex - 1, 0);
+        sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
+    });
+
+    downBtn.addEventListener('click', () => {
+        currentSectionIndex = Math.min(currentSectionIndex + 1, sections.length - 1);
+        sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+
+</html>

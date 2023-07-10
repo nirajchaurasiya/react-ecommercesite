@@ -385,7 +385,7 @@ export default function ProductDetails() {
                                                                     <hr />
                                                                     <div className="flex mt-2 space-x-4">
                                                                         <div className="flex-shrink-0">
-                                                                            <img className="w-10 h-10 rounded-full" src={`${REACT_APP_API_URL}/${e?.profile}`} alt="" />
+                                                                            <img className="w-10 h-10 rounded-full object-contain" src={`${REACT_APP_API_URL}/${e?.profile}`} alt="" />
                                                                         </div>
                                                                         <div className="flex flex-col">
                                                                             <div className="space-y-1 font-medium text-black">

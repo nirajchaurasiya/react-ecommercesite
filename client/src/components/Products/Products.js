@@ -141,7 +141,6 @@ export default function Products() {
                                                             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">All Products</h1>
                                                             <div className="h-1 w-20 bg-indigo-500 rounded"></div>
                                                         </div>
-                                                        <p className="lg:w-1/2 w-full leading-relaxed text-gray-500">Checkout our premium collection of different variety of Gamra</p>
                                                     </div>
 
                                                     <div className="flex flex-wrap -m-4">
