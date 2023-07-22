@@ -49,39 +49,122 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            gap: 10px;
-            bottom: 5px;
-            right: 20px;
+            gap: 20px;
+            bottom: 100px;
+            right: 50px;
+            color: white;
         }
 
         .btns button {
-            padding: 3px;
             background-color: transparent;
             outline: 0;
+            height: 70px;
+            width: 70px;
+            z-index: 100;
             border-radius: 100%;
-            border: 1px solid rgb(152, 153, 152);
+            border: 0;
             cursor: pointer;
+            color: white;
+        }
+
+        video {
+            width: 350px;
+        }
+
+        @media (max-width: 1500px) {
+            video {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            video {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            video {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            video {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            video {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 300px) {
+            video {
+                width: 200px;
+            }
+        }
+
+
+        video::-webkit-media-controls-start-playback-button,
+        video::-webkit-media-controls-rewind-button,
+        video::-webkit-media-controls-seek-back-button,
+        video::-webkit-media-controls-seek-forward-button,
+        video::-webkit-media-controls-toggle-closed-captions-button,
+        /* video::-webkit-media-controls-volume-slider, */
+        /* video::-webkit-media-controls-mute-button, */
+        video::-webkit-media-controls-timeline,
+        video::-webkit-media-controls-fullscreen-button {
+            display: none !important;
         }
     </style>
 </head>
 
 <body>
     <div class="btns">
-        <button id="up">Up</button>
-        <button id="down">D</button>
+        <button id="up"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                <path fill="white" d="M12 3L4.5 11H9v10h6V11h4.5L12 3z" />
+            </svg>
+        </button>
+        <button id="down"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                <path fill="white" d="M12 21l7.5-8H15V3h-6v10H4.5L12 21z" />
+            </svg>
+        </button>
     </div>
     <div class="container">
         <section class="one">
-            <h1>First Page</h1>
+            <video disablePictureInPicture controlslist="nodownload noplaybackrate" controls src="./video/1.mp4"
+                id="video1"></video>
+            <!-- <button class="play-button"
+                style="background-color: transparent;color: white;border: 1px solid black;padding: 3px; width: 50px;"
+                data-video-index="0">Play
+            </button> -->
         </section>
         <section class="two">
-            <h1>Second Page</h1>
+            <video disablePictureInPicture controlslist="nodownload noplaybackrate" controls src="./video/2.mp4"
+                id="video2"></video>
+            <!-- <button class="play-button"
+                style="background-color: transparent;color: white;border: 1px solid black;padding: 3px; width: 50px;"
+                data-video-index="1">Play
+            </button> -->
         </section>
         <section class="three">
-            <h1>Third Page</h1>
+            <video disablePictureInPicture controlslist="nodownload noplaybackrate" controls src="./video/3.mp4"
+                id="video3"></video>
+            <!-- <button class="play-button"
+                style="background-color: transparent;color: white;border: 1px solid black;padding: 3px; width: 50px;"
+                data-video-index="2">Play
+            </button> -->
         </section>
         <section class="four">
-            <h1>Fourth Page</h1>
+            <video disablePictureInPicture controlslist="nodownload noplaybackrate" controls src="./video/4.mp4"
+                id="video4"></video>
+            <!-- <button class="play-button"
+                style="background-color: transparent;color: white;border: 1px solid black;padding: 3px; width: 50px;"
+                data-video-index="3">Play
+            </button> -->
         </section>
     </div>
 </body>
@@ -90,7 +173,41 @@
     const downBtn = document.querySelector('#down');
     const container = document.querySelector('.container');
     const sections = document.querySelectorAll('.container > section');
+    const videos = document.querySelectorAll('video');
+    const playButtons = document.querySelectorAll('.play-button');
     let currentSectionIndex = 0;
+
+    function playVideo(index) {
+        videos.forEach((video) => {
+            video.pause();
+        });
+        videos[index].play();
+    }
+
+    function updateCurrentSectionIndex() {
+        const rect = sections[currentSectionIndex].getBoundingClientRect();
+        if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+            playVideo(currentSectionIndex);
+        }
+    }
+
+    function handlePlayButtonClick(event) {
+        const button = event.target;
+        const videoIndex = button.getAttribute('data-video-index');
+        const index = parseInt(videoIndex, 10);
+
+        if (!isNaN(index) && index >= 0 && index < videos.length) {
+            const video = videos[index];
+            if (video.paused) {
+                playVideo(index);
+                button.textContent = 'Pause';
+            } else {
+                video.pause();
+                button.textContent = 'Play';
+            }
+        }
+    }
+
 
     upBtn.addEventListener('click', () => {
         currentSectionIndex = Math.max(currentSectionIndex - 1, 0);
@@ -100,6 +217,12 @@
     downBtn.addEventListener('click', () => {
         currentSectionIndex = Math.min(currentSectionIndex + 1, sections.length - 1);
         sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
+    });
+
+    container.addEventListener('scroll', updateCurrentSectionIndex);
+
+    playButtons.forEach((button) => {
+        button.addEventListener('click', handlePlayButtonClick);
     });
 </script>
 
